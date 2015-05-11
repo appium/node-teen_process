@@ -1,18 +1,19 @@
 {
   "name": "teen_process",
-  "description": "Description goes here.",
+  "description": "A grown up version of Node's spawn/exec",
   "keywords": [
-    "appium"
+    "child_process",
+    "process management"
   ],
   "version": "1.0.0",
   "author": "appium",
   "license": "Apache License 2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/appium/teen_process.git"
+    "url": "https://github.com/appium/node-teen_process.git"
   },
   "bugs": {
-    "url": "https://github.com/appium/teen_process/issues"
+    "url": "https://github.com/appium/node-teen_process/issues"
   },
   "engines": [
     "node"
@@ -35,9 +36,9 @@
   "devDependencies": {
     "appium-gulp-plugins": "^1.1.0",
     "chai": "^2.2.0",
-    "chai-as-promised": "^4.3.0",
+    "chai-as-promised": "^5.0.0",
     "gulp": "^3.8.11",
     "mochawait": "^2.0.0",
-    "yargs": "^3.7.1"
+    "yargs": "^3.8.0"
   }
 }
