@@ -20,16 +20,36 @@ console.log(stderr);              // ''
 console.log(code);                // 0
 
 // works with spaces
-let res = await exec('/command/with spaces.sh', ['foo', 'argument with spaces'])
+await exec('/command/with spaces.sh', ['foo', 'argument with spaces'])
 // as though we had run: "/command/with spaces.sh" foo "argument with spaces"
 
-// takes options cwd, env, timeout, and killSignal
-await exec('sleep', ['10'], {timeout: 500, killSignal: 'SIGINT'});
+// nice error handling that still includes stderr/stdout/code
+try {
+  await exec('echo_and_exit', ['foo', '10']);
+} catch (e) {
+  console.log(e.message);  // "Exited with code 10"
+  console.log(e.stdout);   // "foo"
+  console.log(e.code);     // 10
+}
+```
 
-// defaults:
-// {
-//   cwd: undefined,
-//   env: process.env,
-//   timeout: null,
-//   killSignal: 'SIGTERM'
-// }
+The `exec` fucntion takes some options, with these defaults:
+
+```js
+{
+  cwd: undefined,
+  env: process.env,
+  timeout: null,
+  killSignal: 'SIGTERM'
+}
+```
+
+Example:
+
+```
+try {
+  await exec('sleep', ['10'], {timeout: 500, killSignal: 'SIGINT'});
+} catch (e) {
+  console.log(e.message);  // "'sleep 10' timed out after 500ms"
+}
+```
