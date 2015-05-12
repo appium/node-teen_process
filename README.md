@@ -46,7 +46,7 @@ The `exec` fucntion takes some options, with these defaults:
 
 Example:
 
-```
+```js
 try {
   await exec('sleep', ['10'], {timeout: 500, killSignal: 'SIGINT'});
 } catch (e) {
