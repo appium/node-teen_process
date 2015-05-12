@@ -47,6 +47,16 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
+  it('should work with backslashes in arguments', async () => {
+    let cmd = getFixture("echo.sh");
+    let echo1 = "my\\ name\\ is\\ bob";
+    let echo2 = "lol";
+    let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
+    stdout.trim().should.equal(echo1);
+    stderr.trim().should.equal(echo2);
+    code.should.equal(0);
+  });
+
   it('should work with spaces in commands', async () => {
     let cmd = getFixture("echo with space.sh");
     let echo1 = "my name is bob";
