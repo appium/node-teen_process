@@ -13,23 +13,23 @@ Examples:
 ```js
 import { exec } from 'teen_process';
 
-# basic usage
+// basic usage
 let {stdout, stderr, code} = await exec('ls', ['/usr/local/bin']);
 console.log(stdout.split("\n"));  // array of files
 console.log(stderr);              // ''
 console.log(code);                // 0
 
-# works with spaces
+// works with spaces
 let res = await exec('/command/with spaces.sh', ['foo', 'argument with spaces'])
-# as though we had run: "/command/with spaces.sh" foo "argument with spaces"
+// as though we had run: "/command/with spaces.sh" foo "argument with spaces"
 
-# takes options cwd, env, timeout, and killSignal
+// takes options cwd, env, timeout, and killSignal
 await exec('sleep', ['10'], {timeout: 500, killSignal: 'SIGINT'});
 
-# defaults:
-# {
-#   cwd: undefined,
-#   env: process.env,
-#   timeout: null,
-#   killSignal: 'SIGTERM'
-# }
+// defaults:
+// {
+//   cwd: undefined,
+//   env: process.env,
+//   timeout: null,
+//   killSignal: 'SIGTERM'
+// }
