@@ -40,9 +40,15 @@ The `exec` function takes some options, with these defaults:
   cwd: undefined,
   env: process.env,
   timeout: null,
-  killSignal: 'SIGTERM'
+  killSignal: 'SIGTERM',
+  encoding: 'utf8',
+  ignoreOutput: false
 }
 ```
+
+Most of these are self-explanatory. `ignoreOutput` is useful if you have a very
+chatty process whose output you don't care about and don't want to add it to
+the memory consumed by your program.
 
 Example:
 

@@ -104,5 +104,13 @@ describe('exec', () => {
     let {stdout} = await exec(getFixture("bigbuffer.js"));
     stdout.length.should.be.above(512 * 1024);
   });
+
+  it('should ignore output if requested', async () => {
+    let cmd = getFixture("echo.sh");
+    let echo1 = "my name is bob";
+    let {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
+    stdout.should.equal("");
+    code.should.equal(0);
+  });
 });
 
