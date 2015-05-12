@@ -33,7 +33,7 @@ try {
 }
 ```
 
-The `exec` fucntion takes some options, with these defaults:
+The `exec` function takes some options, with these defaults:
 
 ```js
 {
