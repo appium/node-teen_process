@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "babel-runtime": "^5.1.9",
-    "source-map-support": "^0.2.10",
-    "q": "^1.2.0"
+    "bluebird": "^2.9.25",
+    "source-map-support": "^0.2.10"
   },
   "scripts": {
     "prepublish": "./node_modules/.bin/gulp prepublish",

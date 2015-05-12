@@ -1,6 +1,6 @@
 // transpile:main
 
-import {default as sample} from './lib/sample';
+import { exec, spawn } from './lib/teen_process';
 
-export {sample};
+export { exec, spawn };
 
