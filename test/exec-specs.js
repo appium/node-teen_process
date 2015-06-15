@@ -5,13 +5,10 @@ import { exec } from '../..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import 'mochawait';
+import { getFixture } from './helpers';
 
 const should = chai.should();
 chai.use(chaiAsPromised);
-
-function getFixture (fix) {
-  return path.resolve(__dirname, "..", "..", "test", "fixtures", fix);
-}
 
 describe('exec', () => {
   it('should work with arguments like spawn', async () => {

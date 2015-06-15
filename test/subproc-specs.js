@@ -1,0 +1,129 @@
+// transpile:mocha
+
+import B from 'bluebird';
+import path from 'path';
+import { SubProcess } from '../..';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import 'mochawait';
+import { getFixture } from './helpers';
+
+const should = chai.should();
+chai.use(chaiAsPromised);
+
+describe('SubProcess', () => {
+  it('should throw an error if initialized without a command', () => {
+    should.throw(() => {
+      new SubProcess();
+    });
+  });
+  it('should throw an error if initialized with a bad command', () => {
+    should.throw(() => {
+      new SubProcess({lol: true});
+    });
+    should.throw(() => {
+      new SubProcess(1);
+    });
+  });
+  it('should default args list to []', () => {
+    let x = new SubProcess('ls');
+    x.args.should.eql([]);
+  });
+
+  describe('#start', () => {
+    it('should throw an error if command fails on startup', async () => {
+      let s = new SubProcess('blargimarg');
+      await s.start().should.eventually.be.rejectedWith(/ENOENT/);
+    });
+    it('should have a default startDetector of waiting for output', async () => {
+      let hasData = false;
+      let s = new SubProcess('ls');
+      s.on('output', (stdout) => {
+        if (stdout) {
+          hasData = true;
+        }
+      });
+      await s.start();
+      hasData.should.be.true;
+    });
+    it('should interpret a numeric startDetector as a start timeout', async () => {
+      let hasData = false;
+      let s = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      s.on('output', (stdout) => {
+        if (stdout) {
+          hasData = true;
+        }
+      });
+      await s.start(0);
+      hasData.should.be.false;
+      await B.delay(1200);
+      hasData.should.be.true;
+    });
+    it('should be able to provide a custom startDetector function', async () => {
+      let sd = (stdout) => { return stdout; };
+      let hasData = false;
+      let s = new SubProcess('ls');
+      s.on('output', (stdout) => {
+        if (stdout) {
+          hasData = true;
+        }
+      });
+      await s.start(sd);
+      hasData.should.be.true;
+    });
+  });
+
+  describe('listening for data', () => {
+    let subproc;
+    it('should get output as params', async () => {
+      await new Promise(async (resolve) => {
+        subproc = new SubProcess(getFixture('sleepyproc.sh'),
+                                 ['ls', path.resolve(__dirname)]);
+        subproc.on('output', (stdout) => {
+          if (stdout && stdout.indexOf('subproc-specs') !== -1) {
+            resolve();
+          }
+        });
+        await subproc.start();
+      });
+      await subproc.stop();
+
+      await new Promise(async (resolve) => {
+        subproc = new SubProcess(getFixture('echo.sh'), ['foo', 'bar']);
+        subproc.on('output', (stdout, stderr) => {
+          if (stderr && stderr.indexOf('bar') !== -1) {
+            resolve();
+          }
+        });
+        await subproc.start();
+      });
+      await subproc.stop();
+    });
+  });
+
+  describe('#stop', () => {
+    it('should send the right signal to stop a proc', async () => {
+      return new Promise(async (resolve, reject) => {
+        let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+        await subproc.start();
+        subproc.on('exit', (code, signal) => {
+          try {
+            signal.should.equal('SIGHUP');
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+        await subproc.stop('SIGHUP');
+      });
+    });
+
+    it('should time out if stop doesnt complete fast enough', async () => {
+      let subproc = new SubProcess(getFixture('traphup.sh'),
+                                   ['tail', '-f', path.resolve(__filename)]);
+      await subproc.start();
+      await subproc.stop('SIGHUP', 10)
+              .should.eventually.be.rejectedWith(/Process didn't end/);
+    });
+  });
+});
