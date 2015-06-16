@@ -81,7 +81,8 @@ async function tailFileForABit () {
 
 Errors with start/stop are thrown in the calling context.
 
-You can listen to 2 events, `output`, and `exit`:
+You can listen to 4 events, `output`, `exit`, `lines-stdout`, and
+`lines-stderr`:
 
 ```js
 proc.on('output', (stdout, stderr) => {
@@ -92,6 +93,13 @@ proc.on('output', (stdout, stderr) => {
 proc.on('exit', (code, signal) => {
   console.log(`exited with code ${code} from signal ${signal}`);
   // exited with code 127 from signal SIGHUP
+});
+
+// lines-stderr is just the same
+proc.on('lines-stdout', lines => {
+  console.log(lines);
+  // ['foo', 'bar', 'baz']
+  // automatically handles rejoining lines across stream chunks
 });
 ```
 

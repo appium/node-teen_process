@@ -25,6 +25,17 @@ describe('SubProcess', () => {
       new SubProcess(1);
     });
   });
+  it('should throw an error if initialized with bad args', () => {
+    should.throw(() => {
+      new SubProcess('ls', 'foo');
+    });
+    should.throw(() => {
+      new SubProcess('ls', 1);
+    });
+    should.throw(() => {
+      new SubProcess('ls', {});
+    });
+  });
   it('should default args list to []', () => {
     let x = new SubProcess('ls');
     x.args.should.eql([]);
@@ -58,6 +69,10 @@ describe('SubProcess', () => {
       hasData.should.be.false;
       await B.delay(1200);
       hasData.should.be.true;
+    });
+    it('should fail even with a start timeout of 0 when command is bad', async () => {
+      let s = new SubProcess('blargimarg');
+      await s.start(0).should.eventually.be.rejectedWith(/ENOENT/);
     });
     it('should be able to provide a custom startDetector function', async () => {
       let sd = (stdout) => { return stdout; };
@@ -99,6 +114,18 @@ describe('SubProcess', () => {
       });
       await subproc.stop();
     });
+
+    it('should get output by lines', async () => {
+      subproc = new SubProcess('ls', [path.resolve(__dirname)]);
+      let lines = [];
+      subproc.on('lines-stdout', (newLines) => {
+        lines = lines.concat(newLines);
+      });
+      await subproc.start(0);
+      await B.delay(50);
+      lines.should.eql(['exec-specs.js', 'fixtures', 'helpers.js',
+                        'subproc-specs.js']);
+    });
   });
 
   describe('#stop', () => {
@@ -124,6 +151,14 @@ describe('SubProcess', () => {
       await subproc.start();
       await subproc.stop('SIGHUP', 10)
               .should.eventually.be.rejectedWith(/Process didn't end/);
+    });
+
+    it('should error if there is no process to stop', async () => {
+      let subproc = new SubProcess('ls');
+      await subproc.stop().should.eventually.be.rejectedWith(/Can't stop/);
+      await subproc.start();
+      await B.delay(10);
+      await subproc.stop().should.eventually.be.rejectedWith(/Can't stop/);
     });
   });
 });
