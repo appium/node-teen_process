@@ -86,6 +86,18 @@ describe('SubProcess', () => {
       await s.start(sd);
       hasData.should.be.true;
     });
+    it('should pass on custom errors from startDetector', async () => {
+      let sd = () => { throw new Error('foo'); };
+      let s = new SubProcess('ls');
+      await s.start(sd).should.eventually.be.rejectedWith(/foo/);
+    });
+    it('should time out starts that take longer than specified ms', async () => {
+      let sd = (stdout) => { return stdout.indexOf('nothere') !== -1; };
+      let s = new SubProcess('ls');
+      let start = Date.now();
+      await s.start(sd, 500).should.eventually.be.rejectedWith(/did not start.+time/i);
+      (Date.now() - start).should.be.below(600);
+    });
   });
 
   describe('listening for data', () => {

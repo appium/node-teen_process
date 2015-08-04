@@ -119,6 +119,31 @@ let sd = (stdout, stderr) => {
 await proc.start(sd); // will continue when stderr receives 'blarg'
 ```
 
+A custom `startDetector` can also throw an error if it wants to declare the
+start unsuccessful. For example, if we know that the first output might contain
+a string which invalidates the process (for us), we could define a custom
+`startDetector` as follows:
+
+```js
+let sd = (stdout, stderr) => {
+  if (/fail/.test(stderr)) {
+    throw new Error("Encountered failure condition");
+  }
+  return stdout || stderr;
+};
+await proc.start(sd); // will continue when output is received that doesn't
+                      // match 'fail'
+```
+
+Finally, if you want to specify a maximum time to wait for a process to start,
+you can do that by passing a second parameter in milliseconds to `start()`:
+
+```js
+// use the default startDetector and throw an error if we wait for more than
+// 1000ms for output
+await proc.start(null, 1000);
+```
+
 And how about killing the processes? Can you provide a custom signal, instead
 of using the default `SIGTERM`? Why yes:
 
