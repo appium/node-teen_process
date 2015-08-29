@@ -24,7 +24,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "babel-runtime": "^5.1.9",
+    "babel-runtime": "=5.5.5",
     "bluebird": "^2.9.25",
     "shell-quote": "^1.4.3",
     "source-map-support": "^0.2.10",
