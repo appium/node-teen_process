@@ -2,11 +2,11 @@
 
 import B from 'bluebird';
 import path from 'path';
-import { SubProcess } from '../..';
+import { exec, SubProcess } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import 'mochawait';
 import { getFixture } from './helpers';
+
 
 const should = chai.should();
 chai.use(chaiAsPromised);
@@ -163,6 +163,15 @@ describe('SubProcess', () => {
       await subproc.start();
       await subproc.stop('SIGHUP', 10)
               .should.eventually.be.rejectedWith(/Process didn't end/);
+
+      // need to kill the process
+      // 1 for the trap, 1 for the tail
+      try {
+        await exec('kill', ['-9', subproc.proc.pid + 1]);
+      } catch (ign) {}
+      try {
+        await exec('kill', ['-9', subproc.proc.pid]);
+      } catch (ign) {}
     });
 
     it('should error if there is no process to stop', async () => {
