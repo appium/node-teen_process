@@ -1,11 +1,11 @@
 // transpile:mocha
 
 import path from 'path';
-import { exec } from '../..';
+import { exec } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import 'mochawait';
 import { getFixture } from './helpers';
+
 
 const should = chai.should();
 chai.use(chaiAsPromised);
@@ -97,7 +97,8 @@ describe('exec', () => {
     err.message.should.contain(cmd);
   });
 
-  it('should allow large amounts of output', async () => {
+  it('should allow large amounts of output', async function () {
+    this.timeout(10000);
     let {stdout} = await exec(getFixture("bigbuffer.js"));
     stdout.length.should.be.above(512 * 1024);
   });
