@@ -24,10 +24,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "babel-runtime": "=5.5.5",
-    "bluebird": "^2.9.25",
     "shell-quote": "^1.4.3",
-    "source-map-support": "^0.2.10",
     "through": "^2.3.7"
   },
   "scripts": {
@@ -37,10 +34,13 @@
   },
   "devDependencies": {
     "appium-gulp-plugins": "^1.1.0",
+    "babel-runtime": "^5.5.5",
+    "bluebird": "^2.10.2",
     "chai": "^2.2.0",
     "chai-as-promised": "^5.0.0",
     "gulp": "^3.8.11",
     "mochawait": "^2.0.0",
+    "source-map-support": "^0.2.10",
     "yargs": "^3.8.0"
   }
 }
