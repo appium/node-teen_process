@@ -40,6 +40,23 @@ describe('SubProcess', () => {
     let x = new SubProcess('ls');
     x.args.should.eql([]);
   });
+  it('should default opts dict to {}', () => {
+    let x = new SubProcess('ls');
+    x.opts.should.eql({});
+  });
+  it('should pass opts to spawn', async () => {
+    const cwd = path.resolve(getFixture('.'));
+    const subproc = new SubProcess('ls', [], { cwd });
+    let lines = [];
+    subproc.on('lines-stdout', (newLines) => {
+      lines = lines.concat(newLines);
+    });
+    await subproc.start(0);
+    await B.delay(50);
+    lines.should.include('bad_exit.sh');
+    lines.should.contain('bigbuffer.js');
+    lines.should.contain('echo.sh');
+  });
 
   describe('#start', () => {
     it('should throw an error if command fails on startup', async () => {
