@@ -46,7 +46,7 @@ describe('SubProcess', () => {
   });
   it('should pass opts to spawn', async () => {
     const cwd = path.resolve(getFixture('.'));
-    const subproc = new SubProcess('ls', [], { cwd });
+    const subproc = new SubProcess('ls', [], {cwd});
     let lines = [];
     subproc.on('lines-stdout', (newLines) => {
       lines = lines.concat(newLines);
