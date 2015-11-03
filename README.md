@@ -144,6 +144,13 @@ you can do that by passing a second parameter in milliseconds to `start()`:
 await proc.start(null, 1000);
 ```
 
+After the process has been started you can use `join()` to wait for it:
+
+```js
+await proc.join(); // will throw on exitcode not 0
+await proc.join([0, 1]); // will throw on exitcode not 0 or 1
+```
+
 And how about killing the processes? Can you provide a custom signal, instead
 of using the default `SIGTERM`? Why yes:
 

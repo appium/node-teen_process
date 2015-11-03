@@ -182,4 +182,32 @@ describe('SubProcess', () => {
       await subproc.stop().should.eventually.be.rejectedWith(/Can't stop/);
     });
   });
+
+  describe('#join', () => {
+    it('should fail if the #start has not yet been called', async () => {
+      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      await proc.join().should.eventually.be.rejectedWith(/Can't join/);
+    });
+
+    it('should wait until the process has been finished', async () => {
+      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      const now = Date.now();
+      await proc.start(0);
+      await proc.join();
+      const diff = Date.now() - now;
+      diff.should.be.above(1000);
+    });
+
+    it('should throw if process ends with a invalid exitcode', async () => {
+      const proc = new SubProcess(getFixture('bad_exit.sh'));
+      await proc.start(0);
+      await proc.join().should.eventually.be.rejectedWith(/Process ended with exitcode/);
+    });
+
+    it('should NOT throw if process ends with a custom allowed exitcode', async () => {
+      const proc = new SubProcess(getFixture('bad_exit.sh'));
+      await proc.start(0);
+      await proc.join([1]).should.eventually.be.become(1);
+    });
+  });
 });
