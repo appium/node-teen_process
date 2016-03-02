@@ -24,6 +24,7 @@
     "lib": "lib"
   },
   "dependencies": {
+    "appium-support": "^2.0.10",
     "babel-runtime": "=5.8.24",
     "shell-quote": "^1.4.3",
     "source-map-support": "^0.2.10",
