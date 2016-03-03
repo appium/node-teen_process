@@ -5,7 +5,7 @@ import { exec } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
-
+import { system } from 'appium-support';
 
 const should = chai.should();
 chai.use(chaiAsPromised);
@@ -21,7 +21,7 @@ describe('exec', () => {
   });
 
   it('should throw an error with a bad exit code', async () => {
-    let cmd = getFixture("bad_exit.sh");
+    let cmd = getFixture("bad_exit");
     let err;
     try {
       await exec(cmd);
@@ -35,7 +35,7 @@ describe('exec', () => {
   });
 
   it('should work with spaces in arguments', async () => {
-    let cmd = getFixture("echo.sh");
+    let cmd = getFixture("echo");
     let echo1 = "my name is bob";
     let echo2 = "lol";
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -45,7 +45,7 @@ describe('exec', () => {
   });
 
   it('should work with backslashes in arguments', async () => {
-    let cmd = getFixture("echo.sh");
+    let cmd = getFixture("echo");
     let echo1 = "my\\ name\\ is\\ bob";
     let echo2 = "lol";
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -55,7 +55,17 @@ describe('exec', () => {
   });
 
   it('should work with spaces in commands', async () => {
-    let cmd = getFixture("echo with space.sh");
+    let cmd = getFixture("echo with space");
+    let echo1 = "bobbob";
+    let echo2 = "lol";
+    let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
+    stdout.trim().should.equal(echo1);
+    stderr.trim().should.equal(echo2);
+    code.should.equal(0);
+  });
+
+  it('should work with spaces in commands and arguments', async () => {
+    let cmd = getFixture("echo with space");
     let echo1 = "my name is bob";
     let echo2 = "lol";
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -65,10 +75,10 @@ describe('exec', () => {
   });
 
   it('should respect cwd', async () => {
-    let cmd = "./echo.sh";
+    let cmd = system.isWindows() ? "echo.bat" : "./echo.sh";
     let echo1 = "my name is bob";
     let echo2 = "lol";
-    let cwd = path.dirname(getFixture("echo.sh"));
+    let cwd = path.dirname(getFixture("echo"));
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2], {cwd});
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
@@ -76,7 +86,7 @@ describe('exec', () => {
   });
 
   it('should respect env', async () => {
-    let cmd = getFixture("env.sh");
+    let cmd = getFixture("env");
     let env = {FOO: "lolol"};
     let {stdout, code} = await exec(cmd, [], {env});
     stdout.trim().should.equal(`${env.FOO} ${env.FOO}`);
@@ -111,4 +121,3 @@ describe('exec', () => {
     code.should.equal(0);
   });
 });
-

@@ -6,8 +6,11 @@ import { exec, SubProcess } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
+import { system } from 'appium-support';
 
 
+// Windows doesn't understand SIGHUP
+let stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
 const should = chai.should();
 chai.use(chaiAsPromised);
 
@@ -76,7 +79,7 @@ describe('SubProcess', () => {
     });
     it('should interpret a numeric startDetector as a start timeout', async () => {
       let hasData = false;
-      let s = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      let s = new SubProcess(getFixture('sleepyproc'), ['ls']);
       s.on('output', (stdout) => {
         if (stdout) {
           hasData = true;
@@ -121,7 +124,7 @@ describe('SubProcess', () => {
     let subproc;
     it('should get output as params', async () => {
       await new Promise(async (resolve) => {
-        subproc = new SubProcess(getFixture('sleepyproc.sh'),
+        subproc = new SubProcess(getFixture('sleepyproc'),
                                  ['ls', path.resolve(__dirname)]);
         subproc.on('output', (stdout) => {
           if (stdout && stdout.indexOf('subproc-specs') !== -1) {
@@ -133,7 +136,7 @@ describe('SubProcess', () => {
       await subproc.stop();
 
       await new Promise(async (resolve) => {
-        subproc = new SubProcess(getFixture('echo.sh'), ['foo', 'bar']);
+        subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') !== -1) {
             resolve();
@@ -164,21 +167,21 @@ describe('SubProcess', () => {
         await subproc.start();
         subproc.on('exit', (code, signal) => {
           try {
-            signal.should.equal('SIGHUP');
+            signal.should.equal(stopSignal);
             resolve();
           } catch (e) {
             reject(e);
           }
         });
-        await subproc.stop('SIGHUP');
+        await subproc.stop(stopSignal);
       });
     });
 
     it('should time out if stop doesnt complete fast enough', async () => {
-      let subproc = new SubProcess(getFixture('traphup.sh'),
+      let subproc = new SubProcess(getFixture('traphup'),
                                    ['tail', '-f', path.resolve(__filename)]);
       await subproc.start();
-      await subproc.stop('SIGHUP', 10)
+      await subproc.stop(stopSignal, 1)
               .should.eventually.be.rejectedWith(/Process didn't end/);
 
       // need to kill the process
@@ -207,7 +210,7 @@ describe('SubProcess', () => {
     });
 
     it('should wait until the process has been finished', async () => {
-      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      const proc = new SubProcess(getFixture('sleepyproc'), ['ls']);
       const now = Date.now();
       await proc.start(0);
       await proc.join();
@@ -216,13 +219,13 @@ describe('SubProcess', () => {
     });
 
     it('should throw if process ends with a invalid exitcode', async () => {
-      const proc = new SubProcess(getFixture('bad_exit.sh'));
+      const proc = new SubProcess(getFixture('bad_exit'));
       await proc.start(0);
       await proc.join().should.eventually.be.rejectedWith(/Process ended with exitcode/);
     });
 
     it('should NOT throw if process ends with a custom allowed exitcode', async () => {
-      const proc = new SubProcess(getFixture('bad_exit.sh'));
+      const proc = new SubProcess(getFixture('bad_exit'));
       await proc.start(0);
       await proc.join([1]).should.eventually.be.become(1);
     });
