@@ -4,7 +4,8 @@ import path from 'path';
 import { exec } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getFixture, system } from './helpers';
+import { getFixture } from './helpers';
+import { system } from 'appium-support';
 
 const should = chai.should();
 chai.use(chaiAsPromised);

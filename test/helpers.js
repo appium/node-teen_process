@@ -9,4 +9,4 @@ function getFixture (fix) {
   return path.resolve(__dirname, "..", "..", "test", "fixtures", fix);
 }
 
-export { getFixture, system };
+export { getFixture };

@@ -5,7 +5,9 @@ import path from 'path';
 import { exec, SubProcess } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getFixture, system } from './helpers';
+import { getFixture } from './helpers';
+import { system } from 'appium-support';
+
 
 // Windows doesn't understand SIGHUP
 let stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
