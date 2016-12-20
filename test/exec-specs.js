@@ -20,6 +20,18 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
+  it('should throw an error if command does not exist', async () => {
+    let cmd = 'doesnoteexist';
+    let err;
+    try {
+      await exec(cmd);
+    } catch (e) {
+      err = e;
+    }
+    should.exist(err);
+    err.message.should.include('not found');
+  });
+
   it('should throw an error with a bad exit code', async () => {
     let cmd = getFixture("bad_exit");
     let err;
