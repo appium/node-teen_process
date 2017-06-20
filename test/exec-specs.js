@@ -153,6 +153,12 @@ describe('exec', () => {
       signature.should.eql(PNG_MAGIC);
     });
 
+    it('should allow binary output as Buffer', async () => {
+      let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', isBuffer: true});
+      const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
+      signature.should.eql(PNG_MAGIC);
+    });
+
     it('should allow binary output from timeout', async () => {
       try {
         await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1})
@@ -160,6 +166,17 @@ describe('exec', () => {
       } catch (err) {
         let stdout = err.stdout;
         const signature = new Buffer(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
+        signature.should.eql(PNG_MAGIC);
+      }
+    });
+
+    it('should allow binary output as Buffer from timeout', async () => {
+      try {
+        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1})
+          .should.eventually.be.rejectedWith(/timed out/);
+      } catch (err) {
+        let stdout = err.stdout;
+        const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
         signature.should.eql(PNG_MAGIC);
       }
     });
