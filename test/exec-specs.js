@@ -6,6 +6,8 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
 import { system } from 'appium-support';
+import _ from 'lodash';
+
 
 const should = chai.should();
 chai.use(chaiAsPromised);
@@ -131,5 +133,57 @@ describe('exec', () => {
     let {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
     stdout.should.equal("");
     code.should.equal(0);
+  });
+
+  it('should return a Buffer if requested', async () => {
+    let cmd = getFixture("echo.sh");
+    let echo1 = "my name is bob";
+    let {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
+    _.isString(stdout).should.be.false;
+    _.isBuffer(stdout).should.be.true;
+    _.isString(stderr).should.be.false;
+    _.isBuffer(stderr).should.be.true;
+    code.should.equal(0);
+  });
+
+  describe('binary output', function () {
+    const PNG_MAGIC = '89504e47';
+    const PNG_MAGIC_LENGTH = 4;
+
+    it('should allow binary output', async () => {
+      let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
+      _.isString(stdout).should.be.true;
+      _.isBuffer(stdout).should.be.false;
+      const signature = new Buffer(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
+      signature.should.eql(PNG_MAGIC);
+    });
+
+    it('should allow binary output as Buffer', async () => {
+      let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', isBuffer: true});
+      _.isString(stdout).should.be.false;
+      _.isBuffer(stdout).should.be.true;
+      const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
+      signature.should.eql(PNG_MAGIC);
+    });
+
+    it('should allow binary output from timeout', async () => {
+      try {
+        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
+      } catch (err) {
+        let stdout = err.stdout;
+        _.isString(stdout).should.be.true;
+        _.isBuffer(stdout).should.be.false;
+      }
+    });
+
+    it('should allow binary output as Buffer from timeout', async () => {
+      try {
+        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1, isBuffer: true});
+      } catch (err) {
+        let stdout = err.stdout;
+        _.isString(stdout).should.be.false;
+        _.isBuffer(stdout).should.be.true;
+      }
+    });
   });
 });
