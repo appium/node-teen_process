@@ -62,6 +62,16 @@ try {
 }
 ```
 
+The `isBuffer` option specifies that the returned standard I/O is an instance
+of a [Buffer](https://nodejs.org/api/buffer.html).
+
+Example:
+
+```js
+let {stdout, stderr} = await exec('cat', [filename], {isBuffer: true});
+Buffer.isBuffer(stdout); // true
+```
+
 ### teen_process.SubProcess
 
 `spawn` is already pretty great but for some uses there's a fair amount of

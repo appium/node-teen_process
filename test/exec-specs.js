@@ -7,6 +7,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
 import { system } from 'appium-support';
 
+
 const should = chai.should();
 chai.use(chaiAsPromised);
 
@@ -131,5 +132,36 @@ describe('exec', () => {
     let {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
     stdout.should.equal("");
     code.should.equal(0);
+  });
+
+  it('should return a Buffer if requested', async () => {
+    let cmd = getFixture("echo.sh");
+    let echo1 = "my name is bob";
+    let {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
+    Buffer.isBuffer(stdout).should.be.true;
+    Buffer.isBuffer(stderr).should.be.true;
+    code.should.equal(0);
+  });
+
+  describe('binary output', function () {
+    const PNG_MAGIC = '89504e47';
+    const PNG_MAGIC_LENGTH = 4;
+
+    it('should allow binary output', async () => {
+      let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
+      const signature = new Buffer(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
+      signature.should.eql(PNG_MAGIC);
+    });
+
+    it('should allow binary output from timeout', async () => {
+      try {
+        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1})
+          .should.eventually.be.rejectedWith(/timed out/);
+      } catch (err) {
+        let stdout = err.stdout;
+        const signature = new Buffer(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
+        signature.should.eql(PNG_MAGIC);
+      }
+    });
   });
 });
