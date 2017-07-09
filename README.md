@@ -72,6 +72,9 @@ let {stdout, stderr} = await exec('cat', [filename], {isBuffer: true});
 Buffer.isBuffer(stdout); // true
 ```
 
+The spawned process will be automatically terminated by receiving `SIGTERM`
+if `isDaemon` option is falsy and NodeJS event loop is terminated.
+
 ### teen_process.SubProcess
 
 `spawn` is already pretty great but for some uses there's a fair amount of
