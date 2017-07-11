@@ -43,9 +43,9 @@ describe('SubProcess', () => {
     let x = new SubProcess('ls');
     x.args.should.eql([]);
   });
-  it('should default opts dict to {}', () => {
+  it('should default opts dict to {isDaemon: true}', () => {
     let x = new SubProcess('ls');
-    x.opts.should.eql({});
+    x.opts.should.eql({isDaemon: true});
   });
   it('should pass opts to spawn', async () => {
     const cwd = path.resolve(getFixture('.'));
