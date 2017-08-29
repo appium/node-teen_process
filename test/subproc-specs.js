@@ -123,7 +123,7 @@ describe('SubProcess', () => {
   describe('listening for data', () => {
     let subproc;
     it('should get output as params', async () => {
-      await new Promise(async (resolve) => {
+      await new B(async (resolve) => {
         subproc = new SubProcess(getFixture('sleepyproc'),
                                  ['ls', path.resolve(__dirname)]);
         subproc.on('output', (stdout) => {
@@ -135,7 +135,7 @@ describe('SubProcess', () => {
       });
       await subproc.stop();
 
-      await new Promise(async (resolve) => {
+      await new B(async (resolve) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') !== -1) {
@@ -162,7 +162,7 @@ describe('SubProcess', () => {
 
   describe('#stop', () => {
     it('should send the right signal to stop a proc', async () => {
-      return new Promise(async (resolve, reject) => {
+      return new B(async (resolve, reject) => {
         let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
         await subproc.start();
         subproc.on('exit', (code, signal) => {
