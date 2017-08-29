@@ -36,7 +36,7 @@
     "watch": "gulp",
     "lint": "gulp eslint",
     "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
-    "precommit-test": "REPORTER=dot gulp once",
+    "precommit-test": "REPORTER=dot gulp once"
   },
   "pre-commit": [
     "precommit-msg",
