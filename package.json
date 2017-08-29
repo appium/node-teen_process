@@ -34,8 +34,14 @@
     "prepublish": "gulp prepublish",
     "test": "gulp once",
     "watch": "gulp",
-    "lint": "gulp eslint"
+    "lint": "gulp eslint",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
+    "precommit-test": "REPORTER=dot gulp once",
   },
+  "pre-commit": [
+    "precommit-msg",
+    "precommit-test"
+  ],
   "devDependencies": {
     "appium-gulp-plugins": "^2.2.0",
     "babel-eslint": "^7.1.1",
@@ -48,6 +54,7 @@
     "eslint-plugin-mocha": "^4.7.0",
     "eslint-plugin-promise": "^3.3.1",
     "gulp": "^3.9.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "pre-commit": "^1.2.2"
   }
 }
