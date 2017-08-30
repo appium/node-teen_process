@@ -122,29 +122,37 @@ describe('SubProcess', () => {
 
   describe('listening for data', () => {
     let subproc;
-    it('should get output as params', async () => {
-      await new B(async (resolve) => {
+    afterEach(async function () {
+      try {
+        await subproc.stop();
+      } catch (ign) {}
+    });
+    it('should get output as params', async function () {
+      await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('sleepyproc'),
                                  ['ls', path.resolve(__dirname)]);
         subproc.on('output', (stdout) => {
-          if (stdout && stdout.indexOf('subproc-specs') !== -1) {
+          if (stdout && stdout.indexOf('subproc-specs') === -1) {
+            reject();
+          } else {
             resolve();
           }
         });
         await subproc.start();
-      });
-      await subproc.stop();
-
-      await new B(async (resolve) => {
+      }).should.eventually.not.be.rejected;
+    });
+    it('should get output as params', async function () {
+      await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
-          if (stderr && stderr.indexOf('bar') !== -1) {
+          if (stderr && stderr.indexOf('bar') === -1) {
+            reject();
+          } else {
             resolve();
           }
         });
         await subproc.start();
       });
-      await subproc.stop();
     });
 
     it('should get output by lines', async () => {
