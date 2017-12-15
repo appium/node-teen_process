@@ -44,7 +44,10 @@ The `exec` function takes some options, with these defaults:
   timeout: null,
   killSignal: 'SIGTERM',
   encoding: 'utf8',
-  ignoreOutput: false
+  ignoreOutput: false,
+  stdio: "inherit",
+  isBuffer: false,
+  shell: undefined,
 }
 ```
 
