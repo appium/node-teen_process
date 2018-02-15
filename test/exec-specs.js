@@ -12,8 +12,8 @@ import _ from 'lodash';
 const should = chai.should();
 chai.use(chaiAsPromised);
 
-describe('exec', () => {
-  it('should work with arguments like spawn', async () => {
+describe('exec', function () {
+  it('should work with arguments like spawn', async function () {
     let cmd = 'ls';
     let args = [__dirname];
     let {stdout, stderr, code} = await exec(cmd, args);
@@ -22,7 +22,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should throw an error if command does not exist', async () => {
+  it('should throw an error if command does not exist', async function () {
     let cmd = 'doesnoteexist';
     let err;
     try {
@@ -34,7 +34,7 @@ describe('exec', () => {
     err.message.should.include('not found');
   });
 
-  it('should throw an error with a bad exit code', async () => {
+  it('should throw an error with a bad exit code', async function () {
     let cmd = getFixture("bad_exit");
     let err;
     try {
@@ -48,7 +48,7 @@ describe('exec', () => {
     err.code.should.equal(1);
   });
 
-  it('should work with spaces in arguments', async () => {
+  it('should work with spaces in arguments', async function () {
     let cmd = getFixture("echo");
     let echo1 = "my name is bob";
     let echo2 = "lol";
@@ -58,7 +58,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should work with backslashes in arguments', async () => {
+  it('should work with backslashes in arguments', async function () {
     let cmd = getFixture("echo");
     let echo1 = "my\\ name\\ is\\ bob";
     let echo2 = "lol";
@@ -68,7 +68,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should work with spaces in commands', async () => {
+  it('should work with spaces in commands', async function () {
     let cmd = getFixture("echo with space");
     let echo1 = "bobbob";
     let echo2 = "lol";
@@ -78,7 +78,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should work with spaces in commands and arguments', async () => {
+  it('should work with spaces in commands and arguments', async function () {
     let cmd = getFixture("echo with space");
     let echo1 = "my name is bob";
     let echo2 = "lol";
@@ -88,7 +88,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should respect cwd', async () => {
+  it('should respect cwd', async function () {
     let cmd = system.isWindows() ? "echo.bat" : "./echo.sh";
     let echo1 = "my name is bob";
     let echo2 = "lol";
@@ -99,7 +99,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should respect env', async () => {
+  it('should respect env', async function () {
     let cmd = getFixture("env");
     let env = {FOO: "lolol"};
     let {stdout, code} = await exec(cmd, [], {env});
@@ -107,7 +107,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should allow a timeout parameter', async () => {
+  it('should allow a timeout parameter', async function () {
     let cmd = "sleep";
     let args = ["10"];
     let err;
@@ -127,7 +127,7 @@ describe('exec', () => {
     stdout.length.should.be.above(512 * 1024);
   });
 
-  it('should ignore output if requested', async () => {
+  it('should ignore output if requested', async function () {
     let cmd = getFixture("echo.sh");
     let echo1 = "my name is bob";
     let {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
@@ -135,7 +135,7 @@ describe('exec', () => {
     code.should.equal(0);
   });
 
-  it('should return a Buffer if requested', async () => {
+  it('should return a Buffer if requested', async function () {
     let cmd = getFixture("echo.sh");
     let echo1 = "my name is bob";
     let {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
@@ -150,7 +150,7 @@ describe('exec', () => {
     const PNG_MAGIC = '89504e47';
     const PNG_MAGIC_LENGTH = 4;
 
-    it('should allow binary output', async () => {
+    it('should allow binary output', async function () {
       let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
       _.isString(stdout).should.be.true;
       _.isBuffer(stdout).should.be.false;
@@ -158,7 +158,7 @@ describe('exec', () => {
       signature.should.eql(PNG_MAGIC);
     });
 
-    it('should allow binary output as Buffer', async () => {
+    it('should allow binary output as Buffer', async function () {
       let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', isBuffer: true});
       _.isString(stdout).should.be.false;
       _.isBuffer(stdout).should.be.true;
@@ -166,7 +166,7 @@ describe('exec', () => {
       signature.should.eql(PNG_MAGIC);
     });
 
-    it('should allow binary output from timeout', async () => {
+    it('should allow binary output from timeout', async function () {
       try {
         await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
       } catch (err) {
@@ -176,7 +176,7 @@ describe('exec', () => {
       }
     });
 
-    it('should allow binary output as Buffer from timeout', async () => {
+    it('should allow binary output as Buffer from timeout', async function () {
       try {
         await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1, isBuffer: true});
       } catch (err) {
