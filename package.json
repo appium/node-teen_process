@@ -27,7 +27,7 @@
     "appium-support": "^2.0.10",
     "babel-runtime": "=5.8.24",
     "shell-quote": "^1.4.3",
-    "source-map-support": "^0.4.18",
+    "source-map-support": "^0.5.3",
     "through": "^2.3.8"
   },
   "scripts": {
@@ -35,6 +35,7 @@
     "test": "gulp once",
     "watch": "gulp",
     "lint": "gulp eslint",
+    "lint:fix": "gulp eslint --fix",
     "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "precommit-test": "REPORTER=dot gulp once"
   },
@@ -45,11 +46,11 @@
   "devDependencies": {
     "appium-gulp-plugins": "^2.2.0",
     "babel-eslint": "^7.1.1",
-    "bluebird": "^2.10.2",
-    "chai": "^3.4.0",
-    "chai-as-promised": "^5.1.0",
+    "bluebird": "^3.5.1",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^3.10.2",
-    "eslint-config-appium": "^2.0.1",
+    "eslint-config-appium": "^2.1.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-mocha": "^4.7.0",
     "eslint-plugin-promise": "^3.3.1",
