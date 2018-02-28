@@ -238,4 +238,16 @@ describe('SubProcess', function () {
       await proc.join([1]).should.eventually.be.become(1);
     });
   });
+
+  describe('#emitLines', function () {
+    it('should emit single lines with stream in front', async function () {
+      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      let lines = [];
+      proc.on('stream-line', lines.push.bind(lines));
+      await proc.start();
+      await proc.stop();
+      lines.length.should.be.above(5);
+      lines[0].slice(0, 8).should.eql("[STDOUT]");
+    });
+  });
 });
