@@ -238,4 +238,75 @@ describe('SubProcess', function () {
       await proc.join([1]).should.eventually.be.become(1);
     });
   });
+
+  describe('#emitLines', function () {
+    it('should emit single lines with stream in front', async function () {
+      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      let lines = [];
+      proc.on('stream-line', lines.push.bind(lines));
+      await proc.start();
+      await proc.stop();
+      lines.length.should.be.above(5);
+      lines[0].slice(0, 8).should.eql("[STDOUT]");
+    });
+  });
+
+  describe('on exit / die', function () {
+    it('should emit exit/end and no stop/die in normal exits', async function () {
+      const proc = new SubProcess(getFixture('sleepyproc'), ['ls']);
+      let exitCaught = [];
+      let dieCaught = false;
+      let stopCaught = false;
+      let endCaught = false;
+      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
+      proc.on('die', () => { dieCaught = true; });
+      proc.on('stop', () => { stopCaught = true; });
+      proc.on('end', () => { endCaught = true; });
+      await proc.start();
+      await proc.join();
+      exitCaught.should.eql([0, null]);
+      dieCaught.should.be.false;
+      stopCaught.should.be.false;
+      endCaught.should.be.true;
+    });
+
+    it('should emit exit/stop and no end/die when we stop a proc', async function () {
+      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      let exitCaught = [];
+      let dieCaught = false;
+      let stopCaught = [];
+      let endCaught = false;
+      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
+      proc.on('stop', (code, signal) => { stopCaught = [code, signal]; });
+      proc.on('die', () => { dieCaught = true; });
+      proc.on('end', () => { endCaught = true; });
+      await proc.start();
+      await proc.stop();
+      exitCaught.should.eql([null, 'SIGTERM']);
+      stopCaught.should.eql(exitCaught);
+      dieCaught.should.be.false;
+      endCaught.should.be.false;
+    });
+
+    it('should emit exit/die and no stop/end when a proc is killed externally', async function () {
+      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      let exitCaught = [];
+      let dieCaught = [];
+      let stopCaught = false;
+      let endCaught = false;
+      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
+      proc.on('die', (code, signal) => { dieCaught = [code, signal]; });
+      proc.on('stop', () => { stopCaught = true; });
+      proc.on('end', () => { endCaught = true; });
+      await proc.start();
+      await exec('pkill', ['-f', `tail -f ${path.resolve(__filename)}`]);
+      try {
+        await proc.join();
+      } catch (ign) {}
+      exitCaught.should.eql([null, 'SIGTERM']);
+      dieCaught.should.eql(exitCaught);
+      stopCaught.should.be.false;
+      endCaught.should.be.false;
+    });
+  });
 });

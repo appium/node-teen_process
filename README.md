@@ -8,7 +8,7 @@ arguments so we don't have to care about escaping spaces. It can also return
 stdout/stderr even when the command fails, or times out. Importantly, it's also
 not susceptible to max buffer issues.
 
-### teen_process.exec
+## teen_process.exec
 
 Examples:
 
@@ -75,7 +75,7 @@ let {stdout, stderr} = await exec('cat', [filename], {isBuffer: true});
 Buffer.isBuffer(stdout); // true
 ```
 
-### teen_process.SubProcess
+## teen_process.SubProcess
 
 `spawn` is already pretty great but for some uses there's a fair amount of
 boilerplate, especially when using in an `async/await` context. `teen_process`
@@ -94,18 +94,44 @@ async function tailFileForABit () {
 
 Errors with start/stop are thrown in the calling context.
 
-You can listen to 4 events, `output`, `exit`, `lines-stdout`, and
-`lines-stderr`:
+### Events
+
+You can listen to 8 events:
+
+* `exit`
+* `stop`
+* `end`
+* `die`
+* `output`
+* `lines-stdout`
+* `lines-stderr`
+* `stream-line`
 
 ```js
+proc.on('exit', (code, signal) => {
+  // if we get here, all we know is that the proc exited
+  console.log(`exited with code ${code} from signal ${signal}`);
+  // exited with code 127 from signal SIGHUP
+});
+
+proc.on('stop', (code, signal) => {
+  // if we get here, we know that we intentionally stopped the proc
+  // by calling proc.stop
+});
+
+proc.on('end', (code, signal) => {
+  // if we get here, we know that the process stopped outside of our control
+  // but with a 0 exit code
+});
+
+proc.on('die', (code, signal) => {
+  // if we get here, we know that the process stopped outside of our control
+  // with a non-zero exit code
+});
+
 proc.on('output', (stdout, stderr) => {
   console.log(`stdout: ${stdout}`);
   console.log(`stderr: ${stderr}`);
-});
-
-proc.on('exit', (code, signal) => {
-  console.log(`exited with code ${code} from signal ${signal}`);
-  // exited with code 127 from signal SIGHUP
 });
 
 // lines-stderr is just the same
@@ -114,7 +140,17 @@ proc.on('lines-stdout', lines => {
   // ['foo', 'bar', 'baz']
   // automatically handles rejoining lines across stream chunks
 });
+
+// stream-line gives you one line at a time, with [STDOUT] or [STDERR]
+// prepended
+proc.on('stream-line', line => {
+  console.log(line);
+  // [STDOUT] foo
+});
+// so we could do: proc.on('stream-line', console.log.bind(console))
 ```
+
+### Start Detectors
 
 How does `SubProcess` know when to return control from `start()`? Well, the
 default is to wait until there is some output. You can also pass in a number,
@@ -157,7 +193,10 @@ you can do that by passing a second parameter in milliseconds to `start()`:
 await proc.start(null, 1000);
 ```
 
-After the process has been started you can use `join()` to wait for it:
+### Finishing Processes
+
+After the process has been started you can use `join()` to wait for it to
+finish on its own:
 
 ```js
 await proc.join(); // will throw on exitcode not 0
@@ -184,17 +223,13 @@ try {
 ```
 
 All in all, this makes it super simple to, say, write a script that tails
-a file for X seconds, using async/await and pretty straightforward error
-handling.
+a file for X seconds and then stops, using async/await and pretty
+straightforward error handling.
 
 ```js
 async function boredTail (filePath, boredAfter = 10000) {
   let p = new SubProcess('tail', ['-f', filePath]);
-  p.on('output', stdout => {
-    if (stdout) {
-      console.log(`STDOUT: ${stdout.trim()}`);
-    }
-  });
+  p.on('stream-line', console.log);
   await p.start();
   await Bluebird.delay(boredAfter);
   await p.stop();
