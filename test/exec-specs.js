@@ -122,7 +122,7 @@ describe('exec', function () {
   });
 
   it('should allow large amounts of output', async function () {
-    this.timeout(10000);
+    this.timeout(24000);
     let {stdout} = await exec(getFixture("bigbuffer.js"));
     stdout.length.should.be.above(512 * 1024);
   });

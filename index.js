@@ -1,6 +1,8 @@
 // transpile:main
+import { spawn } from 'child_process';
+import SubProcess from './lib/subprocess';
+import exec from './lib/exec';
 
-import { exec, spawn, SubProcess } from './lib/teen_process';
 
 export { exec, spawn, SubProcess };
 
