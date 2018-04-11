@@ -10,25 +10,25 @@ chai.use(chaiAsPromised);
 
 describe('utils', function () {
   describe('quoteSpawnArgument', function () {
-    it('should properly quote arguments with non-literal chars', async function () {
+    it('should properly quote arguments with non-literal chars', function () {
       const args = ['arg_without_spaces', 'arg with spaces'];
       const quotedArgs = args.map(arg => quoteSpawnArgument(arg));
       quotedArgs.should.eql(['arg_without_spaces', quote(['arg with spaces'])]);
     });
 
-    it('should skip arguments quoted with double quote char', async function () {
+    it('should skip arguments quoted with double quote char', function () {
       const args = ['arg_without_spaces', '"quoted arg with spaces"'];
       const quotedArgs = args.map(arg => quoteSpawnArgument(arg));
       quotedArgs.should.eql(['arg_without_spaces', '"quoted arg with spaces"']);
     });
 
-    it('should skip arguments quoted with single quote char', async function () {
+    it('should skip arguments quoted with single quote char', function () {
       const args = ['arg_without_spaces', '\'quoted arg with spaces\''];
       const quotedArgs = args.map(arg => quoteSpawnArgument(arg));
       quotedArgs.should.eql(['arg_without_spaces', '\'quoted arg with spaces\'']);
     });
 
-    it('should skip invalid arguments', async function () {
+    it('should skip invalid arguments', function () {
       const args = ['arg_without_spaces', null];
       const quotedArgs = args.map(arg => quoteSpawnArgument(arg));
       quotedArgs.should.eql(['arg_without_spaces', null]);
