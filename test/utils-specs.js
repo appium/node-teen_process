@@ -23,9 +23,9 @@ describe('utils', function () {
     });
 
     it('should skip arguments quoted with single quote char', async function () {
-      const args = ['arg_without_spaces', '\"quoted arg with spaces\"'];
+      const args = ['arg_without_spaces', '\'quoted arg with spaces\''];
       const quotedArgs = args.map(arg => quoteSpawnArgument(arg));
-      quotedArgs.should.eql(['arg_without_spaces', '\"quoted arg with spaces\"']);
+      quotedArgs.should.eql(['arg_without_spaces', '\'quoted arg with spaces\'']);
     });
 
     it('should skip invalid arguments', async function () {
