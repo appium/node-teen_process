@@ -55,6 +55,11 @@ Most of these are self-explanatory. `ignoreOutput` is useful if you have a very
 chatty process whose output you don't care about and don't want to add it to
 the memory consumed by your program.
 
+If you're on Windows, you'll want to pass `shell: true`, because `exec`
+actually uses `spawn` under the hood, and is therefore subject to the issues
+noted about Windows + `spawn` in [the Node
+docs](https://nodejs.org/api/child_process.html).
+
 Example:
 
 ```js
