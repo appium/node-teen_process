@@ -60,6 +60,8 @@ actually uses `spawn` under the hood, and is therefore subject to the issues
 noted about Windows + `spawn` in [the Node
 docs](https://nodejs.org/api/child_process.html).
 
+If `stdio` option is not set to `inheirt`, you may not get colored output from your process. To solve this, you can add `--colors` flag (some libraries like `mocha` does that automatically), But this might not always work. the other way is to use `env.FORCE_COLOR = true`.
+
 Example:
 
 ```js
