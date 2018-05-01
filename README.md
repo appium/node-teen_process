@@ -60,6 +60,8 @@ actually uses `spawn` under the hood, and is therefore subject to the issues
 noted about Windows + `spawn` in [the Node
 docs](https://nodejs.org/api/child_process.html).
 
+If `stdio` option is not set to `inheirt`, you may not get colored output from your process. In this case you can explore the subprocess's documentation to see if an option like `--colors` or `FORCE_COLORS` can be specified. you can also try to set `env.FORCE_COLOR = true` and see if it works.
+
 Example:
 
 ```js
