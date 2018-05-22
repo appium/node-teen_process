@@ -154,7 +154,7 @@ describe('exec', function () {
       let {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
       _.isString(stdout).should.be.true;
       _.isBuffer(stdout).should.be.false;
-      const signature = new Buffer(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
+      const signature = Buffer.from(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
       signature.should.eql(PNG_MAGIC);
     });
 
