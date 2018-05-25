@@ -1,6 +1,8 @@
 node-teen_process
 =================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/appium/node-teen_process.svg)](https://greenkeeper.io/)
+
 A grown-up version of Node's child_process. `exec` is really useful, but it
 suffers many limitations. This is an es7 (`async`/`await`) implementation of
 `exec` that uses `spawn` under the hood. It takes care of wrapping commands and
