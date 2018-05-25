@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "appium-support": "^2.0.10",
-    "babel-runtime": "=5.8.24",
+    "babel-runtime": "6.26.0",
     "shell-quote": "^1.4.3",
     "source-map-support": "^0.5.3",
     "through": "^2.3.8"
@@ -45,14 +45,14 @@
   ],
   "devDependencies": {
     "appium-gulp-plugins": "^2.2.0",
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "^8.2.3",
     "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^3.10.2",
+    "eslint": "^4.19.1",
     "eslint-config-appium": "^2.1.0",
     "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-mocha": "^4.7.0",
+    "eslint-plugin-mocha": "^5.0.0",
     "eslint-plugin-promise": "^3.3.1",
     "gulp": "^3.9.0",
     "lodash": "^4.17.4",
