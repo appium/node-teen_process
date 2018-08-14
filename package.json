@@ -31,6 +31,8 @@
     "through": "^2.3.8"
   },
   "scripts": {
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm install",
+    "build": "gulp transpile",
     "prepublish": "gulp prepublish",
     "test": "gulp once",
     "watch": "gulp",
