@@ -115,7 +115,7 @@ describe('SubProcess', function () {
       let sd = (stdout) => { return stdout.indexOf('nothere') !== -1; };
       let s = new SubProcess('ls');
       let start = Date.now();
-      await s.start(sd, 500).should.eventually.be.rejectedWith(/did not start.+time/i);
+      await s.start(sd, 500).should.eventually.be.rejectedWith(/process did not start within/i);
       (Date.now() - start).should.be.below(600);
     });
   });
@@ -214,7 +214,7 @@ describe('SubProcess', function () {
   describe('#join', function () {
     it('should fail if the #start has not yet been called', async function () {
       const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
-      await proc.join().should.eventually.be.rejectedWith(/Can't join/);
+      await proc.join().should.eventually.be.rejectedWith(/Cannot join/);
     });
 
     it('should wait until the process has been finished', async function () {
