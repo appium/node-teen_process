@@ -9,10 +9,11 @@ import { getFixture } from './helpers';
 import { system } from 'appium-support';
 
 
-// Windows doesn't understand SIGHUP
-let stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
 const should = chai.should();
 chai.use(chaiAsPromised);
+
+// Windows doesn't understand SIGHUP
+const stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
 
 describe('SubProcess', function () {
   it('should throw an error if initialized without a command', function () {
@@ -307,6 +308,19 @@ describe('SubProcess', function () {
       dieCaught.should.eql(exitCaught);
       stopCaught.should.be.false;
       endCaught.should.be.false;
+    });
+  });
+
+  describe('#detachProcess', function () {
+    it('should work when process started detached', async function () {
+      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)], {detached: true});
+      await proc.start();
+      proc.detachProcess();
+    });
+    it('should throw error if called when process not started detached', async function () {
+      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      await proc.start();
+      (() => proc.detachProcess()).should.throw(/Unable to detach process that is not started with 'detached' option/);
     });
   });
 });
