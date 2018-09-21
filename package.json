@@ -46,7 +46,7 @@
     "precommit-test"
   ],
   "devDependencies": {
-    "appium-gulp-plugins": "^2.2.0",
+    "appium-gulp-plugins": "^3.0.0",
     "babel-eslint": "^7.1.1",
     "bluebird": "^3.5.1",
     "chai": "^4.1.2",
