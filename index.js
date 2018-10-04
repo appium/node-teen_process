@@ -1,8 +1,11 @@
 // transpile:main
-import { spawn } from 'child_process';
-import SubProcess from './lib/subprocess';
-import exec from './lib/exec';
+import * as cp from 'child_process';
+import * as spIndex from './lib/subprocess';
+import * as execIndex from './lib/exec';
 
+
+const { spawn } = cp;
+const { SubProcess } = spIndex;
+const { exec } = execIndex;
 
 export { exec, spawn, SubProcess };
-
