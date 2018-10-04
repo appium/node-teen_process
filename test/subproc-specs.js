@@ -164,14 +164,13 @@ describe('SubProcess', function () {
       });
       await subproc.start(0);
       await B.delay(50);
-      lines.should.eql(['exec-specs.js', 'fixtures', 'helpers.js',
-                        'subproc-specs.js']);
+      lines.should.eql(['exec-specs.js', 'fixtures', 'helpers.js', 'subproc-specs.js']);
     });
   });
 
   describe('#stop', function () {
     it('should send the right signal to stop a proc', async function () {
-      return new B(async (resolve, reject) => {
+      return await new B(async (resolve, reject) => {
         let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
         await subproc.start();
         subproc.on('exit', (code, signal) => {
