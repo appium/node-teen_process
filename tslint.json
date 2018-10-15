@@ -1,0 +1,139 @@
+{
+    "extends": [
+        "tslint-eslint-rules"
+    ],
+    "rules": {
+        "brace-style": {
+            "options": [
+                "1tbs",
+                {
+                    "allowSingleLine": true
+                }
+            ],
+            "severity": "error"
+        },
+        "curly": {
+            "severity": "error"
+        },
+        "no-conditional-assignment": {
+            "severity": "error"
+        },
+        "no-console": {
+            "severity": "error"
+        },
+        "no-constant-condition": {
+            "severity": "error"
+        },
+        "no-control-regex": {
+            "severity": "error"
+        },
+        "no-debugger": {
+            "severity": "error"
+        },
+        "no-duplicate-case": {
+            "severity": "error"
+        },
+        "no-duplicate-variable": {
+            "options": "check-parameters",
+            "severity": "error"
+        },
+        "no-empty-character-class": {
+            "severity": "error"
+        },
+        "no-ex-assign": {
+            "severity": "error"
+        },
+        "no-extra-boolean-cast": {
+            "severity": "error"
+        },
+        "no-extra-semi": {
+            "severity": "error"
+        },
+        "no-inner-declarations": {
+            "severity": "error"
+        },
+        "no-invalid-regexp": {
+            "severity": "error"
+        },
+        "no-multi-spaces": {
+            "severity": "error"
+        },
+        "no-regex-spaces": {
+            "severity": "error"
+        },
+        "no-switch-case-fall-through": {
+            "severity": "error"
+        },
+        "no-trailing-whitespace": {
+            "severity": "error"
+        },
+        "no-unexpected-multiline": {
+            "severity": "error"
+        },
+        "no-unsafe-finally": {
+            "severity": "error"
+        },
+        "no-var-keyword": {
+            "severity": "error"
+        },
+        "object-literal-shorthand": {
+            "severity": "error"
+        },
+        "radix": {
+            "severity": "error"
+        },
+        "semicolon": {
+            "severity": "error"
+        },
+        "space-in-parens": {
+            "options": [
+                "never"
+            ],
+            "severity": "error"
+        },
+        "ter-arrow-spacing": {
+            "severity": "error"
+        },
+        "ter-indent": {
+            "options": [
+                2,
+                {
+                    "CallExpression": {
+                        "arguments": "off"
+                    },
+                    "ImportDeclaration": "first",
+                    "MemberExpression": "off",
+                    "ObjectExpression": "first",
+                    "SwitchCase": 1,
+                    "VariableDeclarator": {
+                        "const": 3,
+                        "let": 2,
+                        "var": 2
+                    }
+                }
+            ],
+            "severity": "error"
+        },
+        "ter-no-irregular-whitespace": {
+            "severity": "error"
+        },
+        "ter-no-mixed-spaces-and-tabs": {
+            "severity": "error"
+        },
+        "ter-no-sparse-arrays": {
+            "severity": "error"
+        },
+        "triple-equals": {
+            "options": [
+                "allow-null-check"
+            ],
+            "severity": "error"
+        },
+        "use-isnan": {
+            "severity": "error"
+        },
+        "valid-typeof": {
+            "severity": "error"
+        }
+    }
+}

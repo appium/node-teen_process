@@ -3,21 +3,21 @@ import { quote } from 'shell-quote';
 import B from 'bluebird';
 
 interface ExecOpts {
-  cwd?: string,
-  env?: NodeJS.ProcessEnv,
-  shell?: string
-  timeout?: number,
-  encoding?: string,
-  killSignal?: string,
-  ignoreOutput?: boolean,
-  stdio?: string[] | number[] | string,
-  isBuffer?: boolean
+  cwd?: string;
+  env?: NodeJS.ProcessEnv;
+  shell?: string;
+  timeout?: number;
+  encoding?: string;
+  killSignal?: string;
+  ignoreOutput?: boolean;
+  stdio?: string[] | number[] | string;
+  isBuffer?: boolean;
 }
 
 interface ExecResponse {
-  stdout: string | Buffer,
-  stderr: string | Buffer,
-  code: number,
+  stdout: string | Buffer;
+  stderr: string | Buffer;
+  code: number;
 }
 
 class ExecError extends Error implements ExecResponse {
@@ -54,7 +54,6 @@ function exec (cmd: string, args: string[] = [], opts: ExecOpts = defaultExecOpt
   };
 
   // this is an async function, so return a promise
-  
   return new B<ExecResponse>((resolve, reject) => {
     // spawn the child process with options; we don't currently expose any of
     // the other 'spawn' options through the API

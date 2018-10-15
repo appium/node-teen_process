@@ -1,7 +1,7 @@
 // transpile:mocha
 
 import path from 'path';
-import { exec } from '..';
+import { exec } from '..'; // eslint-disable-line import/no-unresolved
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';

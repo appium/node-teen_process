@@ -1,6 +1,4 @@
-/* eslint-disable promise/prefer-await-to-callbacks */
-
-import { spawn } from 'child_process';
+import { spawn, SpawnOptions, ChildProcess } from 'child_process';
 import events from 'events';
 import through from 'through';
 const { EventEmitter } = events;
@@ -8,13 +6,38 @@ import B from 'bluebird';
 import { quote } from 'shell-quote';
 import _ from 'lodash';
 
+interface Stdio {
+  [key:string]: string;
+  stdout: string;
+  stderr: string;
+}
+
+interface SubProcOptions extends SpawnOptions {
+  encoding?: string;
+}
 
 class SubProcess extends EventEmitter {
-  constructor (cmd, args = [], opts = {}) {
+
+  cmd: string;
+  args: string[];
+  proc: ChildProcess;
+  expectingExit: boolean;
+  rep: string;
+  opts: SubProcOptions;
+  lastLinePortion: Stdio;
+
+
+  constructor (cmd: string, args: string[] = [], opts = {}) {
     super();
-    if (!cmd) throw new Error('Command is required'); // eslint-disable-line curly
-    if (!_.isString(cmd)) throw new Error('Command must be a string'); // eslint-disable-line curly
-    if (!_.isArray(args)) throw new Error('Args must be an array'); // eslint-disable-line curly
+    if (!cmd) {
+      throw new Error('Command is required');
+    }
+    if (!_.isString(cmd)) {
+      throw new Error('Command must be a string');
+    }
+    if (!_.isArray(args)) {
+      throw new Error('Args must be an array');
+    }
 
     this.cmd = cmd;
     this.args = args;
@@ -31,7 +54,7 @@ class SubProcess extends EventEmitter {
     return !!this.proc;
   }
 
-  emitLines (stream, lines) {
+  emitLines (stream: string, lines: string[]) {
     for (let line of lines) {
       this.emit('stream-line', `[${stream.toUpperCase()}] ${line}`);
     }
@@ -39,10 +62,10 @@ class SubProcess extends EventEmitter {
 
   // spawn the subprocess and return control whenever we deem that it has fully
   // "started"
-  async start (startDetector = null, timeoutMs = null, detach = false) {
+  async start (startDetector: any = null, timeoutMs: number = null, detach: boolean = false) {
     let startDelay = 10;
 
-    const genericStartDetector = function genericStartDetector (stdout, stderr) {
+    const genericStartDetector = function genericStartDetector (stdout: string, stderr: string) {
       return stdout || stderr;
     };
 
@@ -87,7 +110,7 @@ class SubProcess extends EventEmitter {
       this.lastLinePortion = {stdout: '', stderr: ''};
 
       // this function handles output that we collect from the subproc
-      const handleOutput = (data) => {
+      const handleOutput = (data: Stdio) => {
         // if we have a startDetector, run it on the output so we can resolve/
         // reject and move on from start
         try {
@@ -107,7 +130,9 @@ class SubProcess extends EventEmitter {
         // we have logic to handle that case (using this.lastLinePortion to
         // remember a line that started but did not finish in the last chunk)
         for (const stream of ['stdout', 'stderr']) {
-          if (!data[stream]) continue; // eslint-disable-line curly
+          if (!data[stream]) {
+            continue;
+          }
           let lines = data[stream].split("\n");
           if (lines.length > 1) {
             let retLines = lines.slice(0, -1);
@@ -122,11 +147,11 @@ class SubProcess extends EventEmitter {
       };
 
       // if we get an error spawning the proc, reject and clean up the proc
-      this.proc.on('error', err => {
+      this.proc.on('error', (err: NodeJS.ErrnoException) => {
         this.proc.removeAllListeners('exit');
         this.proc.kill('SIGINT');
 
-        if (err.errno === 'ENOENT') {
+        if (err.code === 'ENOENT') {
           err = new Error(`Command '${this.cmd}' not found. Is it installed?`);
         }
         reject(err);
@@ -208,7 +233,7 @@ class SubProcess extends EventEmitter {
     // make sure to emit any data in our lines buffer whenever we're done with
     // the proc
     this.handleLastLines();
-    return await new B((resolve, reject) => {
+    return await new B<any[]>((resolve, reject) => {
       this.proc.on('close', resolve);
       this.expectingExit = true;
       this.proc.kill(signal);
@@ -223,7 +248,7 @@ class SubProcess extends EventEmitter {
       throw new Error(`Cannot join process; it is not currently running (cmd: '${this.rep}')`);
     }
 
-    return await new B((resolve, reject) => {
+    return await new B<number>((resolve, reject) => {
       this.proc.on('exit', (code) => {
         if (allowedExitCodes.indexOf(code) === -1) {
           reject(new Error(`Process ended with exitcode ${code} (cmd: '${this.rep}')`));
