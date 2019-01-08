@@ -247,7 +247,7 @@ describe('SubProcess', function () {
       await proc.start();
       await proc.stop();
       lines.length.should.be.above(5);
-      lines[0].slice(0, 8).should.eql("[STDOUT]");
+      lines[0].slice(0, 8).should.eql('[STDOUT]');
     });
   });
 

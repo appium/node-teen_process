@@ -7,7 +7,7 @@ function getFixture (fix) {
   if (fix.indexOf('.') === -1) {
     fix = fix + (system.isWindows() ? '.bat' : '.sh');
   }
-  return path.resolve(__dirname, "..", "..", "test", "fixtures", fix);
+  return path.resolve(__dirname, '..', '..', 'test', 'fixtures', fix);
 }
 
 export { getFixture };
