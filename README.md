@@ -50,6 +50,7 @@ The `exec` function takes some options, with these defaults:
   stdio: "inherit",
   isBuffer: false,
   shell: undefined,
+  logger: undefined,
 }
 ```
 
@@ -83,6 +84,10 @@ Example:
 let {stdout, stderr} = await exec('cat', [filename], {isBuffer: true});
 Buffer.isBuffer(stdout); // true
 ```
+
+The `logger` option allows stdout and stderr to be sent to a particular logger,
+as it it received. This is overridden by the `ignoreOutput` option.
+
 
 ## teen_process.SubProcess
 
