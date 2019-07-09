@@ -51,8 +51,8 @@ The `exec` function takes some options, with these defaults:
   isBuffer: false,
   shell: undefined,
   logger: undefined,
-  stdoutBufferSize: 10000,
-  stderrBufferSize: 10000,
+  maxStdoutBufferSize: 20 * 1024 * 1024, // 20 MB
+  maxStdoutBufferSize: 20 * 1024 * 1024, // 20 MB
 }
 ```
 
@@ -61,9 +61,7 @@ chatty process whose output you don't care about and don't want to add it to
 the memory consumed by your program.
 
 Both buffer size limits are needed to avoid memory overflow while collecting
-process output. If the count of output chunks for different stream types exeeds the
-the given one then the oldest chunks will be pulled out in order to keep the memory load
-within the acceptable ranges.
+process output. If the overall size of output chunks for different stream types exceeds the the given one then the oldest chunks will be pulled out in order to keep the memory load within the acceptable ranges.
 
 If you're on Windows, you'll want to pass `shell: true`, because `exec`
 actually uses `spawn` under the hood, and is therefore subject to the issues
