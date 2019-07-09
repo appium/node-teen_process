@@ -34,8 +34,7 @@
     "bluebird": "^3.5.1",
     "lodash": "^4.17.4",
     "shell-quote": "^1.4.3",
-    "source-map-support": "^0.5.3",
-    "through": "^2.3.8"
+    "source-map-support": "^0.5.3"
   },
   "scripts": {
     "clean": "rm -rf node_modules && rm -f package-lock.json && npm install",
