@@ -52,7 +52,7 @@ The `exec` function takes some options, with these defaults:
   shell: undefined,
   logger: undefined,
   maxStdoutBufferSize: 20 * 1024 * 1024, // 20 MB
-  maxStdoutBufferSize: 20 * 1024 * 1024, // 20 MB
+  maxStderrBufferSize: 20 * 1024 * 1024, // 20 MB
 }
 ```
 
