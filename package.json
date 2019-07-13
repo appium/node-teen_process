@@ -5,7 +5,7 @@
     "child_process",
     "process management"
   ],
-  "version": "1.14.3",
+  "version": "1.15.0",
   "author": "appium",
   "license": "Apache-2.0",
   "repository": {
