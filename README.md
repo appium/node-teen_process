@@ -51,12 +51,17 @@ The `exec` function takes some options, with these defaults:
   isBuffer: false,
   shell: undefined,
   logger: undefined,
+  maxStdoutBufferSize: 100 * 1024 * 1024, // 100 MB
+  maxStderrBufferSize: 100 * 1024 * 1024, // 100 MB
 }
 ```
 
 Most of these are self-explanatory. `ignoreOutput` is useful if you have a very
 chatty process whose output you don't care about and don't want to add it to
 the memory consumed by your program.
+
+Both buffer size limits are needed to avoid memory overflow while collecting
+process output. If the overall size of output chunks for different stream types exceeds the the given one then the oldest chunks will be pulled out in order to keep the memory load within the acceptable ranges.
 
 If you're on Windows, you'll want to pass `shell: true`, because `exec`
 actually uses `spawn` under the hood, and is therefore subject to the issues
