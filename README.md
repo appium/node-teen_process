@@ -50,6 +50,7 @@ The `exec` function takes some options, with these defaults:
   stdio: "inherit",
   isBuffer: false,
   shell: undefined,
+  detached: false,
   logger: undefined,
   maxStdoutBufferSize: 100 * 1024 * 1024, // 100 MB
   maxStderrBufferSize: 100 * 1024 * 1024, // 100 MB
