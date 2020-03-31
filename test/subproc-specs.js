@@ -96,7 +96,7 @@ describe('SubProcess', function () {
       await s.start(0).should.eventually.be.rejectedWith(/not found/);
     });
     it('should be able to provide a custom startDetector function', async function () {
-      let sd = (stdout) => { return stdout; };
+      let sd = (stdout) => stdout;
       let hasData = false;
       let s = new SubProcess('ls');
       s.on('output', (stdout) => {
@@ -113,7 +113,7 @@ describe('SubProcess', function () {
       await s.start(sd).should.eventually.be.rejectedWith(/foo/);
     });
     it('should time out starts that take longer than specified ms', async function () {
-      let sd = (stdout) => { return stdout.indexOf('nothere') !== -1; };
+      let sd = (stdout) => stdout.indexOf('nothere') !== -1;
       let s = new SubProcess('ls');
       let start = Date.now();
       await s.start(sd, 500).should.eventually.be.rejectedWith(/process did not start within/i);
