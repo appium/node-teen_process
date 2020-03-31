@@ -60,8 +60,5 @@
     "eslint-config-appium": "^4.0.0",
     "gulp": "^4.0.0",
     "pre-commit": "^1.2.2"
-  },
-  "greenkeeper": {
-    "ignore": []
   }
 }
