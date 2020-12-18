@@ -23,15 +23,7 @@ describe('exec', function () {
   });
 
   it('should throw an error if command does not exist', async function () {
-    let cmd = 'doesnoteexist';
-    let err;
-    try {
-      await exec(cmd);
-    } catch (e) {
-      err = e;
-    }
-    should.exist(err);
-    err.message.should.include('not found');
+    await exec('doesnoteexist').should.eventually.be.rejected;
   });
 
   it('should throw an error with a bad exit code', async function () {
