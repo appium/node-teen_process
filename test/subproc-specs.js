@@ -65,7 +65,7 @@ describe('SubProcess', function () {
   describe('#start', function () {
     it('should throw an error if command fails on startup', async function () {
       let s = new SubProcess('blargimarg');
-      await s.start().should.eventually.be.rejectedWith(/not found/);
+      await s.start().should.eventually.be.rejected;
     });
     it('should have a default startDetector of waiting for output', async function () {
       let hasData = false;
@@ -93,7 +93,7 @@ describe('SubProcess', function () {
     });
     it('should fail even with a start timeout of 0 when command is bad', async function () {
       let s = new SubProcess('blargimarg');
-      await s.start(0).should.eventually.be.rejectedWith(/not found/);
+      await s.start(0).should.eventually.be.rejected;
     });
     it('should be able to provide a custom startDetector function', async function () {
       let sd = (stdout) => stdout;
