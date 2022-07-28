@@ -2,11 +2,11 @@
 
 import B from 'bluebird';
 import path from 'path';
-import { exec, SubProcess } from '..';
+import { exec, SubProcess } from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
-import { system } from 'appium-support';
+import { system } from '@appium/support';
 
 
 const should = chai.should();
@@ -60,11 +60,23 @@ describe('SubProcess', function () {
     lines.should.include('bad_exit.sh');
     lines.should.contain('bigbuffer.js');
     lines.should.contain('echo.sh');
+    await subproc.stop();
   });
 
   describe('#start', function () {
+    /** @type {SubProcess} */
+    let s;
+
+    afterEach(async function() {
+      if (s) {
+        try {
+          await s.stop();
+        } catch {}
+      }
+    });
+
     it('should throw an error if command fails on startup', async function () {
-      let s = new SubProcess('blargimarg');
+      s = new SubProcess('blargimarg');
       await s.start().should.eventually.be.rejected;
     });
     it('should have a default startDetector of waiting for output', async function () {
@@ -181,6 +193,7 @@ describe('SubProcess', function () {
             reject(e);
           }
         });
+
         await subproc.stop(stopSignal);
       });
     });

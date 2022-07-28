@@ -1,11 +1,11 @@
 // transpile:mocha
 
 import path from 'path';
-import { exec } from '..';
+import { exec } from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
-import { system } from 'appium-support';
+import { system } from '@appium/support';
 import _ from 'lodash';
 
 
