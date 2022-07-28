@@ -1,5 +1,5 @@
 import path from 'path';
-import { system } from 'appium-support';
+import { system } from '@appium/support';
 
 
 function getFixture (fix) {

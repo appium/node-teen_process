@@ -15,10 +15,11 @@
   "bugs": {
     "url": "https://github.com/appium/node-teen_process/issues"
   },
-  "engines": [
-    "node"
-  ],
-  "main": "./build/index.js",
+  "engines": {
+    "node": ">=14",
+    "npm": ">=6"
+  },
+  "main": "./index.js",
   "bin": {},
   "directories": {
     "lib": "lib"
@@ -26,7 +27,6 @@
   "files": [
     "index.js",
     "lib",
-    "build/index.js",
     "build/lib"
   ],
   "dependencies": {
@@ -53,15 +53,15 @@
     "precommit-test"
   ],
   "devDependencies": {
+    "@appium/eslint-config-appium": "^6.0.2",
+    "@appium/gulp-plugins": "^7.0.2",
+    "@appium/support": "^2.59.2",
     "@types/bluebird": "^3.5.36",
     "@types/lodash": "^4.14.177",
     "@types/node": "^17.0.0",
     "@types/shell-quote": "^1.7.1",
-    "appium-gulp-plugins": "^5.4.1",
-    "appium-support": "^2.0.10",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "eslint-config-appium": "^4.0.0",
     "gulp": "^4.0.0",
     "pre-commit": "^1.2.2"
   }
