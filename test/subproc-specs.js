@@ -2,12 +2,11 @@
 
 import B from 'bluebird';
 import path from 'path';
-import { exec, SubProcess } from '../lib';
+import {exec, SubProcess} from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { getFixture } from './helpers';
-import { system } from '@appium/support';
-
+import {getFixture} from './helpers';
+import {system} from '@appium/support';
 
 const should = chai.should();
 chai.use(chaiAsPromised);
@@ -60,14 +59,21 @@ describe('SubProcess', function () {
     lines.should.include('bad_exit.sh');
     lines.should.contain('bigbuffer.js');
     lines.should.contain('echo.sh');
-    await subproc.stop();
+    try {
+      // possible, but unlikely, that this is still running
+      await subproc.stop();
+    } catch {}
   });
 
   describe('#start', function () {
-    /** @type {SubProcess} */
+    /** @type {SubProcess?} */
     let s;
 
-    afterEach(async function() {
+    beforeEach(function() {
+      s = null;
+    });
+
+    afterEach(async function () {
       if (s) {
         try {
           await s.stop();
@@ -77,11 +83,11 @@ describe('SubProcess', function () {
 
     it('should throw an error if command fails on startup', async function () {
       s = new SubProcess('blargimarg');
-      await s.start().should.eventually.be.rejected;
+      await s.start().should.be.rejected;
     });
     it('should have a default startDetector of waiting for output', async function () {
       let hasData = false;
-      let s = new SubProcess('ls');
+      s = new SubProcess('ls');
       s.on('output', (stdout) => {
         if (stdout) {
           hasData = true;
@@ -92,7 +98,7 @@ describe('SubProcess', function () {
     });
     it('should interpret a numeric startDetector as a start timeout', async function () {
       let hasData = false;
-      let s = new SubProcess(getFixture('sleepyproc'), ['ls']);
+      s = new SubProcess(getFixture('sleepyproc'), ['ls']);
       s.on('output', (stdout) => {
         if (stdout) {
           hasData = true;
@@ -104,13 +110,13 @@ describe('SubProcess', function () {
       hasData.should.be.true;
     });
     it('should fail even with a start timeout of 0 when command is bad', async function () {
-      let s = new SubProcess('blargimarg');
-      await s.start(0).should.eventually.be.rejected;
+      s = new SubProcess('blargimarg');
+      await s.start(0).should.be.rejected;
     });
     it('should be able to provide a custom startDetector function', async function () {
       let sd = (stdout) => stdout;
       let hasData = false;
-      let s = new SubProcess('ls');
+      s = new SubProcess('ls');
       s.on('output', (stdout) => {
         if (stdout) {
           hasData = true;
@@ -120,15 +126,19 @@ describe('SubProcess', function () {
       hasData.should.be.true;
     });
     it('should pass on custom errors from startDetector', async function () {
-      let sd = () => { throw new Error('foo'); };
-      let s = new SubProcess('ls');
-      await s.start(sd).should.eventually.be.rejectedWith(/foo/);
+      let sd = () => {
+        throw new Error('foo');
+      };
+      s = new SubProcess('ls');
+      await s.start(sd).should.be.rejectedWith(/foo/);
     });
     it('should time out starts that take longer than specified ms', async function () {
       let sd = (stdout) => stdout.indexOf('nothere') !== -1;
-      let s = new SubProcess('ls');
+      s = new SubProcess('ls');
       let start = Date.now();
-      await s.start(sd, 500).should.eventually.be.rejectedWith(/process did not start within/i);
+      await s
+        .start(sd, 500)
+        .should.be.rejectedWith(/process did not start within/i);
       (Date.now() - start).should.be.below(600);
     });
   });
@@ -142,8 +152,10 @@ describe('SubProcess', function () {
     });
     it('should get output as params', async function () {
       await new B(async (resolve, reject) => {
-        subproc = new SubProcess(getFixture('sleepyproc'),
-                                 ['ls', path.resolve(__dirname)]);
+        subproc = new SubProcess(getFixture('sleepyproc'), [
+          'ls',
+          path.resolve(__dirname),
+        ]);
         subproc.on('output', (stdout) => {
           if (stdout && stdout.indexOf('subproc-specs') === -1) {
             reject();
@@ -176,7 +188,12 @@ describe('SubProcess', function () {
       });
       await subproc.start(0);
       await B.delay(50);
-      lines.should.eql(['exec-specs.js', 'fixtures', 'helpers.js', 'subproc-specs.js']);
+      lines.should.eql([
+        'exec-specs.js',
+        'fixtures',
+        'helpers.js',
+        'subproc-specs.js',
+      ]);
     });
   });
 
@@ -199,11 +216,15 @@ describe('SubProcess', function () {
     });
 
     it('should time out if stop doesnt complete fast enough', async function () {
-      let subproc = new SubProcess(getFixture('traphup'),
-                                   ['tail', '-f', path.resolve(__filename)]);
+      let subproc = new SubProcess(getFixture('traphup'), [
+        'tail',
+        '-f',
+        path.resolve(__filename),
+      ]);
       await subproc.start();
-      await subproc.stop(stopSignal, 1)
-              .should.eventually.be.rejectedWith(/Process didn't end/);
+      await subproc
+        .stop(stopSignal, 1)
+        .should.eventually.be.rejectedWith(/Process didn't end/);
 
       // need to kill the process
       // 1 for the trap, 1 for the tail
@@ -242,7 +263,9 @@ describe('SubProcess', function () {
     it('should throw if process ends with a invalid exitcode', async function () {
       const proc = new SubProcess(getFixture('bad_exit'));
       await proc.start(0);
-      await proc.join().should.eventually.be.rejectedWith(/Process ended with exitcode/);
+      await proc
+        .join()
+        .should.eventually.be.rejectedWith(/Process ended with exitcode/);
     });
 
     it('should NOT throw if process ends with a custom allowed exitcode', async function () {
@@ -271,10 +294,18 @@ describe('SubProcess', function () {
       let dieCaught = false;
       let stopCaught = false;
       let endCaught = false;
-      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
-      proc.on('die', () => { dieCaught = true; });
-      proc.on('stop', () => { stopCaught = true; });
-      proc.on('end', () => { endCaught = true; });
+      proc.on('exit', (code, signal) => {
+        exitCaught = [code, signal];
+      });
+      proc.on('die', () => {
+        dieCaught = true;
+      });
+      proc.on('stop', () => {
+        stopCaught = true;
+      });
+      proc.on('end', () => {
+        endCaught = true;
+      });
       await proc.start();
       await proc.join();
       exitCaught.should.eql([0, null]);
@@ -289,10 +320,18 @@ describe('SubProcess', function () {
       let dieCaught = false;
       let stopCaught = [];
       let endCaught = false;
-      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
-      proc.on('stop', (code, signal) => { stopCaught = [code, signal]; });
-      proc.on('die', () => { dieCaught = true; });
-      proc.on('end', () => { endCaught = true; });
+      proc.on('exit', (code, signal) => {
+        exitCaught = [code, signal];
+      });
+      proc.on('stop', (code, signal) => {
+        stopCaught = [code, signal];
+      });
+      proc.on('die', () => {
+        dieCaught = true;
+      });
+      proc.on('end', () => {
+        endCaught = true;
+      });
       await proc.start();
       await proc.stop();
       exitCaught.should.eql([null, 'SIGTERM']);
@@ -307,10 +346,18 @@ describe('SubProcess', function () {
       let dieCaught = [];
       let stopCaught = false;
       let endCaught = false;
-      proc.on('exit', (code, signal) => { exitCaught = [code, signal]; });
-      proc.on('die', (code, signal) => { dieCaught = [code, signal]; });
-      proc.on('stop', () => { stopCaught = true; });
-      proc.on('end', () => { endCaught = true; });
+      proc.on('exit', (code, signal) => {
+        exitCaught = [code, signal];
+      });
+      proc.on('die', (code, signal) => {
+        dieCaught = [code, signal];
+      });
+      proc.on('stop', () => {
+        stopCaught = true;
+      });
+      proc.on('end', () => {
+        endCaught = true;
+      });
       await proc.start();
       await exec('pkill', ['-f', `tail -f ${path.resolve(__filename)}`]);
       try {
@@ -324,15 +371,35 @@ describe('SubProcess', function () {
   });
 
   describe('#detachProcess', function () {
-    it('should work when process started detached', async function () {
-      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)], {detached: true});
-      await proc.start();
-      proc.detachProcess();
+    /** @type {SubProcess?} */
+    let s;
+    beforeEach(function() {
+      s = null;
     });
+
+    afterEach(async function () {
+      if (s) {
+        try {
+          await s.stop();
+        } catch {
+        }
+      }
+    });
+
+    it('should work when process started detached', async function () {
+      s = new SubProcess('tail', ['-f', path.resolve(__filename)], {
+        detached: true,
+      });
+      await s.start();
+      s.detachProcess();
+    });
+
     it('should throw error if called when process not started detached', async function () {
-      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
-      await proc.start();
-      (() => proc.detachProcess()).should.throw(/Unable to detach process that is not started with 'detached' option/);
+      s = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      await s.start();
+      (() => s.detachProcess()).should.throw(
+        /Unable to detach process that is not started with 'detached' option/,
+      );
     });
   });
 });
