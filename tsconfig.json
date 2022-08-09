@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "target": "es2015",
+    "types": ["node", "mocha", "chai", "chai-as-promised"]
+  },
+  "include": ["lib", "test"],
+  "exclude": ["test/fixtures/**/*"]
+}

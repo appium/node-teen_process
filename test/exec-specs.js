@@ -1,5 +1,3 @@
-// transpile:mocha
-
 import path from 'path';
 import { exec } from '../lib';
 import chai from 'chai';

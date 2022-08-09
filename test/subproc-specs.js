@@ -1,5 +1,3 @@
-// transpile:mocha
-
 import B from 'bluebird';
 import path from 'path';
 import {exec, SubProcess} from '../lib';
