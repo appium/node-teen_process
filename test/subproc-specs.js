@@ -15,25 +15,31 @@ const stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
 describe('SubProcess', function () {
   it('should throw an error if initialized without a command', function () {
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess();
     });
   });
   it('should throw an error if initialized with a bad command', function () {
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess({lol: true});
     });
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess(1);
     });
   });
   it('should throw an error if initialized with bad args', function () {
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess('ls', 'foo');
     });
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess('ls', 1);
     });
     should.throw(() => {
+      // @ts-expect-error
       new SubProcess('ls', {});
     });
   });
@@ -81,7 +87,7 @@ describe('SubProcess', function () {
 
     it('should throw an error if command fails on startup', async function () {
       s = new SubProcess('blargimarg');
-      await s.start().should.be.rejected;
+      await s.start().should.be.rejectedWith(/not found/i);
     });
     it('should have a default startDetector of waiting for output', async function () {
       let hasData = false;
@@ -227,10 +233,10 @@ describe('SubProcess', function () {
       // need to kill the process
       // 1 for the trap, 1 for the tail
       try {
-        await exec('kill', ['-9', subproc.proc.pid + 1]);
+        await exec('kill', ['-9', String(/** @type {number} */(/** @type {NonNullable<SubProcess['proc']>} */(subproc.proc).pid) + 1)]);
       } catch (ign) {}
       try {
-        await exec('kill', ['-9', subproc.proc.pid]);
+        await exec('kill', ['-9', String(/** @type {NonNullable<SubProcess['proc']>} */(subproc.proc).pid)]);
       } catch (ign) {}
     });
 
@@ -395,9 +401,13 @@ describe('SubProcess', function () {
     it('should throw error if called when process not started detached', async function () {
       s = new SubProcess('tail', ['-f', path.resolve(__filename)]);
       await s.start();
-      (() => s.detachProcess()).should.throw(
+      (() => s?.detachProcess()).should.throw(
         /Unable to detach process that is not started with 'detached' option/,
       );
     });
   });
 });
+
+/**
+ * @typedef {import('../lib/subprocess').SubProcess} SubProcess
+ */
