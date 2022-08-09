@@ -17,7 +17,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, args);
     stdout.should.contain('exec-specs.js');
     stderr.should.equal('');
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should throw an error if command does not exist', async function () {
@@ -45,7 +45,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should work with backslashes in arguments', async function () {
@@ -55,7 +55,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should work with spaces in commands', async function () {
@@ -65,7 +65,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should work with spaces in commands and arguments', async function () {
@@ -75,7 +75,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should respect cwd', async function () {
@@ -86,7 +86,7 @@ describe('exec', function () {
     let {stdout, stderr, code} = await exec(cmd, [echo1, echo2], {cwd});
     stdout.trim().should.equal(echo1);
     stderr.trim().should.equal(echo2);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should respect env', async function () {
@@ -94,7 +94,7 @@ describe('exec', function () {
     let env = {FOO: 'lolol'};
     let {stdout, code} = await exec(cmd, [], {env});
     stdout.trim().should.equal(`${env.FOO} ${env.FOO}`);
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should allow a timeout parameter', async function () {
@@ -122,7 +122,7 @@ describe('exec', function () {
     let echo1 = 'my name is bob';
     let {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
     stdout.should.equal('');
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   it('should return a Buffer if requested', async function () {
@@ -133,7 +133,7 @@ describe('exec', function () {
     _.isBuffer(stdout).should.be.true;
     _.isString(stderr).should.be.false;
     _.isBuffer(stderr).should.be.true;
-    code.should.equal(0);
+    should.equal(code, 0);
   });
 
   describe('binary output', function () {
