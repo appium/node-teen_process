@@ -17,22 +17,13 @@ jobs:
           VERSIONS="[$previous_lts, $current_lts, $next_lts]"
           echo ::set-output name=versions::${VERSIONS}
 
-  echo_matrix:
-    runs-on: ubuntu-latest
-    needs:
-      - prepare_matrix
-    steps:
-      - name: Echo previous outputs
-        run: echo "${{ toJSON(needs.prepare_matrix.outputs) }}"
-
   build:
     runs-on: ubuntu-latest
     needs:
       - prepare_matrix
-      - echo_matrix
     strategy:
       matrix:
-        node-version: ${{ fromJSON(needs.echo_matrix.outputs.versions) }}
+        node-version: ${{ fromJSON(needs.prepare_matrix.outputs.versions) }}
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
