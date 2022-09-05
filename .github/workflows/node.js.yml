@@ -33,5 +33,4 @@ jobs:
     - run: |
         npm ci || npm install
         npm run test
-        npm run lint:types
         npm run lint
