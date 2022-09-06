@@ -7,6 +7,7 @@
     ":pinAllExceptPeerDependencies",
     "helpers:pinGitHubActionDigests"
   ],
+  "ignorePaths": ["**/.github/**"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
