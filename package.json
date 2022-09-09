@@ -64,7 +64,7 @@
     "which": "2.0.2"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "6.0.4",
+    "@appium/eslint-config-appium": "7.0.0",
     "@appium/support": "2.60.0",
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
