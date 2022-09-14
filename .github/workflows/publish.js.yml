@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: lts/*
+    - run: npm install --no-package-lock
+      name: Install dev dependencies
+    - run: npm run test
+      name: Run unit tests
+    - run: |
+        rm -rf package-lock.json
+        npm prune --production
+      name: Remove dev dependencies
+    - run: npm shrinkwrap
+      name: Create shrinkwrap
+    - run: npm install --only=dev
+      name: Install dev decepdencies for the release
+    - run: npx semantic-release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      name: Release
