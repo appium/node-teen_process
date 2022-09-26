@@ -64,7 +64,7 @@
     "which": "2.0.2"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "6.0.4",
+    "@appium/eslint-config-appium": "7.0.0",
     "@appium/support": "2.60.0",
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
@@ -83,11 +83,11 @@
     "babel-plugin-source-map-support": "2.2.0",
     "chai": "4.3.6",
     "chai-as-promised": "7.1.1",
-    "eslint": "7.32.0",
+    "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-mocha": "9.0.0",
-    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-mocha": "10.1.0",
+    "eslint-plugin-promise": "6.0.1",
     "lint-staged": "13.0.3",
     "mocha": "10.0.0",
     "pre-commit": "1.2.2",
