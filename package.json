@@ -75,7 +75,7 @@
     "@types/bluebird": "3.5.37",
     "@types/chai": "4.3.4",
     "@types/chai-as-promised": "7.1.5",
-    "@types/lodash": "4.14.188",
+    "@types/lodash": "4.14.189",
     "@types/mocha": "9.1.1",
     "@types/node": "18.11.9",
     "@types/shell-quote": "1.7.1",
