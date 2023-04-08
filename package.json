@@ -59,7 +59,7 @@
     "@babel/runtime": "7.21.0",
     "bluebird": "3.7.2",
     "lodash": "4.17.21",
-    "shell-quote": "1.8.0",
+    "shell-quote": "1.8.1",
     "source-map-support": "0.5.21",
     "which": "2.0.2"
   },
