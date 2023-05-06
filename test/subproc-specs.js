@@ -4,13 +4,12 @@ import {exec, SubProcess} from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getFixture} from './helpers';
-import {system} from '@appium/support';
 
 const should = chai.should();
 chai.use(chaiAsPromised);
 
 // Windows doesn't understand SIGHUP
-const stopSignal = system.isWindows() ? 'SIGTERM' : 'SIGHUP';
+const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';
 
 describe('SubProcess', function () {
   it('should throw an error if initialized without a command', function () {
