@@ -3,7 +3,6 @@ import { exec } from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
-import { system } from '@appium/support';
 import _ from 'lodash';
 
 
@@ -79,7 +78,7 @@ describe('exec', function () {
   });
 
   it('should respect cwd', async function () {
-    let cmd = system.isWindows() ? 'echo.bat' : './echo.sh';
+    let cmd = process.platform === 'win32' ? 'echo.bat' : './echo.sh';
     let echo1 = 'my name is bob';
     let echo2 = 'lol';
     let cwd = path.dirname(getFixture('echo'));
