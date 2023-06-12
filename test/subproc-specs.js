@@ -20,11 +20,11 @@ describe('SubProcess', function () {
   });
   it('should throw an error if initialized with a bad command', function () {
     should.throw(() => {
-      // @ts-ignore
+      // @ts-expect-error
       new SubProcess({lol: true});
     });
     should.throw(() => {
-      // @ts-ignore
+      // @ts-expect-error
       new SubProcess(1);
     });
   });
