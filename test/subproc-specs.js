@@ -172,7 +172,6 @@ describe('SubProcess', function () {
     it('should get output as params', async function () {
       await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
-        // @ts-ignore
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') === -1) {
             reject();
@@ -206,7 +205,6 @@ describe('SubProcess', function () {
       return await new B(async (resolve, reject) => {
         let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
         await subproc.start();
-        // @ts-ignore
         subproc.on('exit', (code, signal) => {
           try {
             signal.should.equal(stopSignal);
