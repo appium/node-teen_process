@@ -1,5 +1,5 @@
 import path from 'path';
-import { exec } from '../lib';
+import { exec } from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
