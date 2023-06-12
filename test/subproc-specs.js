@@ -1,6 +1,6 @@
 import B from 'bluebird';
 import path from 'path';
-import {exec, SubProcess} from '../lib';
+import {exec, SubProcess} from '..';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getFixture} from './helpers';
@@ -20,11 +20,11 @@ describe('SubProcess', function () {
   });
   it('should throw an error if initialized with a bad command', function () {
     should.throw(() => {
-      // @ts-expect-error
+      // @ts-ignore
       new SubProcess({lol: true});
     });
     should.throw(() => {
-      // @ts-expect-error
+      // @ts-ignore
       new SubProcess(1);
     });
   });
@@ -172,6 +172,7 @@ describe('SubProcess', function () {
     it('should get output as params', async function () {
       await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
+        // @ts-ignore
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') === -1) {
             reject();
@@ -205,6 +206,7 @@ describe('SubProcess', function () {
       return await new B(async (resolve, reject) => {
         let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
         await subproc.start();
+        // @ts-ignore
         subproc.on('exit', (code, signal) => {
           try {
             signal.should.equal(stopSignal);

@@ -1,17 +1,12 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@appium/tsconfig/tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,
+    "outDir": "build",
     "checkJs": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
     "noEmit": true,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "strictNullChecks": true,
-    "target": "es2015",
-    "types": ["node", "mocha", "chai", "chai-as-promised"]
+    "types": ["node", "mocha", "chai", "chai-as-promised", "sinon"]
   },
-  "include": ["lib", "test"],
+  "include": ["lib", "test", "index.js"],
   "exclude": ["test/fixtures/**/*"]
 }
