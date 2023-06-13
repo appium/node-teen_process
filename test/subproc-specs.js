@@ -1,6 +1,6 @@
 import B from 'bluebird';
 import path from 'path';
-import {exec, SubProcess} from '..';
+import {exec, SubProcess} from '../lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import {getFixture} from './helpers';
