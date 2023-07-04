@@ -64,7 +64,7 @@
     "source-map-support": "0.5.21"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "8.0.3",
+    "@appium/eslint-config-appium": "8.0.4",
     "@appium/tsconfig": "0.3.0",
     "@appium/types": "0.13.1",
     "@types/bluebird": "3.5.38",
