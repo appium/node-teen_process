@@ -1,3 +1,10 @@
+## [2.0.6](https://github.com/appium/node-teen_process/compare/v2.0.5...v2.0.6) (2023-08-25)
+
+
+### Miscellaneous Chores
+
+* pin dependencies ([3407c1b](https://github.com/appium/node-teen_process/commit/3407c1b5c3442345a2da854c507421120a179ff5))
+
 ## [2.0.5](https://github.com/appium/node-teen_process/compare/v2.0.4...v2.0.5) (2023-08-25)
 
 
