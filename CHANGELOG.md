@@ -1,3 +1,10 @@
+## [2.0.8](https://github.com/appium/node-teen_process/compare/v2.0.7...v2.0.8) (2023-08-25)
+
+
+### Miscellaneous Chores
+
+* update dependency typescript to v5.2.2 ([9fa9af8](https://github.com/appium/node-teen_process/commit/9fa9af8e74ce43c027de3530b1434d25e490906c))
+
 ## [2.0.7](https://github.com/appium/node-teen_process/compare/v2.0.6...v2.0.7) (2023-08-25)
 
 
