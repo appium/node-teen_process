@@ -71,7 +71,7 @@
     "@semantic-release/git": "10.0.1",
     "@types/bluebird": "3.5.38",
     "@types/chai": "4.3.6",
-    "@types/chai-as-promised": "7.1.5",
+    "@types/chai-as-promised": "7.1.6",
     "@types/lodash": "4.14.197",
     "@types/mocha": "10.0.1",
     "@types/node": "18.17.12",
