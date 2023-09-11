@@ -1,3 +1,10 @@
+## [2.0.17](https://github.com/appium/node-teen_process/compare/v2.0.16...v2.0.17) (2023-09-11)
+
+
+### Miscellaneous Chores
+
+* update dependency conventional-changelog-conventionalcommits to v7.0.2 ([dc19b3d](https://github.com/appium/node-teen_process/commit/dc19b3d704b69c59b6256e2b75966fa1c05c8f66))
+
 ## [2.0.16](https://github.com/appium/node-teen_process/compare/v2.0.15...v2.0.16) (2023-09-11)
 
 
