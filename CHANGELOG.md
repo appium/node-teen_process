@@ -1,3 +1,10 @@
+## [2.0.21](https://github.com/appium/node-teen_process/compare/v2.0.20...v2.0.21) (2023-09-16)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/bluebird to v3.5.39 ([474979e](https://github.com/appium/node-teen_process/commit/474979e24d346af9b28c046d19723c1c050d9e96))
+
 ## [2.0.20](https://github.com/appium/node-teen_process/compare/v2.0.19...v2.0.20) (2023-09-15)
 
 
