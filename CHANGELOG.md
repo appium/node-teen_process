@@ -1,3 +1,10 @@
+## [2.0.26](https://github.com/appium/node-teen_process/compare/v2.0.25...v2.0.26) (2023-09-23)
+
+
+### Miscellaneous Chores
+
+* update dependency eslint to v8.50.0 ([27077f8](https://github.com/appium/node-teen_process/commit/27077f8f6809b1f864be89734ac1308187adcc45))
+
 ## [2.0.25](https://github.com/appium/node-teen_process/compare/v2.0.24...v2.0.25) (2023-09-23)
 
 
