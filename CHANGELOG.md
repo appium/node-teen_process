@@ -1,3 +1,11 @@
+## [2.0.27](https://github.com/appium/node-teen_process/compare/v2.0.26...v2.0.27) (2023-09-24)
+
+
+### Miscellaneous Chores
+
+* update dependency lint-staged to v14 ([#286](https://github.com/appium/node-teen_process/issues/286)) ([76e88c5](https://github.com/appium/node-teen_process/commit/76e88c5071a3fea8ac412da2cc696068498a3b78))
+* update dependency semantic-release to v22 ([#319](https://github.com/appium/node-teen_process/issues/319)) ([a835925](https://github.com/appium/node-teen_process/commit/a8359250cba44941982c8b57d5c5b2cefa87438b))
+
 ## [2.0.26](https://github.com/appium/node-teen_process/compare/v2.0.25...v2.0.26) (2023-09-23)
 
 
