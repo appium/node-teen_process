@@ -1,3 +1,10 @@
+## [2.0.30](https://github.com/appium/node-teen_process/compare/v2.0.29...v2.0.30) (2023-09-25)
+
+
+### Miscellaneous Chores
+
+* update dependency eslint-plugin-mocha to v10.2.0 ([84cd4db](https://github.com/appium/node-teen_process/commit/84cd4dbf9202c466f99f2d50f97238e070b8e953))
+
 ## [2.0.29](https://github.com/appium/node-teen_process/compare/v2.0.28...v2.0.29) (2023-09-25)
 
 
