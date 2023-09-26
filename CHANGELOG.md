@@ -1,3 +1,10 @@
+## [2.0.33](https://github.com/appium/node-teen_process/compare/v2.0.32...v2.0.33) (2023-09-26)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/source-map-support to v0.5.8 ([6d740da](https://github.com/appium/node-teen_process/commit/6d740dab22f6e4b587bc725c99c0c10bae9a3fe5))
+
 ## [2.0.32](https://github.com/appium/node-teen_process/compare/v2.0.31...v2.0.32) (2023-09-26)
 
 
