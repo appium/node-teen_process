@@ -1,3 +1,10 @@
+## [2.0.35](https://github.com/appium/node-teen_process/compare/v2.0.34...v2.0.35) (2023-09-27)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/node to v18.18.0 ([cc4f8dd](https://github.com/appium/node-teen_process/commit/cc4f8dd61a191e6a3b0614dcccde03c86ba8fdb1))
+
 ## [2.0.34](https://github.com/appium/node-teen_process/compare/v2.0.33...v2.0.34) (2023-09-27)
 
 
