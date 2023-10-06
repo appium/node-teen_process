@@ -1,3 +1,10 @@
+## [2.0.42](https://github.com/appium/node-teen_process/compare/v2.0.41...v2.0.42) (2023-10-06)
+
+
+### Miscellaneous Chores
+
+* update dependency sinon to v16.1.0 ([40d47e8](https://github.com/appium/node-teen_process/commit/40d47e850650bd8638a7a61da4923cfe37f6fb15))
+
 ## [2.0.41](https://github.com/appium/node-teen_process/compare/v2.0.40...v2.0.41) (2023-10-04)
 
 
