@@ -92,7 +92,7 @@
     "pre-commit": "1.2.2",
     "prettier": "3.0.3",
     "semantic-release": "22.0.5",
-    "sinon": "16.0.0",
+    "sinon": "16.1.0",
     "typescript": "5.2.2",
     "ts-node": "10.9.1"
   },
