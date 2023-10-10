@@ -1,3 +1,10 @@
+## [2.0.47](https://github.com/appium/node-teen_process/compare/v2.0.46...v2.0.47) (2023-10-10)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/chai to v4.3.7 ([b52ca31](https://github.com/appium/node-teen_process/commit/b52ca31aa6178d71a48c5912e826affa827b1765))
+
 ## [2.0.46](https://github.com/appium/node-teen_process/compare/v2.0.45...v2.0.46) (2023-10-10)
 
 
