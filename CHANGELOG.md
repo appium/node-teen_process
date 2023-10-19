@@ -1,3 +1,10 @@
+## [2.0.56](https://github.com/appium/node-teen_process/compare/v2.0.55...v2.0.56) (2023-10-19)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/lodash to v4.14.200 ([b9e0886](https://github.com/appium/node-teen_process/commit/b9e088674dd26af1a079b9339dbfc966887c7d79))
+
 ## [2.0.55](https://github.com/appium/node-teen_process/compare/v2.0.54...v2.0.55) (2023-10-19)
 
 
