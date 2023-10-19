@@ -72,7 +72,7 @@
     "@types/bluebird": "3.5.41",
     "@types/chai": "4.3.9",
     "@types/chai-as-promised": "7.1.7",
-    "@types/lodash": "4.14.199",
+    "@types/lodash": "4.14.200",
     "@types/mocha": "10.0.2",
     "@types/node": "18.18.5",
     "@types/shell-quote": "1.7.2",
