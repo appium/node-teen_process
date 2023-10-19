@@ -1,3 +1,10 @@
+## [2.0.54](https://github.com/appium/node-teen_process/compare/v2.0.53...v2.0.54) (2023-10-19)
+
+
+### Miscellaneous Chores
+
+* update dependency @appium/tsconfig to v0.3.2 ([0058ec5](https://github.com/appium/node-teen_process/commit/0058ec5c881056a2cd9d20d59658bfd065a57016))
+
 ## [2.0.53](https://github.com/appium/node-teen_process/compare/v2.0.52...v2.0.53) (2023-10-19)
 
 
