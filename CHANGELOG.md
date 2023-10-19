@@ -1,3 +1,10 @@
+## [2.0.55](https://github.com/appium/node-teen_process/compare/v2.0.54...v2.0.55) (2023-10-19)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/chai-as-promised to v7.1.7 ([a34a148](https://github.com/appium/node-teen_process/commit/a34a148ba7800d24860b741627a43eebd54af93d))
+
 ## [2.0.54](https://github.com/appium/node-teen_process/compare/v2.0.53...v2.0.54) (2023-10-19)
 
 
