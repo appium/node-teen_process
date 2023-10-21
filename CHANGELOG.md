@@ -1,3 +1,10 @@
+## [2.0.62](https://github.com/appium/node-teen_process/compare/v2.0.61...v2.0.62) (2023-10-21)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/ws to v8.5.8 ([6bd8d68](https://github.com/appium/node-teen_process/commit/6bd8d68f9f299071503e4ef307bdbe2e898044e2))
+
 ## [2.0.61](https://github.com/appium/node-teen_process/compare/v2.0.60...v2.0.61) (2023-10-21)
 
 
