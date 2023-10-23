@@ -1,3 +1,10 @@
+## [2.0.67](https://github.com/appium/node-teen_process/compare/v2.0.66...v2.0.67) (2023-10-23)
+
+
+### Miscellaneous Chores
+
+* update dependency eslint-plugin-import to v2.29.0 ([a5a049e](https://github.com/appium/node-teen_process/commit/a5a049ee3a63092046db66a6d5c5bb91794513fb))
+
 ## [2.0.66](https://github.com/appium/node-teen_process/compare/v2.0.65...v2.0.66) (2023-10-22)
 
 
