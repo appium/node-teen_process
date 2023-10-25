@@ -1,3 +1,13 @@
+## [2.0.68](https://github.com/appium/node-teen_process/compare/v2.0.67...v2.0.68) (2023-10-25)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/node to v20 ([#365](https://github.com/appium/node-teen_process/issues/365)) ([14a03ac](https://github.com/appium/node-teen_process/commit/14a03acf6a03ced17449c2057ac42073f6a9e8fe))
+* update dependency eslint-config-prettier to v9 ([#280](https://github.com/appium/node-teen_process/issues/280)) ([baa43ae](https://github.com/appium/node-teen_process/commit/baa43aef11df88865de4a8a2ff1fe62bd5bbda89))
+* update dependency lint-staged to v15 ([#346](https://github.com/appium/node-teen_process/issues/346)) ([4d2cc05](https://github.com/appium/node-teen_process/commit/4d2cc05a214f6d7e841b73981c3840ec7ff89296))
+* update dependency sinon to v17 ([#363](https://github.com/appium/node-teen_process/issues/363)) ([0444949](https://github.com/appium/node-teen_process/commit/0444949bc431559390990f9307cb9670bcd3d220))
+
 ## [2.0.67](https://github.com/appium/node-teen_process/compare/v2.0.66...v2.0.67) (2023-10-23)
 
 
