@@ -73,7 +73,7 @@
     "@types/chai": "4.3.10",
     "@types/chai-as-promised": "7.1.8",
     "@types/lodash": "4.14.201",
-    "@types/mocha": "10.0.3",
+    "@types/mocha": "10.0.4",
     "@types/node": "20.8.10",
     "@types/shell-quote": "1.7.3",
     "@types/sinon": "10.0.20",
