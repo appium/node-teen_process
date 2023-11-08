@@ -75,7 +75,7 @@
     "@types/lodash": "4.14.201",
     "@types/mocha": "10.0.4",
     "@types/node": "20.8.10",
-    "@types/shell-quote": "1.7.3",
+    "@types/shell-quote": "1.7.4",
     "@types/sinon": "10.0.20",
     "@types/source-map-support": "0.5.9",
     "@types/ws": "8.5.8",
