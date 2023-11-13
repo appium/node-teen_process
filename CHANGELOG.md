@@ -1,3 +1,10 @@
+## [2.0.86](https://github.com/appium/node-teen_process/compare/v2.0.85...v2.0.86) (2023-11-13)
+
+
+### Miscellaneous Chores
+
+* update dependency prettier to v3.1.0 ([df13a7d](https://github.com/appium/node-teen_process/commit/df13a7d7e55d07f64c8d6a2d33925a02e7bd6677))
+
 ## [2.0.85](https://github.com/appium/node-teen_process/compare/v2.0.84...v2.0.85) (2023-11-12)
 
 
