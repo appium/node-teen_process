@@ -1,3 +1,10 @@
+## [2.0.88](https://github.com/appium/node-teen_process/compare/v2.0.87...v2.0.88) (2023-11-16)
+
+
+### Miscellaneous Chores
+
+* update npm to v10.2.4 ([3d5d87e](https://github.com/appium/node-teen_process/commit/3d5d87ee271648b9b8d02c8e6d99df68c244a967))
+
 ## [2.0.87](https://github.com/appium/node-teen_process/compare/v2.0.86...v2.0.87) (2023-11-15)
 
 
