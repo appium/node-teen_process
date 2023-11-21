@@ -1,3 +1,10 @@
+## [2.0.95](https://github.com/appium/node-teen_process/compare/v2.0.94...v2.0.95) (2023-11-21)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/mocha to v10.0.5 ([e3b1a35](https://github.com/appium/node-teen_process/commit/e3b1a35f6e821d8a5ed30c599af53d7271c90fe3))
+
 ## [2.0.94](https://github.com/appium/node-teen_process/compare/v2.0.93...v2.0.94) (2023-11-21)
 
 
