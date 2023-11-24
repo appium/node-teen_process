@@ -1,3 +1,10 @@
+## [2.0.99](https://github.com/appium/node-teen_process/compare/v2.0.98...v2.0.99) (2023-11-24)
+
+
+### Miscellaneous Chores
+
+* update dependency @types/shell-quote to v1.7.5 ([512233d](https://github.com/appium/node-teen_process/commit/512233d32a32fbdf0f7680ff7f4f7465b06f7a06))
+
 ## [2.0.98](https://github.com/appium/node-teen_process/compare/v2.0.97...v2.0.98) (2023-11-24)
 
 
