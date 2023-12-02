@@ -1,3 +1,10 @@
+## [2.0.105](https://github.com/appium/node-teen_process/compare/v2.0.104...v2.0.105) (2023-12-02)
+
+
+### Miscellaneous Chores
+
+* update dependency eslint-config-prettier to v9.1.0 ([0d13000](https://github.com/appium/node-teen_process/commit/0d1300062636a81d3c7fc1b18d438edfdfae29e2))
+
 ## [2.0.104](https://github.com/appium/node-teen_process/compare/v2.0.103...v2.0.104) (2023-12-02)
 
 
