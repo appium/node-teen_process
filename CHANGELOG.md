@@ -1,3 +1,10 @@
+## [2.0.107](https://github.com/appium/node-teen_process/compare/v2.0.106...v2.0.107) (2023-12-04)
+
+
+### Miscellaneous Chores
+
+* update dependency lint-staged to v15.2.0 ([bd0c02d](https://github.com/appium/node-teen_process/commit/bd0c02d9b612df3b646bbfcc48c3654ec8041171))
+
 ## [2.0.106](https://github.com/appium/node-teen_process/compare/v2.0.105...v2.0.106) (2023-12-04)
 
 
