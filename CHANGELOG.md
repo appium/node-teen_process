@@ -1,3 +1,10 @@
+## [2.0.110](https://github.com/appium/node-teen_process/compare/v2.0.109...v2.0.110) (2023-12-06)
+
+
+### Miscellaneous Chores
+
+* update dependency semantic-release to v22.0.10 ([65e7ece](https://github.com/appium/node-teen_process/commit/65e7ece1d5f4a9a33ab2494c40f15ca084bcd5a6))
+
 ## [2.0.109](https://github.com/appium/node-teen_process/compare/v2.0.108...v2.0.109) (2023-12-05)
 
 
