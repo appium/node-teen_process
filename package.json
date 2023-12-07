@@ -76,7 +76,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.4",
     "@types/shell-quote": "^1.7.5",
-    "@types/sinon": "^10.0.20",
+    "@types/sinon": "^17.0.0",
     "@types/source-map-support": "^0.x",
     "@types/ws": "^8.5.10",
     "chai": "^4.3.10",
