@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/appium/node-teen_process/compare/v2.1.0...v2.1.1) (2023-12-07)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/sinon from 10.0.20 to 17.0.2 ([#415](https://github.com/appium/node-teen_process/issues/415)) ([112f605](https://github.com/appium/node-teen_process/commit/112f605509ba487f52066474c9931ea547be24d3))
+
 ## [2.1.0](https://github.com/appium/node-teen_process/compare/v2.0.112...v2.1.0) (2023-12-07)
 
 
