@@ -2,23 +2,15 @@ name: Node.js CI
 on: [push, pull_request]
 
 jobs:
-  # https://thekevinwang.com/2021/09/19/github-actions-dynamic-matrix/
   prepare_matrix:
     runs-on: ubuntu-latest
     outputs:
       versions: ${{ steps.generate-matrix.outputs.versions }}
     steps:
-    - name: Generate Node.js versions matrix
+    - name: Select 3 most recent LTS versions of Node.js
       id: generate-matrix
-      run: |
-        sudo apt-get install -y lynx
-        lynx -dump https://endoflife.date/nodejs | grep -E -o '[0-9]+[( a-zA-Z]+LTS\)' | grep -E -o '([0-9]+)' > eol.list
-        cat eol.list
-        lts1=$(cat eol.list | head -1)
-        lts2=$(cat eol.list | head -2 | tail -1)
-        lts3=$(cat eol.list | head -3 | tail -1)
-        VERSIONS="[$lts1, $lts2, $lts3]"
-        echo ::set-output name=versions::${VERSIONS}
+      run: echo "versions=$(curl -s https://endoflife.date/api/nodejs.json | jq -c '[[.[] | select(.lts != false)][:3] | .[].cycle | tonumber]')" >> "$GITHUB_OUTPUT"
+
 
   build:
     runs-on: ubuntu-latest
@@ -33,8 +25,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run: |
-        npm ci || npm install
+    - run: npm install
       name: Install dev dependencies
     - run: npm run lint
       name: Linter
