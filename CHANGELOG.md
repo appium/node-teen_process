@@ -1,3 +1,10 @@
+## [2.1.0](https://github.com/appium/node-teen_process/compare/v2.0.112...v2.1.0) (2023-12-07)
+
+
+### Features
+
+* Disable strict packages locking ([#412](https://github.com/appium/node-teen_process/issues/412)) ([c622083](https://github.com/appium/node-teen_process/commit/c622083966e5fa7a80a9f8d1b7292437d53ce49d))
+
 ## [2.0.112](https://github.com/appium/node-teen_process/compare/v2.0.111...v2.0.112) (2023-12-07)
 
 
