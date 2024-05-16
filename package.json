@@ -37,20 +37,9 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "lint:types": "tsc",
-    "precommit-lint": "lint-staged",
-    "precommit-msg": "echo 'Pre-commit checks...' && exit 0",
     "prepare": "npm run rebuild",
     "rebuild": "npm run clean && npm run build",
     "test": "mocha"
-  },
-  "pre-commit": [
-    "precommit-msg",
-    "precommit-lint"
-  ],
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ]
   },
   "prettier": {
     "bracketSpacing": false,
@@ -82,14 +71,7 @@
     "chai": "^4.3.10",
     "chai-as-promised": "^7.1.1",
     "conventional-changelog-conventionalcommits": "^7.0.2",
-    "eslint": "^8.55.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.0",
-    "eslint-plugin-mocha": "^10.2.0",
-    "eslint-plugin-promise": "^6.1.1",
-    "lint-staged": "^15.2.0",
     "mocha": "^10.2.0",
-    "pre-commit": "^1.2.2",
     "prettier": "^3.1.0",
     "semantic-release": "^22.0.10",
     "sinon": "^17.0.1",
