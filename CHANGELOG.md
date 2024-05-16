@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/appium/node-teen_process/compare/v2.1.1...v2.1.2) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* Update dev dependencies ([0aca92f](https://github.com/appium/node-teen_process/commit/0aca92f60a7b6ae09c3a2ee1ceb05fb5294e00ed))
+
 ## [2.1.1](https://github.com/appium/node-teen_process/compare/v2.1.0...v2.1.1) (2023-12-07)
 
 
