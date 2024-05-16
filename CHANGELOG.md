@@ -1,3 +1,11 @@
+## [2.1.3](https://github.com/appium/node-teen_process/compare/v2.1.2...v2.1.3) (2024-05-16)
+
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 22.0.12 to 23.0.6 ([#427](https://github.com/appium/node-teen_process/issues/427)) ([0893b10](https://github.com/appium/node-teen_process/commit/0893b10c6c2c2c9269b28e84dc4cf0da8edfd0c5))
+* **deps-dev:** bump typescript from 5.2.2 to 5.4.3 ([#426](https://github.com/appium/node-teen_process/issues/426)) ([3c9072b](https://github.com/appium/node-teen_process/commit/3c9072b9c0b739a4f955640c0a564e3d7a2aff93))
+
 ## [2.1.2](https://github.com/appium/node-teen_process/compare/v2.1.1...v2.1.2) (2024-05-16)
 
 
