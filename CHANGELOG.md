@@ -1,3 +1,9 @@
+## [2.1.4](https://github.com/appium/node-teen_process/compare/v2.1.3...v2.1.4) (2024-06-04)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 23.1.1 to 24.0.0 and conventional-changelog-conventionalcommits to 8.0.0 ([#431](https://github.com/appium/node-teen_process/issues/431)) ([d0c249f](https://github.com/appium/node-teen_process/commit/d0c249f7aeffa74c0b1a196cf1cc4bcb846422dd))
+
 ## [2.1.3](https://github.com/appium/node-teen_process/compare/v2.1.2...v2.1.3) (2024-05-16)
 
 
