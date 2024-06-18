@@ -1,17 +1,24 @@
 import B from 'bluebird';
 import path from 'path';
 import {exec, SubProcess} from '../lib';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import {getFixture} from './helpers';
-
-const should = chai.should();
-chai.use(chaiAsPromised);
 
 // Windows doesn't understand SIGHUP
 const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';
 
 describe('SubProcess', function () {
+  let chai;
+  let chaiAsPromised;
+  let should;
+
+  before(async function() {
+    chai = await import('chai');
+    chaiAsPromised = await import('chai-as-promised');
+
+    should = chai.should();
+    chai.use(chaiAsPromised.default);
+  });
+
   it('should throw an error if initialized without a command', function () {
     should.throw(() => {
       // @ts-expect-error
