@@ -1,15 +1,22 @@
 import path from 'path';
 import { exec } from '../lib';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import { getFixture } from './helpers';
 import _ from 'lodash';
 
 
-const should = chai.should();
-chai.use(chaiAsPromised);
-
 describe('exec', function () {
+  let chai;
+  let chaiAsPromised;
+  let should;
+
+  before(async function() {
+    chai = await import('chai');
+    chaiAsPromised = await import('chai-as-promised');
+
+    should = chai.should();
+    chai.use(chaiAsPromised.default);
+  });
+
   it('should work with arguments like spawn', async function () {
     let cmd = 'ls';
     let args = [__dirname];
