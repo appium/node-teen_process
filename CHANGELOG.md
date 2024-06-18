@@ -1,3 +1,9 @@
+## [2.1.6](https://github.com/appium/node-teen_process/compare/v2.1.5...v2.1.6) (2024-06-18)
+
+### Miscellaneous Chores
+
+* Bump chai and chai-as-promised ([#433](https://github.com/appium/node-teen_process/issues/433)) ([d0326c9](https://github.com/appium/node-teen_process/commit/d0326c9208e82cad7cfb153dba6b831571d4eaf6))
+
 ## [2.1.5](https://github.com/appium/node-teen_process/compare/v2.1.4...v2.1.5) (2024-06-18)
 
 ### Miscellaneous Chores
