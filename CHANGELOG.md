@@ -1,3 +1,9 @@
+## [2.1.5](https://github.com/appium/node-teen_process/compare/v2.1.4...v2.1.5) (2024-06-18)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump sinon from 17.0.2 to 18.0.0 ([#428](https://github.com/appium/node-teen_process/issues/428)) ([a5aba06](https://github.com/appium/node-teen_process/commit/a5aba06ec6b47aab65272da597d1bb73d76fb2f8))
+
 ## [2.1.4](https://github.com/appium/node-teen_process/compare/v2.1.3...v2.1.4) (2024-06-04)
 
 ### Miscellaneous Chores
