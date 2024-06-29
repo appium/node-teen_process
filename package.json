@@ -54,7 +54,7 @@
     "source-map-support": "^0.x"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "^8.0.5",
+    "@appium/eslint-config-appium-ts": "^0.x",
     "@appium/tsconfig": "^0.x",
     "@appium/types": "^0.x",
     "@semantic-release/changelog": "^6.0.3",
