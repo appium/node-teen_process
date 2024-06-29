@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import { CircularBuffer } from '../lib/circular-buffer';
 
 
