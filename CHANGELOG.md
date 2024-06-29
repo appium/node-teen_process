@@ -1,3 +1,9 @@
+## [2.1.10](https://github.com/appium/node-teen_process/compare/v2.1.9...v2.1.10) (2024-06-29)
+
+### Bug Fixes
+
+* Restore CJS types ([057c009](https://github.com/appium/node-teen_process/commit/057c009e4e350a713c5657fa2b2b666bc69223b6))
+
 ## [2.1.9](https://github.com/appium/node-teen_process/compare/v2.1.8...v2.1.9) (2024-06-29)
 
 ### Bug Fixes
