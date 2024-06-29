@@ -1,1 +1,1 @@
-export * from './lib/index';
+module.exports = require('./build/lib');
