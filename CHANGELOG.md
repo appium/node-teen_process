@@ -1,3 +1,9 @@
+## [2.1.7](https://github.com/appium/node-teen_process/compare/v2.1.6...v2.1.7) (2024-06-29)
+
+### Miscellaneous Chores
+
+* Optimize streaming processing and history ([#435](https://github.com/appium/node-teen_process/issues/435)) ([b63798e](https://github.com/appium/node-teen_process/commit/b63798e79a3dd567956aabb1531702420650c81f))
+
 ## [2.1.6](https://github.com/appium/node-teen_process/compare/v2.1.5...v2.1.6) (2024-06-18)
 
 ### Miscellaneous Chores
