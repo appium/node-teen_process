@@ -4,7 +4,14 @@
     {
       "files": "test/**/*.js",
       "rules": {
-        "func-names": "off"
+        "func-names": "off",
+        "promise/no-native": "off"
+      }
+    },
+    {
+      "files": "lib/**/*.js",
+      "rules": {
+        "promise/no-native": "off"
       }
     }
   ]

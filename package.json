@@ -47,7 +47,6 @@
     "singleQuote": true
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "lodash": "^4.17.21",
     "shell-quote": "^1.8.1",
     "source-map-support": "^0.x"
@@ -58,7 +57,6 @@
     "@appium/types": "^0.x",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/bluebird": "^3.5.42",
     "@types/chai-as-promised": "^7.1.8",
     "@types/lodash": "^4.14.202",
     "@types/mocha": "^10.0.6",
@@ -73,8 +71,8 @@
     "prettier": "^3.1.0",
     "semantic-release": "^24.0.0",
     "sinon": "^18.0.0",
-    "typescript": "^5.4.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.4.1"
   },
   "engines": {
     "node": "^16.13.0 || >=18.0.0",

@@ -1,10 +1,17 @@
-import B from 'bluebird';
 import path from 'path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
 
 // Windows doesn't understand SIGHUP
 const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';
+
+/**
+ * @param {number} ms
+ */
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 
 describe('SubProcess', function () {
   let chai;
@@ -65,7 +72,7 @@ describe('SubProcess', function () {
       lines = lines.concat(newLines);
     });
     await subproc.start(0);
-    await B.delay(50);
+    await delay(50);
     lines.should.include('bad_exit.sh');
     lines.should.contain('bigbuffer.js');
     lines.should.contain('echo.sh');
@@ -116,7 +123,7 @@ describe('SubProcess', function () {
       });
       await s.start(0);
       hasData.should.be.false;
-      await B.delay(1200);
+      await delay(1200);
       hasData.should.be.true;
     });
     it('should fail even with a start timeout of 0 when command is bad', async function () {
@@ -161,7 +168,7 @@ describe('SubProcess', function () {
       } catch (ign) {}
     });
     it('should get output as params', async function () {
-      await new B(async (resolve, reject) => {
+      await /** @type {Promise<void>} */(new Promise((resolve, reject) => {
         subproc = new SubProcess(getFixture('sleepyproc'), [
           'ls',
           path.resolve(__dirname),
@@ -173,11 +180,11 @@ describe('SubProcess', function () {
             resolve();
           }
         });
-        await subproc.start();
-      }).should.eventually.not.be.rejected;
+        return subproc.start();
+      })).should.eventually.not.be.rejected;
     });
     it('should get output as params', async function () {
-      await new B(async (resolve, reject) => {
+      await /** @type {Promise<void>} */(new Promise((resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') === -1) {
@@ -186,8 +193,8 @@ describe('SubProcess', function () {
             resolve();
           }
         });
-        await subproc.start();
-      });
+        subproc.start();
+      }));
     });
 
     it('should get output by lines', async function () {
@@ -197,7 +204,7 @@ describe('SubProcess', function () {
         lines = lines.concat(newLines);
       });
       await subproc.start(0);
-      await B.delay(50);
+      await delay(50);
       lines.should.eql([
         'exec-specs.js',
         'fixtures',
@@ -209,9 +216,9 @@ describe('SubProcess', function () {
 
   describe('#stop', function () {
     it('should send the right signal to stop a proc', async function () {
-      return await new B(async (resolve, reject) => {
+      return await new Promise((resolve, reject) => {
         let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
-        await subproc.start();
+        subproc.start();
         subproc.on('exit', (code, signal) => {
           try {
             signal.should.equal(stopSignal);
@@ -221,7 +228,7 @@ describe('SubProcess', function () {
           }
         });
 
-        await subproc.stop(stopSignal);
+        subproc.stop(stopSignal);
       });
     });
 
@@ -250,7 +257,7 @@ describe('SubProcess', function () {
       let subproc = new SubProcess('ls');
       await subproc.stop().should.eventually.be.rejectedWith(/Can't stop/);
       await subproc.start();
-      await B.delay(10);
+      await delay(10);
       await subproc.stop().should.eventually.be.rejectedWith(/Can't stop/);
     });
   });
