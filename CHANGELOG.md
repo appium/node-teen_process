@@ -1,3 +1,9 @@
+## [2.1.9](https://github.com/appium/node-teen_process/compare/v2.1.8...v2.1.9) (2024-06-29)
+
+### Bug Fixes
+
+* Restore CJS ([#438](https://github.com/appium/node-teen_process/issues/438)) ([2ffb0da](https://github.com/appium/node-teen_process/commit/2ffb0da2c71f121f1fb434b1931cbeea99bd98c2))
+
 ## [2.1.8](https://github.com/appium/node-teen_process/compare/v2.1.7...v2.1.8) (2024-06-29)
 
 ### Miscellaneous Chores
