@@ -20,7 +20,8 @@
   },
   "license": "Apache-2.0",
   "author": "Appium Contributors",
-  "main": "./index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "bin": {},
   "directories": {
     "lib": "lib"
@@ -53,15 +54,13 @@
     "source-map-support": "^0.x"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "^8.0.5",
+    "@appium/eslint-config-appium-ts": "^0.x",
     "@appium/tsconfig": "^0.x",
     "@appium/types": "^0.x",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/bluebird": "^3.5.42",
-    "@types/chai-as-promised": "^7.1.8",
     "@types/lodash": "^4.14.202",
-    "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.4",
     "@types/shell-quote": "^1.7.5",
     "@types/source-map-support": "^0.x",
@@ -72,7 +71,6 @@
     "mocha": "^10.2.0",
     "prettier": "^3.1.0",
     "semantic-release": "^24.0.0",
-    "sinon": "^18.0.0",
     "typescript": "^5.4.1",
     "ts-node": "^10.9.1"
   },
