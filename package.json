@@ -20,7 +20,8 @@
   },
   "license": "Apache-2.0",
   "author": "Appium Contributors",
-  "main": "./index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "bin": {},
   "directories": {
     "lib": "lib"
