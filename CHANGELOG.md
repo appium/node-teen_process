@@ -1,3 +1,21 @@
+## [2.1.10](https://github.com/appium/node-teen_process/compare/v2.1.9...v2.1.10) (2024-06-29)
+
+### Bug Fixes
+
+* Restore CJS types ([057c009](https://github.com/appium/node-teen_process/commit/057c009e4e350a713c5657fa2b2b666bc69223b6))
+
+## [2.1.9](https://github.com/appium/node-teen_process/compare/v2.1.8...v2.1.9) (2024-06-29)
+
+### Bug Fixes
+
+* Restore CJS ([#438](https://github.com/appium/node-teen_process/issues/438)) ([2ffb0da](https://github.com/appium/node-teen_process/commit/2ffb0da2c71f121f1fb434b1931cbeea99bd98c2))
+
+## [2.1.8](https://github.com/appium/node-teen_process/compare/v2.1.7...v2.1.8) (2024-06-29)
+
+### Miscellaneous Chores
+
+* Optimize buffering logic in exec calls ([#437](https://github.com/appium/node-teen_process/issues/437)) ([775f509](https://github.com/appium/node-teen_process/commit/775f509b8e899c7e6cbbb8225361c9a9d03f241d))
+
 ## [2.1.7](https://github.com/appium/node-teen_process/compare/v2.1.6...v2.1.7) (2024-06-29)
 
 ### Miscellaneous Chores

@@ -1,6 +1,6 @@
 {
   "name": "teen_process",
-  "version": "2.1.7",
+  "version": "2.1.10",
   "description": "A grown up version of Node's spawn/exec",
   "keywords": [
     "child_process",
@@ -20,7 +20,7 @@
   },
   "license": "Apache-2.0",
   "author": "Appium Contributors",
-  "main": "./index.js",
+  "main": "index.js",
   "bin": {},
   "directories": {
     "lib": "lib"
@@ -52,14 +52,13 @@
     "source-map-support": "^0.x"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium": "^8.0.5",
+    "@appium/eslint-config-appium-ts": "^0.x",
     "@appium/tsconfig": "^0.x",
     "@appium/types": "^0.x",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/chai-as-promised": "^7.1.8",
     "@types/lodash": "^4.14.202",
-    "@types/mocha": "^10.0.6",
     "@types/node": "^20.10.4",
     "@types/shell-quote": "^1.7.5",
     "@types/source-map-support": "^0.x",

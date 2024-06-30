@@ -205,6 +205,7 @@ describe('SubProcess', function () {
       await subproc.start(0);
       await delay(50);
       lines.should.eql([
+        'circular-buffer-specs.js',
         'exec-specs.js',
         'fixtures',
         'helpers.js',

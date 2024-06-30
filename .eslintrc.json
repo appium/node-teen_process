@@ -1,5 +1,5 @@
 {
-  "extends": "@appium/eslint-config-appium",
+  "extends": ["@appium/eslint-config-appium-ts"],
   "overrides": [
     {
       "files": "test/**/*.js",
@@ -12,7 +12,18 @@
       "files": "lib/**/*.js",
       "rules": {
         "promise/no-native": "off"
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
+      "files": "scripts/**/*",
+      "parserOptions": {"sourceType": "script"},
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
       }
     }
-  ]
+  ],
+  "rules": {
+    "require-await": "error"
+  }
 }
