@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
 
@@ -161,6 +161,9 @@ describe('SubProcess', function () {
   });
 
   describe('listening for data', function () {
+    /**
+     * @type {SubProcess}
+     */
     let subproc;
     afterEach(async function () {
       try {
@@ -184,17 +187,13 @@ describe('SubProcess', function () {
       })).should.eventually.not.be.rejected;
     });
     it('should get output as params', async function () {
-      await /** @type {Promise<void>} */(new Promise((resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
           if (stderr && stderr.indexOf('bar') === -1) {
-            reject();
-          } else {
-            resolve();
+            throw new Error();
           }
         });
-        subproc.start();
-      }));
+        await subproc.start();
     });
 
     it('should get output by lines', async function () {
@@ -216,21 +215,17 @@ describe('SubProcess', function () {
 
   describe('#stop', function () {
     it('should send the right signal to stop a proc', async function () {
-      return await new Promise((resolve, reject) => {
-        let subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
-        subproc.start();
+        const subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+
+        await subproc.start();
+
         subproc.on('exit', (code, signal) => {
-          try {
             signal.should.equal(stopSignal);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
         });
 
-        subproc.stop(stopSignal);
-      });
+        await subproc.stop(stopSignal);
     });
+
 
     it('should time out if stop doesnt complete fast enough', async function () {
       let subproc = new SubProcess(getFixture('traphup'), [
