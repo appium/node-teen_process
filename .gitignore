@@ -3,3 +3,4 @@ build
 *.log
 .idea
 package-lock.json*
+bun.lockb
