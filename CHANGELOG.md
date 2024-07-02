@@ -1,3 +1,9 @@
+## [2.2.0](https://github.com/appium/node-teen_process/compare/v2.1.10...v2.2.0) (2024-07-02)
+
+### Features
+
+* Add line-`streamName` event to Subprocess ([#439](https://github.com/appium/node-teen_process/issues/439)) ([f6babc7](https://github.com/appium/node-teen_process/commit/f6babc7b2fa671b12b59da0772e4ec5fbeeaacbd))
+
 ## [2.1.10](https://github.com/appium/node-teen_process/compare/v2.1.9...v2.1.10) (2024-06-29)
 
 ### Bug Fixes
