@@ -11,7 +11,7 @@
     {
       "files": "lib/**/*.js",
       "rules": {
-        "promise/no-native": "off"
+        "promise/no-native": "off",
         "@typescript-eslint/no-var-requires": "off"
       }
     },
