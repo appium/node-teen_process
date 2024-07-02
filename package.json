@@ -57,7 +57,6 @@
     "@appium/types": "^0.x",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/chai-as-promised": "^7.1.8",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.4",
     "@types/shell-quote": "^1.7.5",
