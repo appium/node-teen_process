@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/appium/node-teen_process/compare/v2.2.0...v2.2.1) (2024-07-29)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 20.14.13 to 22.0.0 ([#441](https://github.com/appium/node-teen_process/issues/441)) ([2e77812](https://github.com/appium/node-teen_process/commit/2e778127d53a97edfeff03820b9a14e80a40452f))
+
 ## [2.2.0](https://github.com/appium/node-teen_process/compare/v2.1.10...v2.2.0) (2024-07-02)
 
 ### Features

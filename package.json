@@ -1,6 +1,6 @@
 {
   "name": "teen_process",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "A grown up version of Node's spawn/exec",
   "keywords": [
     "child_process",
@@ -58,7 +58,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@types/lodash": "^4.14.202",
-    "@types/node": "^20.10.4",
+    "@types/node": "^22.0.0",
     "@types/shell-quote": "^1.7.5",
     "@types/source-map-support": "^0.x",
     "@types/ws": "^8.5.10",
