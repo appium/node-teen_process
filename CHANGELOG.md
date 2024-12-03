@@ -1,3 +1,9 @@
+## [2.2.2](https://github.com/appium/node-teen_process/compare/v2.2.1...v2.2.2) (2024-12-03)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump mocha from 10.8.2 to 11.0.1 ([#442](https://github.com/appium/node-teen_process/issues/442)) ([48d1b66](https://github.com/appium/node-teen_process/commit/48d1b6690b3a2b01e2b80716c02e181af2dfdfb2))
+
 ## [2.2.1](https://github.com/appium/node-teen_process/compare/v2.2.0...v2.2.1) (2024-07-29)
 
 ### Miscellaneous Chores
