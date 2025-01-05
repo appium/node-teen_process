@@ -1,3 +1,9 @@
+## [2.2.3](https://github.com/appium/node-teen_process/compare/v2.2.2...v2.2.3) (2025-01-05)
+
+### Miscellaneous Chores
+
+* Bump eslint ([#444](https://github.com/appium/node-teen_process/issues/444)) ([ccbedba](https://github.com/appium/node-teen_process/commit/ccbedba36d70bb47fcb23c1d4d0d7888ee507728))
+
 ## [2.2.2](https://github.com/appium/node-teen_process/compare/v2.2.1...v2.2.2) (2024-12-03)
 
 ### Miscellaneous Chores
