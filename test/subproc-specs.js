@@ -158,7 +158,7 @@ describe('SubProcess', function () {
     afterEach(async function () {
       try {
         await subproc.stop();
-      } catch (ign) {}
+      } catch {}
     });
     it('should get output as params', async function () {
       await new B(async (resolve, reject) => {
@@ -176,7 +176,7 @@ describe('SubProcess', function () {
         await subproc.start();
       }).should.eventually.not.be.rejected;
     });
-    it('should get output as params', async function () {
+    it('should get output as params with args', async function () {
       await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout, stderr) => {
@@ -241,10 +241,10 @@ describe('SubProcess', function () {
       // 1 for the trap, 1 for the tail
       try {
         await exec('kill', ['-9', String(/** @type {number} */(/** @type {NonNullable<SubProcess['proc']>} */(subproc.proc).pid) + 1)]);
-      } catch (ign) {}
+      } catch {}
       try {
         await exec('kill', ['-9', String(/** @type {NonNullable<SubProcess['proc']>} */(subproc.proc).pid)]);
-      } catch (ign) {}
+      } catch {}
     });
 
     it('should error if there is no process to stop', async function () {
@@ -373,7 +373,7 @@ describe('SubProcess', function () {
       await exec('pkill', ['-f', `tail -f ${path.resolve(__filename)}`]);
       try {
         await proc.join();
-      } catch (ign) {}
+      } catch {}
       exitCaught.should.eql([null, 'SIGTERM']);
       dieCaught.should.eql(exitCaught);
       stopCaught.should.be.false;
