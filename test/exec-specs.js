@@ -162,6 +162,13 @@ describe('exec', function () {
       signature.should.eql(PNG_MAGIC);
     });
 
+    it('should allow iconv-lite supported encoded output', async function () {
+      let {stdout} = await exec('cat', [getFixture('cp949.txt')], {encoding: 'euckr'});
+      _.isString(stdout).should.be.true;
+      _.isBuffer(stdout).should.be.false;
+      stdout.should.eql('한글');
+    });
+
     it('should allow binary output from timeout', async function () {
       try {
         await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});

@@ -189,6 +189,19 @@ describe('SubProcess', function () {
         await subproc.start();
       });
     });
+    it('should get output with iconv-lite supported encoding', async function () {
+      await new B(async (resolve, reject) => {
+        subproc = new SubProcess('cat', [getFixture('cp949.txt')], {encoding: 'cp949'});
+        subproc.on('output', (stdout) => {
+          if (stdout && stdout.indexOf('한글') === -1) {
+            reject();
+          } else {
+            resolve();
+          }
+        });
+        await subproc.start();
+      });
+    });
 
     it('should get output by lines', async function () {
       subproc = new SubProcess('ls', [path.resolve(__dirname)]);
