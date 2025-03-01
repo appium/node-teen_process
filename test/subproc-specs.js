@@ -2,6 +2,7 @@ import B from 'bluebird';
 import path from 'path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
+import _ from 'lodash';
 
 // Windows doesn't understand SIGHUP
 const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';
@@ -188,6 +189,17 @@ describe('SubProcess', function () {
         });
         await subproc.start();
       });
+    });
+    it('should get output as buffer', async function () {
+      const stdout = await new B(async (resolve) => {
+        subproc = new SubProcess(getFixture('echo'), ['foo'], {isBuffer: true});
+        subproc.on('output', resolve);
+        await subproc.start();
+      });
+      _.isString(stdout).should.be.false;
+      _.isBuffer(stdout).should.be.true;
+
+      stdout.toString().trim().should.eql('foo');
     });
 
     it('should get output by lines', async function () {
