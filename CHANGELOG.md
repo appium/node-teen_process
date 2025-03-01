@@ -1,3 +1,9 @@
+## [2.3.0](https://github.com/appium/node-teen_process/compare/v2.2.3...v2.3.0) (2025-03-01)
+
+### Features
+
+* [subprocess] support output as buffer ([#447](https://github.com/appium/node-teen_process/issues/447)) ([2880a61](https://github.com/appium/node-teen_process/commit/2880a619a0f311190db2207ff921440b6efddc6a))
+
 ## [2.2.3](https://github.com/appium/node-teen_process/compare/v2.2.2...v2.2.3) (2025-01-05)
 
 ### Miscellaneous Chores
