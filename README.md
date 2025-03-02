@@ -111,6 +111,21 @@ async function tailFileForABit () {
 
 Errors with start/stop are thrown in the calling context.
 
+### Options
+
+The instance constructor accepts same options that Node.js's
+[spawn](https://nodejs.org/api/child_process.html#child_processspawncommand-args-options)
+API plus some custom options:
+
+* `isBuffer` - If set to `true` then both stdout and stderr chunks are delivered
+  as buffers rather than strings to the following entities:
+  - `startDetector` argument
+  - `output` event
+* `encoding` - If provided then arguments of the `startDetector` argument and of the
+  `output` event will be encoded to strings using this given encoding, unless `isBuffer`
+  is set to `true`. If no explicit encoding is provided then `utf8` encoding is used by
+  default.
+
 ### Events
 
 You can listen to 8 events:
@@ -151,11 +166,9 @@ proc.on('output', (stdout, stderr) => {
   console.log(`stderr: ${stderr}`);
 });
 
-// lines-stderr is just the same
-proc.on('lines-stdout', lines => {
-  console.log(lines);
-  // ['foo', 'bar', 'baz']
-  // automatically handles rejoining lines across stream chunks
+// line-stderr is just the same
+proc.on('line-stdout', (line) => {
+  console.log(line);
 });
 
 // stream-line gives you one line at a time, with [STDOUT] or [STDERR]
