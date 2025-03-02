@@ -1,3 +1,9 @@
+## [2.3.1](https://github.com/appium/node-teen_process/compare/v2.3.0...v2.3.1) (2025-03-02)
+
+### Miscellaneous Chores
+
+* Add more typedefs to the SubProcess class ([#448](https://github.com/appium/node-teen_process/issues/448)) ([cee316a](https://github.com/appium/node-teen_process/commit/cee316af4d1a58c26d281e57c33300c3d0335737))
+
 ## [2.3.0](https://github.com/appium/node-teen_process/compare/v2.2.3...v2.3.0) (2025-03-01)
 
 ### Features
