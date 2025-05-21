@@ -1,3 +1,9 @@
+## [2.3.2](https://github.com/appium/node-teen_process/compare/v2.3.1...v2.3.2) (2025-05-21)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump conventional-changelog-conventionalcommits ([#450](https://github.com/appium/node-teen_process/issues/450)) ([d1aa29e](https://github.com/appium/node-teen_process/commit/d1aa29eccc4b887ab135732824bcce828e0ddf46))
+
 ## [2.3.1](https://github.com/appium/node-teen_process/compare/v2.3.0...v2.3.1) (2025-03-02)
 
 ### Miscellaneous Chores
