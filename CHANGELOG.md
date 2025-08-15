@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/appium/node-teen_process/compare/v2.3.3...v3.0.0) (2025-08-15)
+
+### ⚠ BREAKING CHANGES
+
+* Required Node.js version has been bumped to ^20.19.0 || ^22.12.0 || >=24.0.0
+* Required npm version has been bumped to >=10
+
+### Features
+
+* Bump Node.js version ([#452](https://github.com/appium/node-teen_process/issues/452)) ([ed6c554](https://github.com/appium/node-teen_process/commit/ed6c554b6fd28aaf8c478842ea6cc79338beb050))
+
 ## [2.3.3](https://github.com/appium/node-teen_process/compare/v2.3.2...v2.3.3) (2025-06-10)
 
 ### Miscellaneous Chores
