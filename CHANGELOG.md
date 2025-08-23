@@ -1,3 +1,9 @@
+## [3.0.1](https://github.com/appium/node-teen_process/compare/v3.0.0...v3.0.1) (2025-08-23)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump chai from 5.3.2 to 6.0.0 ([#453](https://github.com/appium/node-teen_process/issues/453)) ([7eccebf](https://github.com/appium/node-teen_process/commit/7eccebf6ab65a813002d9e1d34b8f3a9a197be97))
+
 ## [3.0.0](https://github.com/appium/node-teen_process/compare/v2.3.3...v3.0.0) (2025-08-15)
 
 ### ⚠ BREAKING CHANGES
