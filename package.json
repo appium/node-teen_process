@@ -64,7 +64,7 @@
     "@types/shell-quote": "^1.7.5",
     "@types/source-map-support": "^0.x",
     "@types/ws": "^8.5.10",
-    "chai": "^5.1.1",
+    "chai": "^6.0.0",
     "chai-as-promised": "^8.0.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
     "mocha": "^11.0.1",
