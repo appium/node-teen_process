@@ -1,6 +1,6 @@
 {
   "name": "teen_process",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "A grown up version of Node's spawn/exec",
   "keywords": [
     "child_process",

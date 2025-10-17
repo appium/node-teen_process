@@ -1,3 +1,9 @@
+## [3.0.2](https://github.com/appium/node-teen_process/compare/v3.0.1...v3.0.2) (2025-10-17)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump semantic-release from 24.2.9 to 25.0.0 ([#454](https://github.com/appium/node-teen_process/issues/454)) ([18daea6](https://github.com/appium/node-teen_process/commit/18daea61e849bb40e4cc84f2d6ab0fc4ff054ef4))
+
 ## [3.0.1](https://github.com/appium/node-teen_process/compare/v3.0.0...v3.0.1) (2025-08-23)
 
 ### Miscellaneous Chores
