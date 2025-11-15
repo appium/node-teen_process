@@ -1,3 +1,9 @@
+## [3.0.3](https://github.com/appium/node-teen_process/compare/v3.0.2...v3.0.3) (2025-11-15)
+
+### Miscellaneous Chores
+
+* publish via trusted publisher ([#455](https://github.com/appium/node-teen_process/issues/455)) ([271fe5e](https://github.com/appium/node-teen_process/commit/271fe5e38b923a248dc022328018beecd5c1e22c))
+
 ## [3.0.2](https://github.com/appium/node-teen_process/compare/v3.0.1...v3.0.2) (2025-10-17)
 
 ### Miscellaneous Chores
