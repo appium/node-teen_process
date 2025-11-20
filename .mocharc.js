@@ -1,5 +1,6 @@
 module.exports = {
   require: ['ts-node/register'],
   forbidOnly: Boolean(process.env.CI),
-  color: true
+  color: true,
+  spec: ['test/**/*.ts']
 };
