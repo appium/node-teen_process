@@ -2,7 +2,7 @@
 /* eslint-disable no-var */
 
 const MAX_BUFFER_BYTES = 512 * 1024;
-const chars = parseInt(MAX_BUFFER_BYTES * 1.5, 10);
+const chars = parseInt(String(MAX_BUFFER_BYTES * 1.5), 10);
 const asciiRange = [65, 110];
 
 var ch;
