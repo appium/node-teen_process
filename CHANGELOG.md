@@ -1,3 +1,10 @@
+## [3.0.4](https://github.com/appium/node-teen_process/compare/v3.0.3...v3.0.4) (2025-12-02)
+
+### Miscellaneous Chores
+
+* **deps:** bump actions/checkout from 3 to 6 ([#459](https://github.com/appium/node-teen_process/issues/459)) ([fe6c6ab](https://github.com/appium/node-teen_process/commit/fe6c6ab099bcc3c74f1029a8a7512fbaf93a4767))
+* **deps:** bump actions/setup-node from 3 to 6 ([#458](https://github.com/appium/node-teen_process/issues/458)) ([4049180](https://github.com/appium/node-teen_process/commit/404918014d545e84e3d140262cf68fd19856b8ca))
+
 ## [3.0.3](https://github.com/appium/node-teen_process/compare/v3.0.2...v3.0.3) (2025-11-15)
 
 ### Miscellaneous Chores
