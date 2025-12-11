@@ -1,3 +1,9 @@
+## [3.0.6](https://github.com/appium/node-teen_process/compare/v3.0.5...v3.0.6) (2025-12-11)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @types/node from 24.10.3 to 25.0.0 ([#461](https://github.com/appium/node-teen_process/issues/461)) ([f45792a](https://github.com/appium/node-teen_process/commit/f45792a66583e93ce5581b40a9e2d81b7b3d6243))
+
 ## [3.0.5](https://github.com/appium/node-teen_process/compare/v3.0.4...v3.0.5) (2025-12-11)
 
 ### Miscellaneous Chores
