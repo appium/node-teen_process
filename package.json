@@ -49,8 +49,7 @@
   "dependencies": {
     "bluebird": "^3.7.2",
     "lodash": "^4.17.21",
-    "shell-quote": "^1.8.1",
-    "source-map-support": "^0.x"
+    "shell-quote": "^1.8.1"
   },
   "devDependencies": {
     "@appium/eslint-config-appium-ts": "^2.0.0-rc.1",
@@ -63,8 +62,6 @@
     "@types/mocha": "10.0.10",
     "@types/node": "^24.0.0",
     "@types/shell-quote": "^1.7.5",
-    "@types/source-map-support": "^0.x",
-    "@types/ws": "^8.5.10",
     "chai": "^6.0.0",
     "chai-as-promised": "^8.0.0",
     "conventional-changelog-conventionalcommits": "^9.0.0",
