@@ -1,3 +1,9 @@
+## [3.0.5](https://github.com/appium/node-teen_process/compare/v3.0.4...v3.0.5) (2025-12-11)
+
+### Miscellaneous Chores
+
+* **deps:** remove `source-map-support` ([#460](https://github.com/appium/node-teen_process/issues/460)) ([9772128](https://github.com/appium/node-teen_process/commit/9772128453a96b7a03bafbe4340203357b1e10f7))
+
 ## [3.0.4](https://github.com/appium/node-teen_process/compare/v3.0.3...v3.0.4) (2025-12-02)
 
 ### Miscellaneous Chores
