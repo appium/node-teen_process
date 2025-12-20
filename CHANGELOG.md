@@ -1,3 +1,9 @@
+## [4.0.3](https://github.com/appium/node-teen_process/compare/v4.0.2...v4.0.3) (2025-12-20)
+
+### Bug Fixes
+
+* remove private in SubProcess[#proc](https://github.com/appium/node-teen_process/issues/proc) ([#465](https://github.com/appium/node-teen_process/issues/465)) ([b899133](https://github.com/appium/node-teen_process/commit/b8991336db397ad1a522c7ebfe0c2ee078300ac4))
+
 ## [4.0.2](https://github.com/appium/node-teen_process/compare/v4.0.1...v4.0.2) (2025-12-20)
 
 ### Bug Fixes
