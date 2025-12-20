@@ -1,5 +1,5 @@
 import {spawn} from 'node:child_process';
-import type {ChildProcess,} from 'node:child_process';
+import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import B from 'bluebird';
 import {quote} from 'shell-quote';
@@ -63,15 +63,15 @@ export class SubProcess<
     super();
 
     if (!cmd) {
-        throw new Error('Command is required');
+      throw new Error('Command is required');
     }
 
     if (!_.isString(cmd)) {
-        throw new Error('Command must be a string');
+      throw new Error('Command must be a string');
     }
 
     if (!_.isArray(args)) {
-        throw new Error('Args must be an array');
+      throw new Error('Args must be an array');
     }
 
     this.cmd = cmd;
