@@ -3,6 +3,6 @@ export {SubProcess} from './subprocess';
 export {exec} from './exec';
 export type {
   TeenProcessExecOptions,
-  TeenProcessExecResult,
+  ExecResult,
   SubProcessOptions
 } from './types';
