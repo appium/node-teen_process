@@ -53,11 +53,11 @@ export class SubProcess<
   TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
 > extends EventEmitter {
   proc: ChildProcess | null;
-  args: string[];
-  cmd: string;
-  opts: TSubProcessOptions;
-  expectingExit: boolean;
-  rep: string;
+  private args: string[];
+  private cmd: string;
+  private opts: TSubProcessOptions;
+  private expectingExit: boolean;
+  private rep: string;
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
@@ -85,18 +85,6 @@ export class SubProcess<
 
   get isRunning(): boolean {
     return !!this.proc;
-  }
-
-  private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
-    const doEmit = (line: string) => this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
-
-    if (_.isString(lines)) {
-      doEmit(lines);
-    } else {
-      for (const line of lines) {
-        doEmit(line);
-      }
-    }
   }
 
   /**
@@ -321,7 +309,7 @@ export class SubProcess<
 
     return await new B<number | null>((resolve, reject) => {
       this.proc?.on('exit', (code: number | null) => {
-        if (code !== null && allowedExitCodes.indexOf(code) === -1) {
+        if (code !== null && !allowedExitCodes.includes(code)) {
           reject(new Error(`Process ended with exitcode ${code} (cmd: '${this.rep}')`));
         } else {
           resolve(code);
@@ -348,8 +336,18 @@ export class SubProcess<
   }
 
   get pid(): number | null {
-    return this.proc ? this.proc.pid || null : null;
+    return this.proc?.pid ?? null;
+  }
+
+  private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
+    const doEmit = (line: string) => this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
+
+    if (_.isString(lines)) {
+      doEmit(lines);
+    } else {
+      for (const line of lines) {
+        doEmit(line);
+      }
+    }
   }
 }
-
-export default SubProcess;
