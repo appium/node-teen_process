@@ -14,6 +14,41 @@ import type {
     StreamName
 } from './types';
 
+/**
+ * A wrapper around Node's spawn that provides event-driven process management.
+ *
+ * Extends EventEmitter to provide real-time output streaming and lifecycle events.
+ *
+ * @template TSubProcessOptions - Options type extending SubProcessOptions
+ *
+ * @fires SubProcess#output - Emitted when stdout or stderr receives data
+ * @fires SubProcess#line-stdout - Emitted for each line of stdout
+ * @fires SubProcess#line-stderr - Emitted for each line of stderr
+ * @fires SubProcess#lines-stdout - Legacy event emitting stdout lines (deprecated)
+ * @fires SubProcess#lines-stderr - Legacy event emitting stderr lines (deprecated)
+ * @fires SubProcess#stream-line - Emitted for combined stdout/stderr lines
+ * @fires SubProcess#exit - Emitted when process exits
+ * @fires SubProcess#stop - Emitted when process is stopped intentionally
+ * @fires SubProcess#die - Emitted when process dies unexpectedly with non-zero code
+ * @fires SubProcess#end - Emitted when process ends normally with code 0
+ *
+ * @example
+ * ```typescript
+ * const proc = new SubProcess('tail', ['-f', 'logfile.txt']);
+ *
+ * proc.on('output', (stdout, stderr) => {
+ *   console.log('Output:', stdout);
+ * });
+ *
+ * proc.on('line-stdout', (line) => {
+ *   console.log('Line:', line);
+ * });
+ *
+ * await proc.start();
+ * // ... later
+ * await proc.stop();
+ * ```
+ */
 export class SubProcess<
   TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
 > extends EventEmitter {
@@ -64,6 +99,31 @@ export class SubProcess<
     }
   }
 
+  /**
+   * Starts the subprocess and waits for it to be ready.
+   *
+   * @param startDetector - Function to detect when process is ready, number for delay in ms,
+   *                        boolean true to detach immediately, or null for default behavior
+   * @param timeoutMs - Maximum time to wait for process to start (in ms), or boolean true to detach
+   * @param detach - Whether to detach the process (requires 'detached' option)
+   *
+   * @throws {Error} When process fails to start or times out
+   *
+   * @example
+   * ```typescript
+   * // Wait for any output
+   * await proc.start();
+   *
+   * // Wait 100ms then continue
+   * await proc.start(100);
+   *
+   * // Wait for specific output
+   * await proc.start((stdout) => stdout.includes('Server ready'));
+   *
+   * // With timeout
+   * await proc.start(null, 5000);
+   * ```
+   */
   async start(
     startDetector: StartDetector<TSubProcessOptions> | number | boolean | null = null,
     timeoutMs: number | boolean | null = null,
@@ -203,6 +263,26 @@ export class SubProcess<
     });
   }
 
+  /**
+   * Stops the running subprocess by sending a signal.
+   *
+   * @param signal - Signal to send to the process (default: 'SIGTERM')
+   * @param timeout - Maximum time to wait for process to exit in ms (default: 10000)
+   *
+   * @throws {Error} When process is not running or doesn't exit within timeout
+   *
+   * @example
+   * ```typescript
+   * // Graceful stop with SIGTERM
+   * await proc.stop();
+   *
+   * // Force kill with SIGKILL
+   * await proc.stop('SIGKILL');
+   *
+   * // Custom timeout
+   * await proc.stop('SIGTERM', 5000);
+   * ```
+   */
   async stop(signal: NodeJS.Signals = 'SIGTERM', timeout = 10000): Promise<void> {
     if (!this.isRunning) {
       throw new Error(`Can't stop process; it's not currently running (cmd: '${this.rep}')`);
@@ -217,6 +297,23 @@ export class SubProcess<
     });
   }
 
+  /**
+   * Waits for the process to exit and validates its exit code.
+   *
+   * @param allowedExitCodes - Array of acceptable exit codes (default: [0])
+   * @returns Promise resolving to the exit code
+   *
+   * @throws {Error} When process is not running or exits with disallowed code
+   *
+   * @example
+   * ```typescript
+   * // Wait for successful exit (code 0)
+   * const code = await proc.join();
+   *
+   * // Allow multiple exit codes
+   * const code = await proc.join([0, 1, 2]);
+   * ```
+   */
   async join(allowedExitCodes: number[] = [0]): Promise<number | null> {
     if (!this.isRunning) {
       throw new Error(`Cannot join process; it is not currently running (cmd: '${this.rep}')`);
@@ -233,6 +330,14 @@ export class SubProcess<
     });
   }
 
+  /**
+   * Detaches the process so it continues running independently.
+   *
+   * The process must have been created with the 'detached' option.
+   * Once detached, the process will not be killed when the parent exits.
+   *
+   * @throws {Error} When process was not created with 'detached' option
+   */
   detachProcess(): void {
     if (!this.opts.detached) {
       throw new Error(`Unable to detach process that is not started with 'detached' option`);

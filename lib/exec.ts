@@ -14,7 +14,34 @@ import type {
 
 
 /**
- * Spawn a process and collect its output.
+ * Spawns a child process and collects its output.
+ *
+ * This is a promisified version of Node's spawn that collects stdout and stderr,
+ * handles timeouts, and provides error context.
+ *
+ * @template T - The options type extending TeenProcessExecOptions
+ * @param cmd - The command to execute
+ * @param args - Array of arguments to pass to the command (default: [])
+ * @param originalOpts - Execution options including timeout, encoding, environment, etc.
+ * @returns Promise resolving to an object with stdout, stderr, and exit code
+ *
+ * @throws {TeenProcessExecError} When the process exits with non-zero code or times out
+ *
+ * @example
+ * ```typescript
+ * // Simple execution
+ * const {stdout, stderr, code} = await exec('ls', ['-la']);
+ *
+ * // With timeout and custom encoding
+ * const result = await exec('long-running-cmd', [], {
+ *   timeout: 5000,
+ *   encoding: 'utf8',
+ *   cwd: '/custom/path'
+ * });
+ *
+ * // Return output as Buffer
+ * const {stdout} = await exec('cat', ['image.png'], {isBuffer: true});
+ * ```
  */
 export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
   cmd: string,

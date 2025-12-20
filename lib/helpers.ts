@@ -2,8 +2,18 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 
 /**
- * Decorates ENOENT error received from a spawn system call with a more descriptive message.
- * The error instance is mutated and returned for convenience.
+ * Enhances ENOENT errors from spawn with descriptive messages.
+ *
+ * This is an internal helper that mutates the error object to provide context about:
+ * - Invalid working directory paths
+ * - Missing executables in PATH
+ *
+ * @param error - The original ENOENT error from spawn
+ * @param cmd - The command that was attempted to execute
+ * @param cwd - The working directory used (if any)
+ * @returns The same error object with an enhanced message
+ *
+ * @internal
  */
 export async function formatEnoent(
   error: NodeJS.ErrnoException,
