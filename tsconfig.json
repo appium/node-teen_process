@@ -6,7 +6,6 @@
     "types": ["node", "mocha"]
   },
   "include": [
-    "index.ts",
     "lib",
     "test"
   ]
