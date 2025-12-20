@@ -1,3 +1,15 @@
+## [4.0.0](https://github.com/appium/node-teen_process/compare/v3.0.6...v4.0.0) (2025-12-20)
+
+### ⚠ BREAKING CHANGES
+
+* `TeenProcessExecOptions` type respects `SpawnOptions` in `node:child_process` of `timeout` type
+* Remove `handleLastLines` from SubProcess by following the TODO
+* Minimize exposed properties in `SubProcess`
+
+### Features
+
+* convert remaining js to ts ([#462](https://github.com/appium/node-teen_process/issues/462)) ([a228fd8](https://github.com/appium/node-teen_process/commit/a228fd820e7ab7da7f4ebb54601fa30b21fa6eab))
+
 ## [3.0.6](https://github.com/appium/node-teen_process/compare/v3.0.5...v3.0.6) (2025-12-11)
 
 ### Miscellaneous Chores
