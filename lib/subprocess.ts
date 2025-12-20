@@ -7,18 +7,18 @@ import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
 
-type SubProcessCustomOptions = {
+export type SubProcessCustomOptions = {
   isBuffer?: boolean;
   encoding?: BufferEncoding;
 };
 
-type SubProcessOptions = SubProcessCustomOptions & SpawnOptionsWithoutStdio;
+export type SubProcessOptions = SubProcessCustomOptions & SpawnOptionsWithoutStdio;
 
-type TIsBufferOpts = {
+export type TIsBufferOpts = {
   isBuffer: true;
 };
 
-type StartDetector<T extends SubProcessOptions> = (
+export type StartDetector<T extends SubProcessOptions> = (
   stdout: T extends TIsBufferOpts ? Buffer : string,
   stderr?: T extends TIsBufferOpts ? Buffer : string,
 ) => unknown;
@@ -258,11 +258,3 @@ export class SubProcess<
     return this.proc ? this.proc.pid || null : null;
   }
 }
-
-export default SubProcess;
-export type {
-  StartDetector,
-  SubProcessCustomOptions,
-  SubProcessOptions,
-  TIsBufferOpts,
-};

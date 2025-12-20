@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
 
-type TeenProcessLogger = {
+export type TeenProcessLogger = {
   debug: (...args: any[]) => void;
 };
 
@@ -18,29 +18,29 @@ interface TeenProcessProps {
   encoding?: BufferEncoding;
 }
 
-type TeenProcessExecOptions = SpawnOptions & TeenProcessProps;
+export type TeenProcessExecOptions = SpawnOptions & TeenProcessProps;
 
-type TeenProcessExecStringResult = {
+export type TeenProcessExecStringResult = {
   stdout: string;
   stderr: string;
   code: number | null;
 };
 
-type TeenProcessExecBufferResult = {
+export type TeenProcessExecBufferResult = {
   stdout: Buffer;
   stderr: Buffer;
   code: number | null;
 };
 
-type TeenProcessExecErrorProps = {
+export type TeenProcessExecErrorProps = {
   stdout: string;
   stderr: string;
   code: number | null;
 };
 
-type TeenProcessExecError = Error & TeenProcessExecErrorProps;
+export type TeenProcessExecError = Error & TeenProcessExecErrorProps;
 
-type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'];
+export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'];
 
 type ExecResult<T extends boolean | undefined> = T extends true
   ? TeenProcessExecBufferResult
@@ -51,7 +51,7 @@ type StreamName = 'stdout' | 'stderr';
 /**
  * Spawn a process and collect its output.
  */
-async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
+export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
   cmd: string,
   args: string[] = [],
   originalOpts: T = {} as T,
@@ -164,15 +164,3 @@ async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
     }
   });
 }
-
-export {exec};
-export default exec;
-export type {
-  BufferProp,
-  TeenProcessExecBufferResult,
-  TeenProcessExecError,
-  TeenProcessExecErrorProps,
-  TeenProcessExecOptions,
-  TeenProcessExecStringResult,
-  TeenProcessLogger,
-};

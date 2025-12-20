@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
  * Decorates ENOENT error received from a spawn system call with a more descriptive message.
  * The error instance is mutated and returned for convenience.
  */
-async function formatEnoent(
+export async function formatEnoent(
   error: NodeJS.ErrnoException,
   cmd: string,
   cwd?: string,
@@ -32,5 +32,3 @@ async function formatEnoent(
     `nor in any folders specified in the PATH environment variable (${pathMsg})`;
   return error;
 }
-
-export { formatEnoent };
