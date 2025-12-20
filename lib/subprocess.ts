@@ -52,7 +52,7 @@ export class SubProcess<
     return !!this.proc;
   }
 
-  emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
+  private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
     const doEmit = (line: string) => this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
     if (_.isString(lines)) {
@@ -201,10 +201,6 @@ export class SubProcess<
         this.proc.unref();
       }
     });
-  }
-
-  handleLastLines(): void {
-    // noop for backward compatibility
   }
 
   async stop(signal: NodeJS.Signals = 'SIGTERM', timeout = 10000): Promise<void> {
