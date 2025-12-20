@@ -4,5 +4,6 @@ export {exec} from './exec';
 export type {
   TeenProcessExecOptions,
   ExecResult,
+  ExecError,
   SubProcessOptions
 } from './types';
