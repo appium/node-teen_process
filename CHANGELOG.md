@@ -1,3 +1,9 @@
+## [4.0.2](https://github.com/appium/node-teen_process/compare/v4.0.1...v4.0.2) (2025-12-20)
+
+### Bug Fixes
+
+* expose more types and tweak type definition ([#464](https://github.com/appium/node-teen_process/issues/464)) ([1985f75](https://github.com/appium/node-teen_process/commit/1985f75084be45e39eda027d83a509e3ec5c0335))
+
 ## [4.0.1](https://github.com/appium/node-teen_process/compare/v4.0.0...v4.0.1) (2025-12-20)
 
 ### Bug Fixes
