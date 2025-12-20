@@ -138,7 +138,7 @@ describe('SubProcess', function () {
     it('should time out starts that take longer than specified ms', async function () {
       const sd = (stdout: string | Buffer) => {
         if (typeof stdout === 'string') {
-          return stdout.indexOf('nothere') !== -1;
+          return stdout.includes('nothere');
         }
         return false;
       };
@@ -167,7 +167,7 @@ describe('SubProcess', function () {
           path.resolve(__dirname),
         ]);
         subproc.on('output', (stdout: string | Buffer) => {
-          if (stdout && typeof stdout === 'string' && stdout.indexOf('subproc-specs') === -1) {
+          if (stdout && typeof stdout === 'string' && !stdout.includes('subproc-specs')) {
             reject();
           } else {
             resolve(undefined);
@@ -180,7 +180,7 @@ describe('SubProcess', function () {
       await new B(async (resolve, reject) => {
         subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
         subproc.on('output', (stdout: string | Buffer, stderr?: string | Buffer) => {
-          if (stderr && typeof stderr === 'string' && stderr.indexOf('bar') === -1) {
+          if (stderr && typeof stderr === 'string' && !stderr.includes('bar')) {
             reject();
           } else {
             resolve(undefined);
