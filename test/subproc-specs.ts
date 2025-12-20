@@ -45,11 +45,11 @@ describe('SubProcess', function () {
   });
   it('should default args list to []', function () {
     const x = new SubProcess('ls');
-    expect(x.args).to.eql([]);
+    expect((x as any).args).to.eql([]);
   });
   it('should default opts dict to {}', function () {
     const x = new SubProcess('ls');
-    expect(x.opts).to.eql({});
+    expect((x as any).opts).to.eql({});
   });
   it('should pass opts to spawn', async function () {
     const cwd = path.resolve(getFixture('.'));
