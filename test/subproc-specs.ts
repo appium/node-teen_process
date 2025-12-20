@@ -5,7 +5,6 @@ import {getFixture} from './helpers';
 import _ from 'lodash';
 import { use as chaiUse, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import type { ChildProcess } from 'child_process';
 
 chaiUse(chaiAsPromised);
 
@@ -250,13 +249,12 @@ describe('SubProcess', function () {
 
       // need to kill the process
       // 1 for the trap, 1 for the tail
-      if (subproc.proc) {
-        const proc = subproc.proc as ChildProcess;
+      if (subproc.isRunning) {
         try {
-          await exec('kill', ['-9', String(proc.pid! + 1)]);
+          await exec('kill', ['-9', String(subproc.pid! + 1)]);
         } catch {}
         try {
-          await exec('kill', ['-9', String(proc.pid!)]);
+          await exec('kill', ['-9', String(subproc.pid!)]);
         } catch {}
       }
     });
