@@ -1,3 +1,3 @@
-export {spawn} from 'child_process';
+export {spawn} from 'node:child_process';
 export {SubProcess} from './subprocess';
 export {exec} from './exec';
