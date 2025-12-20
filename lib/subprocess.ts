@@ -57,7 +57,7 @@ export class SubProcess<
   private cmd: string;
   private opts: TSubProcessOptions;
   private expectingExit: boolean;
-  private rep: string;
+  private readonly rep: string;
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
@@ -115,7 +115,7 @@ export class SubProcess<
   async start(
     startDetector: StartDetector<TSubProcessOptions> | number | boolean | null = null,
     timeoutMs: number | boolean | null = null,
-    detach = false,
+    detach: boolean = false,
   ): Promise<void> {
     let startDelay = 10;
 

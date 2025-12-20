@@ -1,4 +1,8 @@
 export {spawn} from 'node:child_process';
 export {SubProcess} from './subprocess';
 export {exec} from './exec';
-export type * from './types';
+export type {
+  TeenProcessExecOptions,
+  TeenProcessExecResult,
+  SubProcessOptions
+} from './types';

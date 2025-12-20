@@ -62,7 +62,7 @@ export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends t
  * Resolves to the correct exec result shape based on buffer mode.
  * Defaults to string output when isBuffer is false/undefined.
  */
-export type ExecResult<T extends boolean> = T extends true
+export type TeenProcessExecResult<T extends boolean> = T extends true
   ? TeenProcessExecBufferResult
   : TeenProcessExecStringResult;
 
