@@ -4,9 +4,11 @@
   "compilerOptions": {
     "outDir": "build",
     "types": ["node", "mocha"],
-    "checkJs": true
+    "allowJs": false,
+    "checkJs": false
   },
   "include": [
+    "index.ts",
     "lib",
     "test"
   ]
