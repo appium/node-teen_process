@@ -1,11 +1,11 @@
-import {spawn, type ChildProcess, type SpawnOptionsWithoutStdio} from 'child_process';
-import {EventEmitter} from 'events';
+import {spawn, type ChildProcess, type SpawnOptionsWithoutStdio} from 'node:child_process';
+import {EventEmitter} from 'node:events';
 import B from 'bluebird';
 import {quote} from 'shell-quote';
 import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
-import type {Readable} from 'stream';
+import type {Readable} from 'node:stream';
 
 type SubProcessCustomOptions = {
   isBuffer?: boolean;
@@ -37,9 +37,15 @@ export class SubProcess<
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
-    if (!cmd) throw new Error('Command is required'); // eslint-disable-line curly
-    if (!_.isString(cmd)) throw new Error('Command must be a string'); // eslint-disable-line curly
-    if (!_.isArray(args)) throw new Error('Args must be an array'); // eslint-disable-line curly
+    if (!cmd) {
+        throw new Error('Command is required');
+    };
+    if (!_.isString(cmd)) {
+        throw new Error('Command must be a string');
+    };
+    if (!_.isArray(args)) {
+        throw new Error('Args must be an array');
+    };
 
     this.cmd = cmd;
     this.args = args;
