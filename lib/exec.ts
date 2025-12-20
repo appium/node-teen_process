@@ -1,52 +1,17 @@
-import {spawn, type SpawnOptions} from 'node:child_process';
+import {spawn} from 'node:child_process';
 import {quote} from 'shell-quote';
 import B from 'bluebird';
 import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
+import type {
+    TeenProcessExecOptions,
+    ExecResult,
+    BufferProp,
+    TeenProcessExecError,
+    StreamName
+} from './types';
 
-export type TeenProcessLogger = {
-  debug: (...args: any[]) => void;
-};
-
-interface TeenProcessProps {
-  ignoreOutput?: boolean;
-  isBuffer?: boolean;
-  logger?: TeenProcessLogger;
-  maxStdoutBufferSize?: number;
-  maxStderrBufferSize?: number;
-  encoding?: BufferEncoding;
-}
-
-export type TeenProcessExecOptions = SpawnOptions & TeenProcessProps;
-
-export type TeenProcessExecStringResult = {
-  stdout: string;
-  stderr: string;
-  code: number | null;
-};
-
-export type TeenProcessExecBufferResult = {
-  stdout: Buffer;
-  stderr: Buffer;
-  code: number | null;
-};
-
-export type TeenProcessExecErrorProps = {
-  stdout: string;
-  stderr: string;
-  code: number | null;
-};
-
-export type TeenProcessExecError = Error & TeenProcessExecErrorProps;
-
-export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'];
-
-type ExecResult<T extends boolean | undefined> = T extends true
-  ? TeenProcessExecBufferResult
-  : TeenProcessExecStringResult;
-
-type StreamName = 'stdout' | 'stderr';
 
 /**
  * Spawn a process and collect its output.

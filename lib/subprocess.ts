@@ -1,4 +1,5 @@
-import {spawn, type ChildProcess, type SpawnOptionsWithoutStdio} from 'node:child_process';
+import {spawn} from 'node:child_process';
+import type {ChildProcess,} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import B from 'bluebird';
 import {quote} from 'shell-quote';
@@ -6,24 +7,12 @@ import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
-
-export type SubProcessCustomOptions = {
-  isBuffer?: boolean;
-  encoding?: BufferEncoding;
-};
-
-export type SubProcessOptions = SubProcessCustomOptions & SpawnOptionsWithoutStdio;
-
-export type TIsBufferOpts = {
-  isBuffer: true;
-};
-
-export type StartDetector<T extends SubProcessOptions> = (
-  stdout: T extends TIsBufferOpts ? Buffer : string,
-  stderr?: T extends TIsBufferOpts ? Buffer : string,
-) => unknown;
-
-type StreamName = 'stdout' | 'stderr';
+import type {
+    SubProcessOptions,
+    StartDetector,
+    TIsBufferOpts,
+    StreamName
+} from './types';
 
 export class SubProcess<
   TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
