@@ -51,7 +51,7 @@ export type TeenProcessExecErrorProps = {
 };
 
 /** Error thrown by exec on non-zero exit or timeout. */
-export type TeenProcessExecError = Error & TeenProcessExecErrorProps;
+export type ExecError = Error & TeenProcessExecErrorProps;
 
 /**
  * Extracts the isBuffer property from options, normalizing undefined/false to false.

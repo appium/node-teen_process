@@ -5,11 +5,13 @@ import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
 import type {
-    TeenProcessExecOptions,
-    ExecResult,
-    BufferProp,
-    TeenProcessExecError,
-    StreamName
+  TeenProcessExecOptions,
+  TeenProcessExecStringResult,
+  TeenProcessExecBufferResult,
+  ExecResult,
+  BufferProp,
+  ExecError,
+  StreamName
 } from './types';
 
 
@@ -25,7 +27,7 @@ import type {
  * @param originalOpts - Execution options including timeout, encoding, environment, etc.
  * @returns Promise resolving to an object with stdout, stderr, and exit code
  *
- * @throws {TeenProcessExecError} When the process exits with non-zero code or times out
+ * @throws {ExecError} When the process exits with non-zero code or times out
  *
  * @example
  * ```typescript
@@ -43,6 +45,16 @@ import type {
  * const {stdout} = await exec('cat', ['image.png'], {isBuffer: true});
  * ```
  */
+export function exec(
+  cmd: string,
+  args?: string[],
+  originalOpts?: TeenProcessExecOptions & {isBuffer?: false}
+): Promise<TeenProcessExecStringResult>;
+export function exec(
+  cmd: string,
+  args: string[] | undefined,
+  originalOpts: TeenProcessExecOptions & {isBuffer: true}
+): Promise<TeenProcessExecBufferResult>;
 export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
   cmd: string,
   args: string[] = [],
@@ -138,7 +150,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
           stdout,
           stderr,
           code,
-        }) as TeenProcessExecError;
+        }) as ExecError;
         reject(err);
       }
     });
@@ -149,7 +161,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
         const err = Object.assign(
           new Error(`Command '${rep}' timed out after ${opts.timeout}ms`),
           {stdout, stderr, code: null},
-        ) as TeenProcessExecError;
+        ) as ExecError;
         reject(err);
         proc.kill(opts.killSignal ?? 'SIGTERM');
       }, opts.timeout);
