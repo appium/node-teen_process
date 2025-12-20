@@ -52,7 +52,7 @@ import type {
 export class SubProcess<
   TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
 > extends EventEmitter {
-  private proc: ChildProcess | null;
+  proc: ChildProcess | null;
   private args: string[];
   private cmd: string;
   private opts: TSubProcessOptions;
