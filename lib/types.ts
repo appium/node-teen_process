@@ -9,7 +9,7 @@ export type TeenProcessLogger = {
 };
 
 export interface TeenProcessProps {
-  ignoreOutput?: boolean | null;
+  ignoreOutput?: boolean;
   isBuffer?: boolean;
   logger?: TeenProcessLogger;
   maxStdoutBufferSize?: number;
