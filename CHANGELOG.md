@@ -1,3 +1,9 @@
+## [4.0.1](https://github.com/appium/node-teen_process/compare/v4.0.0...v4.0.1) (2025-12-20)
+
+### Bug Fixes
+
+* keep ExecResult instead of TeenProcessExecResult ([#463](https://github.com/appium/node-teen_process/issues/463)) ([a5f20ac](https://github.com/appium/node-teen_process/commit/a5f20acf648908fa026e06ec650824d57b494ef3))
+
 ## [4.0.0](https://github.com/appium/node-teen_process/compare/v3.0.6...v4.0.0) (2025-12-20)
 
 ### ⚠ BREAKING CHANGES
