@@ -37,15 +37,18 @@ export class SubProcess<
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
+
     if (!cmd) {
         throw new Error('Command is required');
-    };
+    }
+
     if (!_.isString(cmd)) {
         throw new Error('Command must be a string');
-    };
+    }
+
     if (!_.isArray(args)) {
         throw new Error('Args must be an array');
-    };
+    }
 
     this.cmd = cmd;
     this.args = args;
@@ -220,7 +223,7 @@ export class SubProcess<
       throw new Error(`Can't stop process; it's not currently running (cmd: '${this.rep}')`);
     }
     return await new B<void>((resolve, reject) => {
-      this.proc?.once('close', () => resolve());
+      this.proc?.on('close', () => resolve());
       this.expectingExit = true;
       this.proc?.kill(signal);
       setTimeout(() => {
@@ -235,7 +238,7 @@ export class SubProcess<
     }
 
     return await new B<number | null>((resolve, reject) => {
-      this.proc?.once('exit', (code: number | null) => {
+      this.proc?.on('exit', (code: number | null) => {
         if (code !== null && allowedExitCodes.indexOf(code) === -1) {
           reject(new Error(`Process ended with exitcode ${code} (cmd: '${this.rep}')`));
         } else {
@@ -258,3 +261,5 @@ export class SubProcess<
     return this.proc ? this.proc.pid || null : null;
   }
 }
+
+export default SubProcess;

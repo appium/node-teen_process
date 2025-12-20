@@ -164,3 +164,5 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     }
   });
 }
+
+export default exec;
