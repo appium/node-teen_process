@@ -39,9 +39,16 @@ export type TeenProcessExecErrorProps = {
 
 export type TeenProcessExecError = Error & TeenProcessExecErrorProps;
 
-export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'];
+/**
+ * Extracts the isBuffer property from options, normalizing undefined/false to false.
+ */
+export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true ? true : false;
 
-export type ExecResult<T extends boolean | undefined> = T extends true
+/**
+ * Determines the result type based on whether isBuffer is true.
+ * Defaults to string result when isBuffer is false or undefined.
+ */
+export type ExecResult<T extends boolean> = T extends true
   ? TeenProcessExecBufferResult
   : TeenProcessExecStringResult;
 

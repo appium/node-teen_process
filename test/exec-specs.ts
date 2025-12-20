@@ -40,8 +40,8 @@ describe('exec', function () {
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect((stdout as string).trim()).to.equal(echo1);
-    expect((stderr as string).trim()).to.equal(echo2);
+    expect(stdout.trim()).to.equal(echo1);
+    expect(stderr.trim()).to.equal(echo2);
     expect(code).to.equal(0);
   });
 
@@ -50,8 +50,8 @@ describe('exec', function () {
     const echo1 = 'my\\ name\\ is\\ bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect((stdout as string).trim()).to.equal(echo1);
-    expect((stderr as string).trim()).to.equal(echo2);
+    expect(stdout.trim()).to.equal(echo1);
+    expect(stderr.trim()).to.equal(echo2);
     expect(code).to.equal(0);
   });
 
@@ -60,8 +60,8 @@ describe('exec', function () {
     const echo1 = 'bobbob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect((stdout as string).trim()).to.equal(echo1);
-    expect((stderr as string).trim()).to.equal(echo2);
+    expect(stdout.trim()).to.equal(echo1);
+    expect(stderr.trim()).to.equal(echo2);
     expect(code).to.equal(0);
   });
 
@@ -70,8 +70,8 @@ describe('exec', function () {
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect((stdout as string).trim()).to.equal(echo1);
-    expect((stderr as string).trim()).to.equal(echo2);
+    expect(stdout.trim()).to.equal(echo1);
+    expect(stderr.trim()).to.equal(echo2);
     expect(code).to.equal(0);
   });
 
