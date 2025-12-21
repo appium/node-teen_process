@@ -1,3 +1,9 @@
+## [4.0.4](https://github.com/appium/node-teen_process/compare/v4.0.3...v4.0.4) (2025-12-21)
+
+### Bug Fixes
+
+* TeenProcessExecResult to follow types/teen_process ([#466](https://github.com/appium/node-teen_process/issues/466)) ([bd165bd](https://github.com/appium/node-teen_process/commit/bd165bd0888dcfea12beb9fd74af8f54c2250c1f)), closes [#463](https://github.com/appium/node-teen_process/issues/463)
+
 ## [4.0.3](https://github.com/appium/node-teen_process/compare/v4.0.2...v4.0.3) (2025-12-20)
 
 ### Bug Fixes
