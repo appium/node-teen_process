@@ -1,4 +1,25 @@
 import type {SpawnOptions, SpawnOptionsWithoutStdio} from 'node:child_process';
+import type {SubProcess} from './subprocess';
+import type {exec} from './exec';
+
+/**
+ * Type representing the default teen_process export object.
+ * Useful for typing the default import in tests.
+ *
+ * @example
+ * ```typescript
+ * import type {TeenProcess} from 'teen_process';
+ * import tp from 'teen_process';
+ *
+ * // In tests:
+ * sinon.stub(tp, 'exec').resolves({stdout: '', stderr: '', code: 0});
+ * ```
+ */
+export interface TeenProcess {
+  spawn: typeof import('node:child_process').spawn;
+  SubProcess: typeof SubProcess;
+  exec: typeof exec;
+}
 
 /**
  * Minimal logger interface used by teen_process for debug output.
