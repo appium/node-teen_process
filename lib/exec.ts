@@ -6,8 +6,6 @@ import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
 import type {
   TeenProcessExecOptions,
-  TeenProcessExecStringResult,
-  TeenProcessExecBufferResult,
   TeenProcessExecResult,
   BufferProp,
   ExecError,
@@ -45,16 +43,6 @@ import type {
  * const {stdout} = await exec('cat', ['image.png'], {isBuffer: true});
  * ```
  */
-export function exec(
-  cmd: string,
-  args?: string[],
-  originalOpts?: TeenProcessExecOptions & {isBuffer?: false}
-): Promise<TeenProcessExecStringResult>;
-export function exec(
-  cmd: string,
-  args: string[] | undefined,
-  originalOpts: TeenProcessExecOptions & {isBuffer: true}
-): Promise<TeenProcessExecBufferResult>;
 export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOptions>(
   cmd: string,
   args: string[] = [],
