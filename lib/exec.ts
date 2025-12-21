@@ -8,7 +8,7 @@ import type {
   TeenProcessExecOptions,
   TeenProcessExecStringResult,
   TeenProcessExecBufferResult,
-  ExecResult,
+  TeenProcessExecResult,
   BufferProp,
   ExecError,
   StreamName
@@ -59,7 +59,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
   cmd: string,
   args: string[] = [],
   originalOpts: T = {} as T,
-): Promise<ExecResult<BufferProp<T>>> {
+): Promise<TeenProcessExecResult<BufferProp<T>>> {
   // get a quoted representation of the command for error strings
   const rep = quote([cmd, ...args]);
 
@@ -81,7 +81,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
   const opts = _.defaults({}, originalOpts, defaults) as T;
   const isBuffer = Boolean(opts.isBuffer);
 
-  return await new B<ExecResult<BufferProp<T>>>((resolve, reject) => {
+  return await new B<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
     const proc = spawn(cmd, args, {cwd: opts.cwd, env: opts.env, shell: opts.shell});
     const stdoutBuffer = new CircularBuffer(opts.maxStdoutBufferSize);
     const stderrBuffer = new CircularBuffer(opts.maxStderrBufferSize);
@@ -144,7 +144,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }
       const {stdout, stderr} = getStdio(isBuffer);
       if (code === 0) {
-        resolve({stdout, stderr, code} as ExecResult<BufferProp<T>>);
+        resolve({stdout, stderr, code} as TeenProcessExecResult<BufferProp<T>>);
       } else {
         const err = Object.assign(new Error(`Command '${rep}' exited with code ${code}`), {
           stdout,
