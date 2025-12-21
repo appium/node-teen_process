@@ -29,20 +29,6 @@ export interface TeenProcessProps {
 /** Options accepted by exec (SpawnOptions + teen_process props). */
 export type TeenProcessExecOptions = SpawnOptions & TeenProcessProps;
 
-/** exec result when isBuffer is false/undefined (string output). */
-export type TeenProcessExecStringResult = {
-  stdout: string;
-  stderr: string;
-  code: number | null;
-};
-
-/** exec result when isBuffer is true (Buffer output). */
-export type TeenProcessExecBufferResult = {
-  stdout: Buffer;
-  stderr: Buffer;
-  code: number | null;
-};
-
 /** Additional properties attached to exec errors. */
 export type TeenProcessExecErrorProps = {
   stdout: string;
@@ -54,17 +40,19 @@ export type TeenProcessExecErrorProps = {
 export type ExecError = Error & TeenProcessExecErrorProps;
 
 /**
- * Extracts the isBuffer property from options, normalizing undefined/false to false.
+ * Extracts the isBuffer property from options.
  */
-export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true ? true : false;
+export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true ? Buffer : string;
 
 /**
  * Resolves to the correct exec result shape based on buffer mode.
  * Defaults to string output when isBuffer is false/undefined.
  */
-export type ExecResult<T extends boolean> = T extends true
-  ? TeenProcessExecBufferResult
-  : TeenProcessExecStringResult;
+export type TeenProcessExecResult<T extends string | Buffer> = {
+  stdout: T;
+  stderr: T;
+  code: number | null;
+};
 
 /** Supported stdio stream names. */
 export type StreamName = 'stdout' | 'stderr';
