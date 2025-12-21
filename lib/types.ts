@@ -40,7 +40,7 @@ export type TeenProcessExecErrorProps = {
 export type ExecError = Error & TeenProcessExecErrorProps;
 
 /**
- * Extracts the isBuffer property from options, normalizing undefined/false to false.
+ * Extracts the isBuffer property from options.
  */
 export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true ? Buffer : string;
 
