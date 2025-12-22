@@ -1,3 +1,9 @@
+## [4.0.5](https://github.com/appium/node-teen_process/compare/v4.0.4...v4.0.5) (2025-12-22)
+
+### Bug Fixes
+
+* do not bundle test files ([#467](https://github.com/appium/node-teen_process/issues/467)) ([b3f6573](https://github.com/appium/node-teen_process/commit/b3f657356ccde87c6fc73734ba15399ec85686f3))
+
 ## [4.0.4](https://github.com/appium/node-teen_process/compare/v4.0.3...v4.0.4) (2025-12-21)
 
 ### Bug Fixes
