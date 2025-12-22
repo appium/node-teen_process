@@ -27,7 +27,7 @@
     "lib": "lib"
   },
   "files": [
-    "build",
+    "build/lib",
     "lib"
   ],
   "scripts": {
