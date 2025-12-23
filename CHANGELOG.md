@@ -1,3 +1,9 @@
+## [4.0.6](https://github.com/appium/node-teen_process/compare/v4.0.5...v4.0.6) (2025-12-23)
+
+### Bug Fixes
+
+* allow common spawn options as well ([#468](https://github.com/appium/node-teen_process/issues/468)) ([8bab4fd](https://github.com/appium/node-teen_process/commit/8bab4fd69700c5894b2ce7297a3633f91b0cdcb8))
+
 ## [4.0.5](https://github.com/appium/node-teen_process/compare/v4.0.4...v4.0.5) (2025-12-22)
 
 ### Bug Fixes
