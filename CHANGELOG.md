@@ -1,3 +1,9 @@
+## [4.0.7](https://github.com/appium/node-teen_process/compare/v4.0.6...v4.0.7) (2025-12-23)
+
+### Bug Fixes
+
+* make rep readonly but public for a use case in android ([#469](https://github.com/appium/node-teen_process/issues/469)) ([742811d](https://github.com/appium/node-teen_process/commit/742811d8087cf76428cacfd20701a4e981288282))
+
 ## [4.0.6](https://github.com/appium/node-teen_process/compare/v4.0.5...v4.0.6) (2025-12-23)
 
 ### Bug Fixes
