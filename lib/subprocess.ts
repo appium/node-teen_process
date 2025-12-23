@@ -57,7 +57,7 @@ export class SubProcess<
   private cmd: string;
   private opts: TSubProcessOptions;
   private expectingExit: boolean;
-  private readonly rep: string;
+  readonly rep: string;
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
