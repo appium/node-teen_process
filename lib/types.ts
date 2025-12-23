@@ -1,4 +1,4 @@
-import type {SpawnOptions, SpawnOptionsWithoutStdio} from 'node:child_process';
+import type {SpawnOptions} from 'node:child_process';
 
 /**
  * Minimal logger interface used by teen_process for debug output.
@@ -66,7 +66,7 @@ export type SubProcessCustomOptions = {
 };
 
 /** Options accepted by SubProcess (extends spawn options). */
-export type SubProcessOptions = SpawnOptions | SubProcessCustomOptions & SpawnOptionsWithoutStdio;
+export type SubProcessOptions =  SubProcessCustomOptions & SpawnOptions;
 
 /** Helper type representing SubProcess buffer mode. */
 export type TIsBufferOpts = {
