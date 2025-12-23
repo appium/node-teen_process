@@ -66,7 +66,7 @@ export type SubProcessCustomOptions = {
 };
 
 /** Options accepted by SubProcess (extends spawn options). */
-export type SubProcessOptions = SubProcessCustomOptions & SpawnOptionsWithoutStdio;
+export type SubProcessOptions = SpawnOptions | SubProcessCustomOptions & SpawnOptionsWithoutStdio;
 
 /** Helper type representing SubProcess buffer mode. */
 export type TIsBufferOpts = {
