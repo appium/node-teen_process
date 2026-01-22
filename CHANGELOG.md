@@ -1,3 +1,9 @@
+## [4.0.8](https://github.com/appium/node-teen_process/compare/v4.0.7...v4.0.8) (2026-01-22)
+
+### Miscellaneous Chores
+
+* replace bluebird with native promises ([#470](https://github.com/appium/node-teen_process/issues/470)) ([b1b5186](https://github.com/appium/node-teen_process/commit/b1b5186d3c9aca846fa3894596fd97e68dfd3ec0))
+
 ## [4.0.7](https://github.com/appium/node-teen_process/compare/v4.0.6...v4.0.7) (2025-12-23)
 
 ### Bug Fixes
