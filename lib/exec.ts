@@ -1,6 +1,5 @@
 import {spawn} from 'node:child_process';
 import {quote} from 'shell-quote';
-import B from 'bluebird';
 import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
@@ -69,7 +68,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
   const opts = _.defaults({}, originalOpts, defaults) as T;
   const isBuffer = Boolean(opts.isBuffer);
 
-  return await new B<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
+  return await new Promise<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
     const proc = spawn(cmd, args, {cwd: opts.cwd, env: opts.env, shell: opts.shell});
     const stdoutBuffer = new CircularBuffer(opts.maxStdoutBufferSize);
     const stderrBuffer = new CircularBuffer(opts.maxStderrBufferSize);

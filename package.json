@@ -47,7 +47,6 @@
     "singleQuote": true
   },
   "dependencies": {
-    "bluebird": "^3.7.2",
     "lodash": "^4.17.21",
     "shell-quote": "^1.8.1"
   },
@@ -57,7 +56,6 @@
     "@appium/types": "^1.0.0-rc.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/bluebird": "^3.5.42",
     "@types/lodash": "^4.14.202",
     "@types/mocha": "10.0.10",
     "@types/node": "^25.0.0",

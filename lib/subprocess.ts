@@ -1,7 +1,6 @@
 import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
-import B from 'bluebird';
 import {quote} from 'shell-quote';
 import _ from 'lodash';
 import {formatEnoent} from './helpers';
@@ -147,7 +146,7 @@ export class SubProcess<
       timeoutMs = null;
     }
 
-    return await new B<void>((resolve, reject) => {
+    return await new Promise<void>((resolve, reject) => {
       this.proc = spawn(this.cmd, this.args, this.opts);
 
       const handleOutput = (streams: {
@@ -275,7 +274,7 @@ export class SubProcess<
     if (!this.isRunning) {
       throw new Error(`Can't stop process; it's not currently running (cmd: '${this.rep}')`);
     }
-    return await new B<void>((resolve, reject) => {
+    return await new Promise<void>((resolve, reject) => {
       this.proc?.on('close', () => resolve());
       this.expectingExit = true;
       this.proc?.kill(signal);
@@ -307,7 +306,7 @@ export class SubProcess<
       throw new Error(`Cannot join process; it is not currently running (cmd: '${this.rep}')`);
     }
 
-    return await new B<number | null>((resolve, reject) => {
+    return await new Promise<number | null>((resolve, reject) => {
       this.proc?.on('exit', (code: number | null) => {
         if (code !== null && !allowedExitCodes.includes(code)) {
           reject(new Error(`Process ended with exitcode ${code} (cmd: '${this.rep}')`));

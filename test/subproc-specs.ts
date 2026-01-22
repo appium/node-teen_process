@@ -1,4 +1,3 @@
-import B from 'bluebird';
 import path from 'path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
@@ -58,7 +57,7 @@ describe('SubProcess', function () {
       lines = lines.concat(newLines);
     });
     await subproc.start(0);
-    await B.delay(50);
+    await new Promise((resolve) => setTimeout(resolve, 50));
     expect(lines).to.include('bad_exit.sh');
     expect(lines).to.contain('bigbuffer.js');
     expect(lines).to.contain('echo.sh');
@@ -108,7 +107,7 @@ describe('SubProcess', function () {
       });
       await s.start(0);
       expect(hasData).to.be.false;
-      await B.delay(1200);
+      await new Promise((resolve) => setTimeout(resolve, 1200));
       expect(hasData).to.be.true;
     });
     it('should fail even with a start timeout of 0 when command is bad', async function () {
@@ -160,46 +159,40 @@ describe('SubProcess', function () {
       } catch {}
     });
     it('should get output as params', async function () {
-      await expect(new B(async (resolve, reject) => {
-        subproc = new SubProcess(getFixture('sleepyproc'), [
-          'ls',
-          path.resolve(__dirname),
-        ]);
-        subproc.on('output', (stdout: string | Buffer) => {
-          if (stdout && typeof stdout === 'string' && !stdout.includes('subproc-specs')) {
-            reject();
-          } else {
-            resolve(undefined);
-          }
-        });
-        await subproc.start();
-      })).to.eventually.not.be.rejected;
+      subproc = new SubProcess(getFixture('sleepyproc'), ['ls', path.resolve(__dirname)]);
+      const output: (string | Buffer)[] = [];
+      subproc.on('output', (stdout: string | Buffer) => {
+        output.push(stdout);
+      });
+      await subproc.start();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(_.isString(output[0])).to.be.true;
+      expect(output[0]).to.include('subproc-specs');
     });
     it('should get output as params with args', async function () {
-      await new B(async (resolve, reject) => {
-        subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
-        subproc.on('output', (stdout: string | Buffer, stderr?: string | Buffer) => {
-          if (stderr && typeof stderr === 'string' && !stderr.includes('bar')) {
-            reject();
-          } else {
-            resolve(undefined);
-          }
-        });
-        await subproc.start();
+      subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
+      const outputs: Array<{stdout: string | Buffer, stderr: string | Buffer}> = [];
+      subproc.on('output', (stdout: string | Buffer, stderr: string | Buffer) => {
+        // We expect two invocations, one with stdout and one with stderr
+        outputs.push({stdout, stderr});
       });
+      await subproc.start();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(outputs.length).to.be.above(0);
+      expect(outputs[0].stdout.toString().trim()).to.eql('foo');
+      expect(outputs[1].stderr.toString().trim()).to.eql('bar');
     });
     it('should get output as buffer', async function () {
-      const stdout = await new B<Buffer>(async (resolve) => {
-        subproc = new SubProcess(getFixture('echo'), ['foo'], {isBuffer: true});
-        subproc.on('output', resolve);
-        await subproc.start();
+      subproc = new SubProcess(getFixture('echo'), ['foo'], {isBuffer: true});
+      const output: (string | Buffer)[] = [];
+      subproc.on('output', (stdout: string | Buffer) => {
+        output.push(stdout);
       });
-      expect(_.isString(stdout)).to.be.false;
-      expect(_.isBuffer(stdout)).to.be.true;
-
-      expect(stdout.toString().trim()).to.eql('foo');
+      await subproc.start();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      expect(_.isBuffer(output[0])).to.be.true;
+      expect(output[0].toString().trim()).to.eql('foo');
     });
-
     it('should get output by lines', async function () {
       subproc = new SubProcess('ls', [path.resolve(__dirname)]);
       let lines: string[] = [];
@@ -207,7 +200,7 @@ describe('SubProcess', function () {
         lines = lines.concat(newLines);
       });
       await subproc.start(0);
-      await B.delay(50);
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(lines).to.eql([
         'circular-buffer-specs.ts',
         'exec-specs.ts',
@@ -220,20 +213,14 @@ describe('SubProcess', function () {
 
   describe('#stop', function () {
     it('should send the right signal to stop a proc', async function () {
-      return await new B(async (resolve, reject) => {
-        const subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
-        await subproc.start();
-        subproc.on('exit', (code: number | null, signal: string | null) => {
-          try {
-            expect(signal).to.equal(stopSignal);
-            resolve(undefined);
-          } catch (e) {
-            reject(e);
-          }
-        });
-
-        await subproc.stop(stopSignal);
+      const subproc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      let exitSignal: string | null;
+      subproc.on('exit', (code: number | null, signal: string | null) => {
+        exitSignal = signal;
       });
+      await subproc.start();
+      await subproc.stop(stopSignal);
+      expect(exitSignal!).to.eql(stopSignal);
     });
 
     it('should time out if stop doesnt complete fast enough', async function () {
@@ -263,7 +250,7 @@ describe('SubProcess', function () {
       const subproc = new SubProcess('ls');
       await expect(subproc.stop()).to.eventually.be.rejectedWith(/Can't stop/);
       await subproc.start();
-      await B.delay(10);
+      await new Promise((resolve) => setTimeout(resolve, 10));
       await expect(subproc.stop()).to.eventually.be.rejectedWith(/Can't stop/);
     });
   });
