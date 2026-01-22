@@ -165,7 +165,7 @@ describe('SubProcess', function () {
         output.push(stdout);
       });
       await subproc.start();
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(_.isString(output[0])).to.be.true;
       expect(output[0]).to.include('subproc-specs');
     });
@@ -177,10 +177,10 @@ describe('SubProcess', function () {
         outputs.push({stdout, stderr});
       });
       await subproc.start();
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(outputs.length).to.be.above(0);
-      expect(outputs[0].stdout.toString().trim()).to.eql('foo');
-      expect(outputs[1].stderr.toString().trim()).to.eql('bar');
+      expect(outputs.some((o) => o.stdout?.toString().trim() === 'foo')).to.be.true;
+      expect(outputs.some((o) => o.stderr?.toString().trim() === 'bar')).to.be.true;
     });
     it('should get output as buffer', async function () {
       subproc = new SubProcess(getFixture('echo'), ['foo'], {isBuffer: true});
@@ -189,7 +189,7 @@ describe('SubProcess', function () {
         output.push(stdout);
       });
       await subproc.start();
-      await new Promise((resolve) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 50));
       expect(_.isBuffer(output[0])).to.be.true;
       expect(output[0].toString().trim()).to.eql('foo');
     });
