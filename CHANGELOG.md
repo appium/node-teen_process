@@ -1,3 +1,9 @@
+## [4.0.9](https://github.com/appium/node-teen_process/compare/v4.0.8...v4.0.9) (2026-01-28)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump @appium/eslint-config-appium-ts from 2.0.5 to 3.0.0 ([#471](https://github.com/appium/node-teen_process/issues/471)) ([d3b628f](https://github.com/appium/node-teen_process/commit/d3b628fc2d5f979b05a252979f343b39ee33523c))
+
 ## [4.0.8](https://github.com/appium/node-teen_process/compare/v4.0.7...v4.0.8) (2026-01-22)
 
 ### Miscellaneous Chores
