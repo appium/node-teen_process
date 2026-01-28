@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
 import _ from 'lodash';
