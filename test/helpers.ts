@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 function getFixture(fix: string): string {
   // Append .bat or .sh if there's no extention
