@@ -1,8 +1,8 @@
 import path from 'node:path';
-import { exec } from '../lib';
-import { getFixture } from './helpers';
+import {exec} from '../lib';
+import {getFixture} from './helpers';
 import _ from 'lodash';
-import { use as chaiUse, expect } from 'chai';
+import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 chaiUse(chaiAsPromised);
@@ -146,7 +146,10 @@ describe('exec', function () {
     });
 
     it('should allow binary output as Buffer', async function () {
-      const {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', isBuffer: true});
+      const {stdout} = await exec('cat', [getFixture('screenshot.png')], {
+        encoding: 'binary',
+        isBuffer: true,
+      });
       expect(_.isString(stdout)).to.be.false;
       expect(_.isBuffer(stdout)).to.be.true;
       const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
@@ -165,7 +168,11 @@ describe('exec', function () {
 
     it('should allow binary output as Buffer from timeout', async function () {
       try {
-        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1, isBuffer: true});
+        await exec('cat', [getFixture('screenshot.png')], {
+          encoding: 'binary',
+          timeout: 1,
+          isBuffer: true,
+        });
       } catch (err: any) {
         const stdout = err.stdout;
         expect(_.isString(stdout)).to.be.false;

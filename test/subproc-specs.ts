@@ -2,7 +2,7 @@ import path from 'node:path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
 import _ from 'lodash';
-import { use as chaiUse, expect } from 'chai';
+import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 chaiUse(chaiAsPromised);
@@ -70,7 +70,7 @@ describe('SubProcess', function () {
   describe('#start', function () {
     let s: InstanceType<typeof SubProcess> | null;
 
-    beforeEach(function() {
+    beforeEach(function () {
       s = null;
     });
 
@@ -142,9 +142,7 @@ describe('SubProcess', function () {
       };
       s = new SubProcess('ls');
       const start = Date.now();
-      await expect(s
-        .start(sd, 500))
-        .to.eventually.be.rejectedWith(/process did not start within/i);
+      await expect(s.start(sd, 500)).to.eventually.be.rejectedWith(/process did not start within/i);
       expect(Date.now() - start).to.be.below(600);
     });
   });
@@ -171,7 +169,7 @@ describe('SubProcess', function () {
     });
     it('should get output as params with args', async function () {
       subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
-      const outputs: Array<{stdout: string | Buffer, stderr: string | Buffer}> = [];
+      const outputs: Array<{stdout: string | Buffer; stderr: string | Buffer}> = [];
       subproc.on('output', (stdout: string | Buffer, stderr: string | Buffer) => {
         // We expect two invocations, one with stdout and one with stderr
         outputs.push({stdout, stderr});
@@ -230,9 +228,7 @@ describe('SubProcess', function () {
         path.resolve(__filename),
       ]);
       await subproc.start();
-      await expect(subproc
-        .stop(stopSignal, 1))
-        .to.eventually.be.rejectedWith(/Process didn't end/);
+      await expect(subproc.stop(stopSignal, 1)).to.eventually.be.rejectedWith(/Process didn't end/);
 
       // need to kill the process
       // 1 for the trap, 1 for the tail
@@ -273,9 +269,7 @@ describe('SubProcess', function () {
     it('should throw if process ends with a invalid exitcode', async function () {
       const proc = new SubProcess(getFixture('bad_exit'));
       await proc.start(0);
-      await expect(proc
-        .join())
-        .to.eventually.be.rejectedWith(/Process ended with exitcode/);
+      await expect(proc.join()).to.eventually.be.rejectedWith(/Process ended with exitcode/);
     });
 
     it('should NOT throw if process ends with a custom allowed exitcode', async function () {
@@ -382,7 +376,7 @@ describe('SubProcess', function () {
 
   describe('#detachProcess', function () {
     let s: InstanceType<typeof SubProcess> | null;
-    beforeEach(function() {
+    beforeEach(function () {
       s = null;
     });
 
@@ -390,8 +384,7 @@ describe('SubProcess', function () {
       if (s) {
         try {
           await s.stop();
-        } catch {
-        }
+        } catch {}
       }
     });
 
