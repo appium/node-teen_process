@@ -1,3 +1,9 @@
+## [4.0.10](https://github.com/appium/node-teen_process/compare/v4.0.9...v4.0.10) (2026-02-16)
+
+### Bug Fixes
+
+* format ([#472](https://github.com/appium/node-teen_process/issues/472)) ([bbac16b](https://github.com/appium/node-teen_process/commit/bbac16b829a7b896ed91771cf4027dd349737404))
+
 ## [4.0.9](https://github.com/appium/node-teen_process/compare/v4.0.8...v4.0.9) (2026-01-28)
 
 ### Miscellaneous Chores
