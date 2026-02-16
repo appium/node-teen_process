@@ -8,5 +8,4 @@ function getFixture(fix: string): string {
   return path.resolve(__dirname, 'fixtures', fix);
 }
 
-export { getFixture };
-
+export {getFixture};

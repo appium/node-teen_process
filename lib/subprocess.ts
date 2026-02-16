@@ -6,12 +6,7 @@ import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
-import type {
-    SubProcessOptions,
-    StartDetector,
-    TIsBufferOpts,
-    StreamName
-} from './types';
+import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from './types';
 
 /**
  * A wrapper around Node's spawn that provides event-driven process management.
@@ -118,7 +113,8 @@ export class SubProcess<
   ): Promise<void> {
     let startDelay = 10;
 
-    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) => stdout || stderr;
+    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) =>
+      stdout || stderr;
     let detector: StartDetector<TSubProcessOptions> | null = null;
 
     if (startDetector === null) {
@@ -200,10 +196,14 @@ export class SubProcess<
       if (this.proc.stdout) {
         this.proc.stdout.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
+            stdout: (isBuffer
+              ? chunk
+              : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
               ? Buffer
               : string,
-            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
+            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts
+              ? Buffer
+              : string,
           }),
         );
         handleStreamLines('stdout', this.proc.stdout);
@@ -212,8 +212,12 @@ export class SubProcess<
       if (this.proc.stderr) {
         this.proc.stderr.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
-            stderr: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
+            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts
+              ? Buffer
+              : string,
+            stderr: (isBuffer
+              ? chunk
+              : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
               ? Buffer
               : string,
           }),
@@ -339,7 +343,8 @@ export class SubProcess<
   }
 
   private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
-    const doEmit = (line: string) => this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
+    const doEmit = (line: string) =>
+      this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
     if (_.isString(lines)) {
       doEmit(lines);

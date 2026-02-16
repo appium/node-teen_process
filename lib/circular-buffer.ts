@@ -41,7 +41,10 @@ export class CircularBuffer {
     // which reduces the CPU usage
     const expectedSizeToShift = this._size - this._maxSize + Math.trunc(this._maxSize * THRESHOLD);
     let actualShiftedSize = 0;
-    while (numberOfItemsToShift < this._buf.length - 1 && actualShiftedSize <= expectedSizeToShift) {
+    while (
+      numberOfItemsToShift < this._buf.length - 1 &&
+      actualShiftedSize <= expectedSizeToShift
+    ) {
       actualShiftedSize += this._buf[numberOfItemsToShift].length;
       numberOfItemsToShift++;
     }

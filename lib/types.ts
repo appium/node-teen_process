@@ -42,7 +42,9 @@ export type ExecError = Error & TeenProcessExecErrorProps;
 /**
  * Extracts the isBuffer property from options.
  */
-export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true ? Buffer : string;
+export type BufferProp<T extends {isBuffer?: boolean}> = T['isBuffer'] extends true
+  ? Buffer
+  : string;
 
 /**
  * Resolves to the correct exec result shape based on buffer mode.

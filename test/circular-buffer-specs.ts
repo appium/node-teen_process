@@ -1,5 +1,5 @@
-import { CircularBuffer } from '../lib/circular-buffer';
-import { use as chaiUse, expect } from 'chai';
+import {CircularBuffer} from '../lib/circular-buffer';
+import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 chaiUse(chaiAsPromised);
@@ -35,4 +35,3 @@ describe('CircularBuffer', function () {
     expect(buffer.value()).to.eql(Buffer.from('y'.repeat(85)));
   });
 });
-

@@ -8,9 +8,8 @@ import type {
   TeenProcessExecResult,
   BufferProp,
   ExecError,
-  StreamName
+  StreamName,
 } from './types';
-
 
 /**
  * Spawns a child process and collects its output.
@@ -118,8 +117,12 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     function getStdio<U extends boolean>(
       wantBuffer: U,
     ): U extends true ? {stdout: Buffer; stderr: Buffer} : {stdout: string; stderr: string} {
-      const stdout = wantBuffer ? stdoutBuffer.value() : stdoutBuffer.value().toString(opts.encoding);
-      const stderr = wantBuffer ? stderrBuffer.value() : stderrBuffer.value().toString(opts.encoding);
+      const stdout = wantBuffer
+        ? stdoutBuffer.value()
+        : stdoutBuffer.value().toString(opts.encoding);
+      const stderr = wantBuffer
+        ? stderrBuffer.value()
+        : stderrBuffer.value().toString(opts.encoding);
       return {stdout, stderr} as U extends true
         ? {stdout: Buffer; stderr: Buffer}
         : {stdout: string; stderr: string};
@@ -145,10 +148,11 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     if (opts.timeout) {
       timer = setTimeout(() => {
         const {stdout, stderr} = getStdio(isBuffer);
-        const err = Object.assign(
-          new Error(`Command '${rep}' timed out after ${opts.timeout}ms`),
-          {stdout, stderr, code: null},
-        ) as ExecError;
+        const err = Object.assign(new Error(`Command '${rep}' timed out after ${opts.timeout}ms`), {
+          stdout,
+          stderr,
+          code: null,
+        }) as ExecError;
         reject(err);
         proc.kill(opts.killSignal ?? 'SIGTERM');
       }, opts.timeout);
