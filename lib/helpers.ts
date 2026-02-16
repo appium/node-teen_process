@@ -38,7 +38,8 @@ export async function formatEnoent(
 
   const curDir = path.resolve(cwd ?? process.cwd());
   const pathMsg = process.env.PATH ?? 'which is not defined for the process';
-  error.message = `'${cmd}' executable is not found neither in the process working folder (${curDir}) ` +
+  error.message =
+    `'${cmd}' executable is not found neither in the process working folder (${curDir}) ` +
     `nor in any folders specified in the PATH environment variable (${pathMsg})`;
   return error;
 }
