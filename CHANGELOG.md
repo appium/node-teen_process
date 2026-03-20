@@ -1,3 +1,9 @@
+## [4.1.0](https://github.com/appium/node-teen_process/compare/v4.0.10...v4.1.0) (2026-03-20)
+
+### Features
+
+* Allow to pass uid and gid options to exec ([#473](https://github.com/appium/node-teen_process/issues/473)) ([7db347d](https://github.com/appium/node-teen_process/commit/7db347dea829f9dd426fad3a596385e7b3a5dd01))
+
 ## [4.0.10](https://github.com/appium/node-teen_process/compare/v4.0.9...v4.0.10) (2026-02-16)
 
 ### Bug Fixes
