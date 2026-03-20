@@ -66,9 +66,10 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
 
   const opts = _.defaults({}, originalOpts, defaults) as T;
   const isBuffer = Boolean(opts.isBuffer);
+  const spawnOpts = buildSpawnOptions(opts, originalOpts);
 
   return await new Promise<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
-    const proc = spawn(cmd, args, {cwd: opts.cwd, env: opts.env, shell: opts.shell});
+    const proc = spawn(cmd, args, spawnOpts);
     const stdoutBuffer = new CircularBuffer(opts.maxStdoutBufferSize);
     const stderrBuffer = new CircularBuffer(opts.maxStderrBufferSize);
     let timer: NodeJS.Timeout | null = null;
@@ -158,4 +159,20 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }, opts.timeout);
     }
   });
+}
+
+function buildSpawnOptions<T extends TeenProcessExecOptions>(opts: T, originalOpts: T) {
+  return {
+    cwd: opts.cwd,
+    env: opts.env,
+    shell: opts.shell,
+    argv0: opts.argv0,
+    uid: opts.uid,
+    gid: opts.gid,
+    detached: opts.detached,
+    windowsHide: opts.windowsHide,
+    windowsVerbatimArguments: opts.windowsVerbatimArguments,
+    signal: opts.signal,
+    ...(Object.prototype.hasOwnProperty.call(originalOpts, 'stdio') ? {stdio: opts.stdio} : {}),
+  };
 }
