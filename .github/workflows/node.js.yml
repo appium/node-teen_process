@@ -17,6 +17,8 @@ jobs:
     uses: appium/appium-workflows/.github/workflows/node-lts-matrix.yml@main
 
   test:
+    env:
+      CI: 'true'
     needs:
     - node_matrix
     strategy:

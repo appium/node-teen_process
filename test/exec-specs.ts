@@ -180,4 +180,32 @@ describe('exec', function () {
       }
     });
   });
+
+  it('[manual] should be able to run command as non-sudo user when parent runs as sudo', async function () {
+    if (process.platform === 'win32' || process.env.CI !== undefined) {
+      this.skip();
+    }
+
+    if (!process.getuid || process.getuid() !== 0) {
+      this.skip();
+    }
+
+    const sudoUid = process.env.SUDO_UID;
+    const sudoGid = process.env.SUDO_GID;
+    if (!sudoUid || !sudoGid) {
+      this.skip();
+    }
+
+    const targetUid = Number(sudoUid);
+    const targetGid = Number(sudoGid);
+    const {stdout, code} = await exec('id', ['-u'], {
+      uid: targetUid,
+      gid: targetGid,
+      stdio: 'pipe',
+    });
+
+    expect(code).to.equal(0);
+    expect(stdout.trim()).to.equal(String(targetUid));
+    expect(targetUid).to.not.equal(0);
+  });
 });
