@@ -27,8 +27,9 @@
     "lib": "lib"
   },
   "files": [
+    "lib",
     "build/lib",
-    "lib"
+    "CHANGELOG.md"
   ],
   "scripts": {
     "build": "tsc -b",
