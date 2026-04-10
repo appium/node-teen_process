@@ -1,3 +1,9 @@
+## [4.1.1](https://github.com/appium/node-teen_process/compare/v4.1.0...v4.1.1) (2026-04-10)
+
+### Miscellaneous Chores
+
+* **deps-dev:** bump typescript from 5.9.3 to 6.0.2 ([#474](https://github.com/appium/node-teen_process/issues/474)) ([dee018b](https://github.com/appium/node-teen_process/commit/dee018b3a06e186c01a72e4f93de51c50b77e7f4))
+
 ## [4.1.0](https://github.com/appium/node-teen_process/compare/v4.0.10...v4.1.0) (2026-03-20)
 
 ### Features
