@@ -47,11 +47,11 @@ export class SubProcess<
   TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
 > extends EventEmitter {
   proc: ChildProcess | null;
+  readonly rep: string;
   private args: string[];
   private cmd: string;
   private opts: TSubProcessOptions;
   private expectingExit: boolean;
-  readonly rep: string;
 
   constructor(cmd: string, args: string[] = [], opts?: TSubProcessOptions) {
     super();
@@ -79,6 +79,10 @@ export class SubProcess<
 
   get isRunning(): boolean {
     return !!this.proc;
+  }
+
+  get pid(): number | null {
+    return this.proc?.pid ?? null;
   }
 
   /**
@@ -336,10 +340,6 @@ export class SubProcess<
     if (this.proc) {
       this.proc.unref();
     }
-  }
-
-  get pid(): number | null {
-    return this.proc?.pid ?? null;
   }
 
   private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
