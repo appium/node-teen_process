@@ -1,3 +1,9 @@
+## [4.1.2](https://github.com/appium/node-teen_process/compare/v4.1.1...v4.1.2) (2026-04-25)
+
+### Bug Fixes
+
+* lint warnings ([#475](https://github.com/appium/node-teen_process/issues/475)) ([8f10e95](https://github.com/appium/node-teen_process/commit/8f10e95ec2349e86d057705bfbd673837b36b616))
+
 ## [4.1.1](https://github.com/appium/node-teen_process/compare/v4.1.0...v4.1.1) (2026-04-10)
 
 ### Miscellaneous Chores
