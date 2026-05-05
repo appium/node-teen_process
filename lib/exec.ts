@@ -63,7 +63,10 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     maxStderrBufferSize: MAX_BUFFER_SIZE,
   };
 
-  const opts = Object.assign({}, defaults, originalOpts) as T;
+  const definedOriginalOpts = Object.fromEntries(
+    Object.entries(originalOpts).filter(([, value]) => value !== undefined),
+  ) as Partial<T>;
+  const opts = {...defaults, ...definedOriginalOpts} as T;
   const isBuffer = Boolean(opts.isBuffer);
   const spawnOpts = buildSpawnOptions(opts, originalOpts);
 

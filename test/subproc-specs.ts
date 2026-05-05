@@ -163,7 +163,7 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(typeof output[0]).to.equal('string');
+      expect(output[0]).to.be.a('string');
       expect(output[0]).to.include('subproc-specs');
     });
     it('should get output as params with args', async function () {
