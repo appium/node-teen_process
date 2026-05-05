@@ -59,7 +59,7 @@ export class SubProcess<
       throw new Error('Command is required');
     }
 
-    if (typeof cmd !== 'string') {
+    if (typeof cmd !== 'string' && !((cmd as any) instanceof String)) {
       throw new Error('Command must be a string');
     }
 
@@ -124,20 +124,26 @@ export class SubProcess<
       detector = genericStartDetector;
     }
 
-    if (typeof startDetector === 'number') {
-      startDelay = startDetector;
+    if (typeof startDetector === 'number' || (startDetector as any) instanceof Number) {
+      startDelay = Number(startDetector);
       detector = null;
     } else if (typeof startDetector === 'function') {
       detector = startDetector;
     }
 
-    if (typeof startDetector === 'boolean' && startDetector) {
+    if (
+      (typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) &&
+      startDetector
+    ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
       detach = true;
       detector = genericStartDetector;
-    } else if (typeof timeoutMs === 'boolean' && timeoutMs) {
+    } else if (
+      (typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) &&
+      timeoutMs
+    ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
@@ -245,10 +251,10 @@ export class SubProcess<
         setTimeout(() => resolve(), startDelay);
       }
 
-      if (typeof timeoutMs === 'number') {
+      if (typeof timeoutMs === 'number' || (timeoutMs as any) instanceof Number) {
         setTimeout(() => {
           reject(new Error(`The process did not start within ${timeoutMs}ms (cmd: '${this.rep}')`));
-        }, timeoutMs);
+        }, Number(timeoutMs));
       }
     }).finally(() => {
       if (detach && this.proc) {
@@ -345,8 +351,8 @@ export class SubProcess<
     const doEmit = (line: string) =>
       this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
-    if (typeof lines === 'string') {
-      doEmit(lines);
+    if (typeof lines === 'string' || (lines as any) instanceof String) {
+      doEmit(lines as string);
     } else {
       for (const line of lines) {
         doEmit(line);

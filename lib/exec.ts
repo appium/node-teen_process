@@ -63,12 +63,14 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     maxStderrBufferSize: MAX_BUFFER_SIZE,
   };
 
+  const normalizedOriginalOpts =
+    originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
   const definedOriginalOpts = Object.fromEntries(
-    Object.entries(originalOpts).filter(([, value]) => value !== undefined),
+    Object.entries(normalizedOriginalOpts).filter(([, value]) => value !== undefined),
   ) as Partial<T>;
   const opts = {...defaults, ...definedOriginalOpts} as T;
   const isBuffer = Boolean(opts.isBuffer);
-  const spawnOpts = buildSpawnOptions(opts, originalOpts);
+  const spawnOpts = buildSpawnOptions(opts, normalizedOriginalOpts);
 
   return await new Promise<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
     const proc = spawn(cmd, args, spawnOpts);
