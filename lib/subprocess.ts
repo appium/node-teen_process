@@ -133,7 +133,7 @@ export class SubProcess<
 
     if (
       (typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) &&
-      startDetector
+      Boolean(startDetector)
     ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
@@ -142,7 +142,7 @@ export class SubProcess<
       detector = genericStartDetector;
     } else if (
       (typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) &&
-      timeoutMs
+      Boolean(timeoutMs)
     ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
