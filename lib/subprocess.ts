@@ -67,13 +67,13 @@ export class SubProcess<
       throw new Error('Args must be an array');
     }
 
-    this.cmd = cmd;
+    this.cmd = String(cmd);
     this.args = args;
     this.proc = null;
     this.opts = opts ?? ({} as TSubProcessOptions);
     this.expectingExit = false;
 
-    this.rep = quote([cmd, ...args]);
+    this.rep = quote([String(cmd), ...args]);
   }
 
   get isRunning(): boolean {
