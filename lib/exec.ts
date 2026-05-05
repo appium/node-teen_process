@@ -94,7 +94,8 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }
 
       stream.on('error', (err: NodeJS.ErrnoException) => {
-        const capitalizedStreamType = streamType.charAt(0).toUpperCase() + streamType.slice(1).toUpperCase();
+        const capitalizedStreamType =
+          streamType.charAt(0).toUpperCase() + streamType.slice(1).toUpperCase();
         reject(new Error(`${capitalizedStreamType} '${err.syscall}' error: ${err.stack}`));
       });
 
