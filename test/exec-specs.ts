@@ -126,9 +126,9 @@ describe('exec', function () {
     const echo1 = 'my name is bob';
     const {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
     expect(stdout).to.not.be.a('string');
-    expect(Buffer.isBuffer(stdout)).to.be.true;
+    expect(stdout).to.be.instanceOf(Buffer);
     expect(stderr).to.not.be.a('string');
-    expect(Buffer.isBuffer(stderr)).to.be.true;
+    expect(stderr).to.be.instanceOf(Buffer);
     expect(code).to.equal(0);
   });
 
@@ -139,7 +139,7 @@ describe('exec', function () {
     it('should allow binary output', async function () {
       const {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
       expect(stdout).to.be.a('string');
-      expect(Buffer.isBuffer(stdout)).to.be.false;
+      expect(stdout).to.not.be.instanceOf(Buffer);
       const signature = Buffer.from(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
       expect(signature).to.eql(PNG_MAGIC);
     });
@@ -150,7 +150,7 @@ describe('exec', function () {
         isBuffer: true,
       });
       expect(stdout).to.not.be.a('string');
-      expect(Buffer.isBuffer(stdout)).to.be.true;
+      expect(stdout).to.be.instanceOf(Buffer);
       const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
       expect(signature).to.eql(PNG_MAGIC);
     });
@@ -161,7 +161,7 @@ describe('exec', function () {
       } catch (err: any) {
         const stdout = err.stdout;
         expect(stdout).to.be.a('string');
-        expect(Buffer.isBuffer(stdout)).to.be.false;
+        expect(stdout).to.not.be.instanceOf(Buffer);
       }
     });
 
@@ -175,7 +175,7 @@ describe('exec', function () {
       } catch (err: any) {
         const stdout = err.stdout;
         expect(stdout).to.not.be.a('string');
-        expect(Buffer.isBuffer(stdout)).to.be.true;
+        expect(stdout).to.be.instanceOf(Buffer);
       }
     });
   });

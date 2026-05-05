@@ -187,7 +187,7 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(Buffer.isBuffer(output[0])).to.be.true;
+      expect(output[0]).to.be.instanceOf(Buffer);
       expect(output[0].toString().trim()).to.eql('foo');
     });
     it('should get output by lines', async function () {
