@@ -63,14 +63,9 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     maxStderrBufferSize: MAX_BUFFER_SIZE,
   };
 
-  const normalizedOriginalOpts =
-    originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
-  const definedOriginalOpts = Object.fromEntries(
-    Object.entries(normalizedOriginalOpts).filter(([, value]) => value !== undefined),
-  ) as Partial<T>;
-  const opts = {...defaults, ...definedOriginalOpts} as T;
+  const opts = applyDefaults(defaults, originalOpts);
   const isBuffer = Boolean(opts.isBuffer);
-  const spawnOpts = buildSpawnOptions(opts, normalizedOriginalOpts);
+  const spawnOpts = buildSpawnOptions(opts, originalOpts);
 
   return await new Promise<TeenProcessExecResult<BufferProp<T>>>((resolve, reject) => {
     const proc = spawn(cmd, args, spawnOpts);
@@ -112,7 +107,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
 
       stream.on('data', (chunk: Buffer) => {
         buffer.add(chunk);
-        if (opts.logger?.debug && typeof opts.logger.debug === 'function') {
+        if (typeof opts.logger?.debug === 'function') {
           opts.logger.debug(chunk.toString());
         }
       });
@@ -165,6 +160,18 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }, opts.timeout);
     }
   });
+}
+
+function applyDefaults<T extends TeenProcessExecOptions>(
+  defaults: TeenProcessExecOptions,
+  originalOpts: T,
+): T {
+  const normalizedOriginalOpts =
+    originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
+  const definedOriginalOpts = Object.fromEntries(
+    Object.entries(normalizedOriginalOpts).filter(([, value]) => value !== undefined),
+  ) as Partial<T>;
+  return {...defaults, ...definedOriginalOpts} as T;
 }
 
 function buildSpawnOptions<T extends TeenProcessExecOptions>(opts: T, originalOpts: T) {
