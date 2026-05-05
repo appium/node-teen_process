@@ -1,7 +1,6 @@
 import path from 'node:path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
-import _ from 'lodash';
 import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
@@ -164,7 +163,7 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(_.isString(output[0])).to.be.true;
+      expect(typeof output[0]).to.equal('string');
       expect(output[0]).to.include('subproc-specs');
     });
     it('should get output as params with args', async function () {
@@ -188,7 +187,7 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(_.isBuffer(output[0])).to.be.true;
+      expect(Buffer.isBuffer(output[0])).to.be.true;
       expect(output[0].toString().trim()).to.eql('foo');
     });
     it('should get output by lines', async function () {

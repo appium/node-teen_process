@@ -2,7 +2,6 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import {quote} from 'shell-quote';
-import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
@@ -60,11 +59,11 @@ export class SubProcess<
       throw new Error('Command is required');
     }
 
-    if (!_.isString(cmd)) {
+    if (typeof cmd !== 'string') {
       throw new Error('Command must be a string');
     }
 
-    if (!_.isArray(args)) {
+    if (!Array.isArray(args)) {
       throw new Error('Args must be an array');
     }
 
@@ -125,20 +124,20 @@ export class SubProcess<
       detector = genericStartDetector;
     }
 
-    if (_.isNumber(startDetector)) {
+    if (typeof startDetector === 'number') {
       startDelay = startDetector;
       detector = null;
-    } else if (_.isFunction(startDetector)) {
+    } else if (typeof startDetector === 'function') {
       detector = startDetector;
     }
 
-    if (_.isBoolean(startDetector) && startDetector) {
+    if (typeof startDetector === 'boolean' && startDetector) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
       detach = true;
       detector = genericStartDetector;
-    } else if (_.isBoolean(timeoutMs) && timeoutMs) {
+    } else if (typeof timeoutMs === 'boolean' && timeoutMs) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
@@ -246,7 +245,7 @@ export class SubProcess<
         setTimeout(() => resolve(), startDelay);
       }
 
-      if (_.isNumber(timeoutMs)) {
+      if (typeof timeoutMs === 'number') {
         setTimeout(() => {
           reject(new Error(`The process did not start within ${timeoutMs}ms (cmd: '${this.rep}')`));
         }, timeoutMs);
@@ -346,7 +345,7 @@ export class SubProcess<
     const doEmit = (line: string) =>
       this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
-    if (_.isString(lines)) {
+    if (typeof lines === 'string') {
       doEmit(lines);
     } else {
       for (const line of lines) {
