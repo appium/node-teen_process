@@ -1,3 +1,9 @@
+## [4.1.3](https://github.com/appium/node-teen_process/compare/v4.1.2...v4.1.3) (2026-05-06)
+
+### Miscellaneous Chores
+
+* replace lodash with native utilities ([#476](https://github.com/appium/node-teen_process/issues/476)) ([2f976f4](https://github.com/appium/node-teen_process/commit/2f976f48c625acf58284f50c28cd17ce01bc2581))
+
 ## [4.1.2](https://github.com/appium/node-teen_process/compare/v4.1.1...v4.1.2) (2026-04-25)
 
 ### Bug Fixes
