@@ -1,7 +1,6 @@
 import path from 'node:path';
 import {exec} from '../lib';
 import {getFixture} from './helpers';
-import _ from 'lodash';
 import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
@@ -126,10 +125,10 @@ describe('exec', function () {
     const cmd = getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
-    expect(_.isString(stdout)).to.be.false;
-    expect(_.isBuffer(stdout)).to.be.true;
-    expect(_.isString(stderr)).to.be.false;
-    expect(_.isBuffer(stderr)).to.be.true;
+    expect(stdout).to.not.be.a('string');
+    expect(stdout).to.be.instanceOf(Buffer);
+    expect(stderr).to.not.be.a('string');
+    expect(stderr).to.be.instanceOf(Buffer);
     expect(code).to.equal(0);
   });
 
@@ -139,8 +138,8 @@ describe('exec', function () {
 
     it('should allow binary output', async function () {
       const {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
-      expect(_.isString(stdout)).to.be.true;
-      expect(_.isBuffer(stdout)).to.be.false;
+      expect(stdout).to.be.a('string');
+      expect(stdout).to.not.be.instanceOf(Buffer);
       const signature = Buffer.from(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
       expect(signature).to.eql(PNG_MAGIC);
     });
@@ -150,8 +149,8 @@ describe('exec', function () {
         encoding: 'binary',
         isBuffer: true,
       });
-      expect(_.isString(stdout)).to.be.false;
-      expect(_.isBuffer(stdout)).to.be.true;
+      expect(stdout).to.not.be.a('string');
+      expect(stdout).to.be.instanceOf(Buffer);
       const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
       expect(signature).to.eql(PNG_MAGIC);
     });
@@ -161,8 +160,8 @@ describe('exec', function () {
         await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
       } catch (err: any) {
         const stdout = err.stdout;
-        expect(_.isString(stdout)).to.be.true;
-        expect(_.isBuffer(stdout)).to.be.false;
+        expect(stdout).to.be.a('string');
+        expect(stdout).to.not.be.instanceOf(Buffer);
       }
     });
 
@@ -175,8 +174,8 @@ describe('exec', function () {
         });
       } catch (err: any) {
         const stdout = err.stdout;
-        expect(_.isString(stdout)).to.be.false;
-        expect(_.isBuffer(stdout)).to.be.true;
+        expect(stdout).to.not.be.a('string');
+        expect(stdout).to.be.instanceOf(Buffer);
       }
     });
   });

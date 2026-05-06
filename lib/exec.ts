@@ -1,6 +1,5 @@
 import {spawn} from 'node:child_process';
 import {quote} from 'shell-quote';
-import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
 import type {
@@ -64,7 +63,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     maxStderrBufferSize: MAX_BUFFER_SIZE,
   };
 
-  const opts = _.defaults({}, originalOpts, defaults) as T;
+  const opts = applyDefaults(defaults, originalOpts);
   const isBuffer = Boolean(opts.isBuffer);
   const spawnOpts = buildSpawnOptions(opts, originalOpts);
 
@@ -95,7 +94,9 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }
 
       stream.on('error', (err: NodeJS.ErrnoException) => {
-        reject(new Error(`${_.capitalize(streamType)} '${err.syscall}' error: ${err.stack}`));
+        const capitalizedStreamType =
+          streamType.charAt(0).toUpperCase() + streamType.slice(1).toLowerCase();
+        reject(new Error(`${capitalizedStreamType} '${err.syscall}' error: ${err.stack}`));
       });
 
       if (opts.ignoreOutput) {
@@ -106,7 +107,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
 
       stream.on('data', (chunk: Buffer) => {
         buffer.add(chunk);
-        if (opts.logger?.debug && _.isFunction(opts.logger.debug)) {
+        if (typeof opts.logger?.debug === 'function') {
           opts.logger.debug(chunk.toString());
         }
       });
@@ -159,6 +160,18 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }, opts.timeout);
     }
   });
+}
+
+function applyDefaults<T extends TeenProcessExecOptions>(
+  defaults: TeenProcessExecOptions,
+  originalOpts: T,
+): T {
+  const normalizedOriginalOpts =
+    originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
+  const definedOriginalOpts = Object.fromEntries(
+    Object.entries(normalizedOriginalOpts).filter(([, value]) => value !== undefined),
+  ) as Partial<T>;
+  return {...defaults, ...definedOriginalOpts} as T;
 }
 
 function buildSpawnOptions<T extends TeenProcessExecOptions>(opts: T, originalOpts: T) {

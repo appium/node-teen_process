@@ -2,7 +2,6 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import {quote} from 'shell-quote';
-import _ from 'lodash';
 import {formatEnoent} from './helpers';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
@@ -60,21 +59,21 @@ export class SubProcess<
       throw new Error('Command is required');
     }
 
-    if (!_.isString(cmd)) {
+    if (typeof cmd !== 'string' && !((cmd as any) instanceof String)) {
       throw new Error('Command must be a string');
     }
 
-    if (!_.isArray(args)) {
+    if (!Array.isArray(args)) {
       throw new Error('Args must be an array');
     }
 
-    this.cmd = cmd;
+    this.cmd = String(cmd);
     this.args = args;
     this.proc = null;
     this.opts = opts ?? ({} as TSubProcessOptions);
     this.expectingExit = false;
 
-    this.rep = quote([cmd, ...args]);
+    this.rep = quote([String(cmd), ...args]);
   }
 
   get isRunning(): boolean {
@@ -125,20 +124,26 @@ export class SubProcess<
       detector = genericStartDetector;
     }
 
-    if (_.isNumber(startDetector)) {
-      startDelay = startDetector;
+    if (typeof startDetector === 'number' || (startDetector as any) instanceof Number) {
+      startDelay = Number(startDetector);
       detector = null;
-    } else if (_.isFunction(startDetector)) {
+    } else if (typeof startDetector === 'function') {
       detector = startDetector;
     }
 
-    if (_.isBoolean(startDetector) && startDetector) {
+    if (
+      (typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) &&
+      Boolean(startDetector)
+    ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
       detach = true;
       detector = genericStartDetector;
-    } else if (_.isBoolean(timeoutMs) && timeoutMs) {
+    } else if (
+      (typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) &&
+      Boolean(timeoutMs)
+    ) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
@@ -246,10 +251,10 @@ export class SubProcess<
         setTimeout(() => resolve(), startDelay);
       }
 
-      if (_.isNumber(timeoutMs)) {
+      if (typeof timeoutMs === 'number' || (timeoutMs as any) instanceof Number) {
         setTimeout(() => {
           reject(new Error(`The process did not start within ${timeoutMs}ms (cmd: '${this.rep}')`));
-        }, timeoutMs);
+        }, Number(timeoutMs));
       }
     }).finally(() => {
       if (detach && this.proc) {
@@ -346,8 +351,8 @@ export class SubProcess<
     const doEmit = (line: string) =>
       this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
-    if (_.isString(lines)) {
-      doEmit(lines);
+    if (typeof lines === 'string' || (lines as any) instanceof String) {
+      doEmit(lines as string);
     } else {
       for (const line of lines) {
         doEmit(line);
