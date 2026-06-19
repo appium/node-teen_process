@@ -1,3 +1,9 @@
+## [4.1.5](https://github.com/appium/node-teen_process/compare/v4.1.4...v4.1.5) (2026-06-19)
+
+### Miscellaneous Chores
+
+* **deps:** bump actions/checkout from 6 to 7 ([#478](https://github.com/appium/node-teen_process/issues/478)) ([99341ac](https://github.com/appium/node-teen_process/commit/99341acf0200a9a58c569aa3e35ddd45005a5d5d))
+
 ## [4.1.4](https://github.com/appium/node-teen_process/compare/v4.1.3...v4.1.4) (2026-06-19)
 
 ### Miscellaneous Chores
