@@ -1,3 +1,5 @@
+## [4.1.6](https://github.com/appium/node-teen_process/compare/v4.1.5...v4.1.6) (2026-06-29)
+
 ## [4.1.5](https://github.com/appium/node-teen_process/compare/v4.1.4...v4.1.5) (2026-06-19)
 
 ### Miscellaneous Chores
