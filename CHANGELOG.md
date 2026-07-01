@@ -1,3 +1,9 @@
+## [4.1.7](https://github.com/appium/node-teen_process/compare/v4.1.6...v4.1.7) (2026-07-01)
+
+### Miscellaneous Chores
+
+* downgrade conventional-changelog-conventionalcommits to v9 ([#480](https://github.com/appium/node-teen_process/issues/480)) ([40f8259](https://github.com/appium/node-teen_process/commit/40f825978121f9755e816e50a7e46c170067b76c))
+
 ## [4.1.6](https://github.com/appium/node-teen_process/compare/v4.1.5...v4.1.6) (2026-06-29)
 
 ## [4.1.5](https://github.com/appium/node-teen_process/compare/v4.1.4...v4.1.5) (2026-06-19)
