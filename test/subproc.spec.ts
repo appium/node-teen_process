@@ -395,7 +395,12 @@ describe('SubProcess', function () {
         detached: true,
       });
       await s.start();
-      s.detachProcess();
+      try {
+        s.detachProcess();
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      } finally {
+        await s.stop();
+      }
     });
 
     it('should throw error if called when process not started detached', async function () {
