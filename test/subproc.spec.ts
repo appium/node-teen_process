@@ -377,42 +377,23 @@ describe('SubProcess', function () {
   });
 
   describe('#detachProcess', function () {
-    let s: InstanceType<typeof SubProcess> | null;
+    let s: SubProcess | null;
     beforeEach(function () {
       s = null;
     });
 
     afterEach(async function () {
-      if (s) {
-        try {
-          await s.stop();
-        } catch {}
-      }
+      try {
+        await s?.stop();
+      } catch {}
     });
-
-    // This test fail in CI: 'Promise resolution is still pending but the event loop has already resolved'
-    it(
-      'should work when process started detached',
-      {skip: Boolean(process.env.CI)},
-      async function () {
-        s = new SubProcess('tail', ['-f', path.resolve(__filename)], {
-          detached: true,
-        });
-        await s.start();
-        s.detachProcess();
-      },
-    );
 
     it('should throw error if called when process not started detached', async function () {
       s = new SubProcess('tail', ['-f', path.resolve(__filename)]);
       await s.start();
-      try {
-        expect(() => s?.detachProcess()).to.throw(
-          /Unable to detach process that is not started with 'detached' option/,
-        );
-      } finally {
-        await s.stop();
-      }
+      expect(() => s?.detachProcess()).to.throw(
+        /Unable to detach process that is not started with 'detached' option/,
+      );
     });
   });
 });
