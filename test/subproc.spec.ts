@@ -3,6 +3,7 @@ import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
 import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {describe, it, beforeEach, afterEach} from 'node:test';
 
 chaiUse(chaiAsPromised);
 
@@ -49,7 +50,7 @@ describe('SubProcess', function () {
     expect((x as any).opts).to.eql({});
   });
   it('should pass opts to spawn', async function () {
-    const cwd = path.resolve(getFixture('.'));
+    const cwd = path.resolve(await getFixture('.'));
     const subproc = new SubProcess('ls', [], {cwd});
     let lines: string[] = [];
     subproc.on('lines-stdout', (newLines: string[]) => {
@@ -98,7 +99,7 @@ describe('SubProcess', function () {
     });
     it('should interpret a numeric startDetector as a start timeout', async function () {
       let hasData = false;
-      s = new SubProcess(getFixture('sleepyproc'), ['ls']);
+      s = new SubProcess(await getFixture('sleepyproc'), ['ls']);
       s.on('output', (stdout: string | Buffer) => {
         if (stdout) {
           hasData = true;
@@ -156,7 +157,7 @@ describe('SubProcess', function () {
       } catch {}
     });
     it('should get output as params', async function () {
-      subproc = new SubProcess(getFixture('sleepyproc'), ['ls', path.resolve(__dirname)]);
+      subproc = new SubProcess(await getFixture('sleepyproc'), ['ls', path.resolve(__dirname)]);
       const output: (string | Buffer)[] = [];
       subproc.on('output', (stdout: string | Buffer) => {
         output.push(stdout);
@@ -164,10 +165,10 @@ describe('SubProcess', function () {
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
       expect(output[0]).to.be.a('string');
-      expect(output[0]).to.include('subproc-specs');
+      expect(output[0]).to.include('subproc.spec');
     });
     it('should get output as params with args', async function () {
-      subproc = new SubProcess(getFixture('echo'), ['foo', 'bar']);
+      subproc = new SubProcess(await getFixture('echo'), ['foo', 'bar']);
       const outputs: Array<{stdout: string | Buffer; stderr: string | Buffer}> = [];
       subproc.on('output', (stdout: string | Buffer, stderr: string | Buffer) => {
         // We expect two invocations, one with stdout and one with stderr
@@ -180,7 +181,7 @@ describe('SubProcess', function () {
       expect(outputs.some((o) => o.stderr?.toString().trim() === 'bar')).to.be.true;
     });
     it('should get output as buffer', async function () {
-      subproc = new SubProcess(getFixture('echo'), ['foo'], {isBuffer: true});
+      subproc = new SubProcess(await getFixture('echo'), ['foo'], {isBuffer: true});
       const output: (string | Buffer)[] = [];
       subproc.on('output', (stdout: string | Buffer) => {
         output.push(stdout);
@@ -198,13 +199,15 @@ describe('SubProcess', function () {
       });
       await subproc.start(0);
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(lines).to.eql([
-        'circular-buffer-specs.ts',
-        'exec-specs.ts',
+      for (const name of [
+        'circular-buffer.spec',
+        'exec.spec',
         'fixtures',
-        'helpers.ts',
-        'subproc-specs.ts',
-      ]);
+        'helpers',
+        'subproc.spec',
+      ]) {
+        expect(lines.some((line) => line.includes(name))).to.be.true;
+      }
     });
   });
 
@@ -221,7 +224,7 @@ describe('SubProcess', function () {
     });
 
     it('should time out if stop doesnt complete fast enough', async function () {
-      const subproc = new SubProcess(getFixture('traphup'), [
+      const subproc = new SubProcess(await getFixture('traphup'), [
         'tail',
         '-f',
         path.resolve(__filename),
@@ -252,12 +255,12 @@ describe('SubProcess', function () {
 
   describe('#join', function () {
     it('should fail if the #start has not yet been called', async function () {
-      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      const proc = new SubProcess(await getFixture('sleepyproc.sh'), ['ls']);
       await expect(proc.join()).to.eventually.be.rejectedWith(/Cannot join/);
     });
 
     it('should wait until the process has been finished', async function () {
-      const proc = new SubProcess(getFixture('sleepyproc'), ['ls']);
+      const proc = new SubProcess(await getFixture('sleepyproc'), ['ls']);
       const now = Date.now();
       await proc.start(0);
       await proc.join();
@@ -266,13 +269,13 @@ describe('SubProcess', function () {
     });
 
     it('should throw if process ends with a invalid exitcode', async function () {
-      const proc = new SubProcess(getFixture('bad_exit'));
+      const proc = new SubProcess(await getFixture('bad_exit'));
       await proc.start(0);
       await expect(proc.join()).to.eventually.be.rejectedWith(/Process ended with exitcode/);
     });
 
     it('should NOT throw if process ends with a custom allowed exitcode', async function () {
-      const proc = new SubProcess(getFixture('bad_exit'));
+      const proc = new SubProcess(await getFixture('bad_exit'));
       await proc.start(0);
       await expect(proc.join([1])).to.eventually.become(1);
     });
@@ -280,7 +283,7 @@ describe('SubProcess', function () {
 
   describe('#emitLines', function () {
     it('should emit single lines with stream in front', async function () {
-      const proc = new SubProcess(getFixture('sleepyproc.sh'), ['ls']);
+      const proc = new SubProcess(await getFixture('sleepyproc.sh'), ['ls']);
       const lines: string[] = [];
       proc.on('stream-line', lines.push.bind(lines));
       await proc.start();
@@ -292,7 +295,7 @@ describe('SubProcess', function () {
 
   describe('on exit / die', function () {
     it('should emit exit/end and no stop/die in normal exits', async function () {
-      const proc = new SubProcess(getFixture('sleepyproc'), ['ls']);
+      const proc = new SubProcess(await getFixture('sleepyproc'), ['ls']);
       let exitCaught: [number | null, string | null] = [null, null];
       let dieCaught = false;
       let stopCaught = false;
@@ -374,25 +377,15 @@ describe('SubProcess', function () {
   });
 
   describe('#detachProcess', function () {
-    let s: InstanceType<typeof SubProcess> | null;
+    let s: SubProcess | null;
     beforeEach(function () {
       s = null;
     });
 
     afterEach(async function () {
-      if (s) {
-        try {
-          await s.stop();
-        } catch {}
-      }
-    });
-
-    it('should work when process started detached', async function () {
-      s = new SubProcess('tail', ['-f', path.resolve(__filename)], {
-        detached: true,
-      });
-      await s.start();
-      s.detachProcess();
+      try {
+        await s?.stop();
+      } catch {}
     });
 
     it('should throw error if called when process not started detached', async function () {

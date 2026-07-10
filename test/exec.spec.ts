@@ -3,6 +3,7 @@ import {exec} from '../lib';
 import {getFixture} from './helpers';
 import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {describe, it, type TestContext} from 'node:test';
 
 chaiUse(chaiAsPromised);
 
@@ -11,7 +12,7 @@ describe('exec', function () {
     const cmd = 'ls';
     const args = [__dirname];
     const {stdout, stderr, code} = await exec(cmd, args);
-    expect(stdout).to.contain('exec-specs');
+    expect(stdout).to.contain('exec.spec');
     expect(stderr).to.equal('');
     expect(code).to.equal(0);
   });
@@ -21,7 +22,7 @@ describe('exec', function () {
   });
 
   it('should throw an error with a bad exit code', async function () {
-    const cmd = getFixture('bad_exit');
+    const cmd = await getFixture('bad_exit');
     let err: any;
     try {
       await exec(cmd);
@@ -35,7 +36,7 @@ describe('exec', function () {
   });
 
   it('should work with spaces in arguments', async function () {
-    const cmd = getFixture('echo');
+    const cmd = await getFixture('echo');
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -45,7 +46,7 @@ describe('exec', function () {
   });
 
   it('should work with backslashes in arguments', async function () {
-    const cmd = getFixture('echo');
+    const cmd = await getFixture('echo');
     const echo1 = 'my\\ name\\ is\\ bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -55,7 +56,7 @@ describe('exec', function () {
   });
 
   it('should work with spaces in commands', async function () {
-    const cmd = getFixture('echo with space');
+    const cmd = await getFixture('echo with space');
     const echo1 = 'bobbob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -65,7 +66,7 @@ describe('exec', function () {
   });
 
   it('should work with spaces in commands and arguments', async function () {
-    const cmd = getFixture('echo with space');
+    const cmd = await getFixture('echo with space');
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
@@ -78,7 +79,7 @@ describe('exec', function () {
     const cmd = process.platform === 'win32' ? 'echo.bat' : './echo.sh';
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
-    const cwd = path.dirname(getFixture('echo'));
+    const cwd = path.dirname(await getFixture('echo'));
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2], {cwd});
     expect(stdout.trim()).to.equal(echo1);
     expect(stderr.trim()).to.equal(echo2);
@@ -86,7 +87,7 @@ describe('exec', function () {
   });
 
   it('should respect env', async function () {
-    const cmd = getFixture('env');
+    const cmd = await getFixture('env');
     const env = {FOO: 'lolol'};
     const {stdout, code} = await exec(cmd, [], {env});
     expect(stdout.trim()).to.equal(`${env.FOO} ${env.FOO}`);
@@ -107,14 +108,13 @@ describe('exec', function () {
     expect(err.message).to.contain(cmd);
   });
 
-  it('should allow large amounts of output', async function () {
-    this.timeout(24000);
-    const {stdout} = await exec(getFixture('bigbuffer.js'));
+  it('should allow large amounts of output', {timeout: 24000}, async function () {
+    const {stdout} = await exec(await getFixture('bigbuffer.js'));
     expect(stdout.length).to.be.above(512 * 1024);
   });
 
   it('should ignore output if requested', async function () {
-    const cmd = getFixture('echo.sh');
+    const cmd = await getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
     expect(stdout).to.equal('');
@@ -122,7 +122,7 @@ describe('exec', function () {
   });
 
   it('should return a Buffer if requested', async function () {
-    const cmd = getFixture('echo.sh');
+    const cmd = await getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
     expect(stdout).to.not.be.a('string');
@@ -137,7 +137,9 @@ describe('exec', function () {
     const PNG_MAGIC_LENGTH = 4;
 
     it('should allow binary output', async function () {
-      const {stdout} = await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary'});
+      const {stdout} = await exec('cat', [await getFixture('screenshot.png')], {
+        encoding: 'binary',
+      });
       expect(stdout).to.be.a('string');
       expect(stdout).to.not.be.instanceOf(Buffer);
       const signature = Buffer.from(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
@@ -145,7 +147,7 @@ describe('exec', function () {
     });
 
     it('should allow binary output as Buffer', async function () {
-      const {stdout} = await exec('cat', [getFixture('screenshot.png')], {
+      const {stdout} = await exec('cat', [await getFixture('screenshot.png')], {
         encoding: 'binary',
         isBuffer: true,
       });
@@ -157,7 +159,7 @@ describe('exec', function () {
 
     it('should allow binary output from timeout', async function () {
       try {
-        await exec('cat', [getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
+        await exec('cat', [await getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
       } catch (err: any) {
         const stdout = err.stdout;
         expect(stdout).to.be.a('string');
@@ -167,7 +169,7 @@ describe('exec', function () {
 
     it('should allow binary output as Buffer from timeout', async function () {
       try {
-        await exec('cat', [getFixture('screenshot.png')], {
+        await exec('cat', [await getFixture('screenshot.png')], {
           encoding: 'binary',
           timeout: 1,
           isBuffer: true,
@@ -180,31 +182,31 @@ describe('exec', function () {
     });
   });
 
-  it('[manual] should be able to run command as non-sudo user when parent runs as sudo', async function () {
-    if (process.platform === 'win32' || process.env.CI !== undefined) {
-      this.skip();
-    }
+  it(
+    '[manual] should be able to run command as non-sudo user when parent runs as sudo',
+    {skip: process.platform === 'win32' || process.env.CI},
+    async function (ctx: TestContext) {
+      if (!process.getuid || process.getuid() !== 0) {
+        return ctx.skip();
+      }
 
-    if (!process.getuid || process.getuid() !== 0) {
-      this.skip();
-    }
+      const sudoUid = process.env.SUDO_UID;
+      const sudoGid = process.env.SUDO_GID;
+      if (!sudoUid || !sudoGid) {
+        return ctx.skip();
+      }
 
-    const sudoUid = process.env.SUDO_UID;
-    const sudoGid = process.env.SUDO_GID;
-    if (!sudoUid || !sudoGid) {
-      this.skip();
-    }
+      const targetUid = Number(sudoUid);
+      const targetGid = Number(sudoGid);
+      const {stdout, code} = await exec('id', ['-u'], {
+        uid: targetUid,
+        gid: targetGid,
+        stdio: 'pipe',
+      });
 
-    const targetUid = Number(sudoUid);
-    const targetGid = Number(sudoGid);
-    const {stdout, code} = await exec('id', ['-u'], {
-      uid: targetUid,
-      gid: targetGid,
-      stdio: 'pipe',
-    });
-
-    expect(code).to.equal(0);
-    expect(stdout.trim()).to.equal(String(targetUid));
-    expect(targetUid).to.not.equal(0);
-  });
+      expect(code).to.equal(0);
+      expect(stdout.trim()).to.equal(String(targetUid));
+      expect(targetUid).to.not.equal(0);
+    },
+  );
 });
