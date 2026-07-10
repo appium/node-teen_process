@@ -187,7 +187,7 @@ describe('exec', function () {
     {skip: process.platform === 'win32' || process.env.CI},
     async function (ctx: TestContext) {
       if (!process.getuid || process.getuid() !== 0) {
-        return;
+        return ctx.skip();
       }
 
       const sudoUid = process.env.SUDO_UID;
