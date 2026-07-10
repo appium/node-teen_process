@@ -1,6 +1,7 @@
 import {CircularBuffer} from '../lib/circular-buffer';
 import {use as chaiUse, expect} from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import {describe, it} from 'node:test';
 
 chaiUse(chaiAsPromised);
 
