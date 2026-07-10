@@ -1,3 +1,9 @@
+## [4.1.8](https://github.com/appium/node-teen_process/compare/v4.1.7...v4.1.8) (2026-07-10)
+
+### Miscellaneous Chores
+
+* Drop mocha ([#484](https://github.com/appium/node-teen_process/issues/484)) ([74b9605](https://github.com/appium/node-teen_process/commit/74b960523cd730f8478eb02229176099cd22ee64))
+
 ## [4.1.7](https://github.com/appium/node-teen_process/compare/v4.1.6...v4.1.7) (2026-07-01)
 
 ### Miscellaneous Chores
