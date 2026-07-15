@@ -1,3 +1,9 @@
+## [4.1.9](https://github.com/appium/node-teen_process/compare/v4.1.8...v4.1.9) (2026-07-15)
+
+### Miscellaneous Chores
+
+* **deps:** bump actions/setup-node from 6 to 7 ([#485](https://github.com/appium/node-teen_process/issues/485)) ([254bbe7](https://github.com/appium/node-teen_process/commit/254bbe755ed4b3816a750a9b2141782209d5483c))
+
 ## [4.1.8](https://github.com/appium/node-teen_process/compare/v4.1.7...v4.1.8) (2026-07-10)
 
 ### Miscellaneous Chores
