@@ -9,5 +9,6 @@
   "include": [
     "lib",
     "test"
-  ]
+  ],
+  "exclude": ["test/*.cjs"]
 }

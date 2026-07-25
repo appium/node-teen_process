@@ -1,8 +1,12 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import {exec, SubProcess} from '../lib';
-import {getFixture} from './helpers';
+import {fileURLToPath} from 'node:url';
+import {exec, SubProcess} from '../lib/index.js';
+import {getFixture} from './helpers.js';
 import {describe, it, beforeEach, afterEach} from 'node:test';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Windows doesn't understand SIGHUP
 const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';

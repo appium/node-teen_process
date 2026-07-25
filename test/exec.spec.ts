@@ -1,8 +1,11 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
-import {exec} from '../lib';
-import {getFixture} from './helpers';
+import {fileURLToPath} from 'node:url';
+import {exec} from '../lib/index.js';
+import {getFixture} from './helpers.js';
 import {describe, it, type TestContext} from 'node:test';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 describe('exec', function () {
   it('should work with arguments like spawn', async function () {

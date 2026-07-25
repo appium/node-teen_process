@@ -8,6 +8,9 @@ arguments so we don't have to care about escaping spaces. It can also return
 stdout/stderr even when the command fails, or times out. Importantly, it's also
 not susceptible to max buffer issues.
 
+Published as both ESM and CommonJS, so `import {exec} from 'teen_process'` and
+`const {exec} = require('teen_process')` both work.
+
 ## teen_process.exec
 
 Examples:

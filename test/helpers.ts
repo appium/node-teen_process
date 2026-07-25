@@ -1,5 +1,6 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
 
 let moduleRoot: string | null = null;
 
@@ -16,7 +17,7 @@ export async function getFixture(fix: string): Promise<string> {
 }
 
 async function getModuleRoot(): Promise<string> {
-  let currentDir = path.dirname(path.resolve(__filename));
+  let currentDir = path.dirname(fileURLToPath(import.meta.url));
   let isAtFsRoot = false;
   while (!isAtFsRoot) {
     const manifestPath = path.join(currentDir, 'package.json');
