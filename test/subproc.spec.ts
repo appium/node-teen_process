@@ -1,53 +1,50 @@
+import assert from 'node:assert/strict';
 import path from 'node:path';
 import {exec, SubProcess} from '../lib';
 import {getFixture} from './helpers';
-import {use as chaiUse, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import {describe, it, beforeEach, afterEach} from 'node:test';
-
-chaiUse(chaiAsPromised);
 
 // Windows doesn't understand SIGHUP
 const stopSignal = process.platform === 'win32' ? 'SIGTERM' : 'SIGHUP';
 
 describe('SubProcess', function () {
   it('should throw an error if initialized without a command', function () {
-    expect(() => {
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess();
-    }).to.throw();
+    });
   });
   it('should throw an error if initialized with a bad command', function () {
-    expect(() => {
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess({lol: true});
-    }).to.throw();
-    expect(() => {
+    });
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess(1);
-    }).to.throw();
+    });
   });
   it('should throw an error if initialized with bad args', function () {
-    expect(() => {
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess('ls', 'foo');
-    }).to.throw();
-    expect(() => {
+    });
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess('ls', 1);
-    }).to.throw();
-    expect(() => {
+    });
+    assert.throws(() => {
       // @ts-expect-error - testing invalid input
       new SubProcess('ls', {});
-    }).to.throw();
+    });
   });
   it('should default args list to []', function () {
     const x = new SubProcess('ls');
-    expect((x as any).args).to.eql([]);
+    assert.deepStrictEqual((x as any).args, []);
   });
   it('should default opts dict to {}', function () {
     const x = new SubProcess('ls');
-    expect((x as any).opts).to.eql({});
+    assert.deepStrictEqual((x as any).opts, {});
   });
   it('should pass opts to spawn', async function () {
     const cwd = path.resolve(await getFixture('.'));
@@ -58,9 +55,9 @@ describe('SubProcess', function () {
     });
     await subproc.start(0);
     await new Promise((resolve) => setTimeout(resolve, 50));
-    expect(lines).to.include('bad_exit.sh');
-    expect(lines).to.contain('bigbuffer.js');
-    expect(lines).to.contain('echo.sh');
+    assert.ok(lines.includes('bad_exit.sh'));
+    assert.ok(lines.includes('bigbuffer.js'));
+    assert.ok(lines.includes('echo.sh'));
     try {
       // possible, but unlikely, that this is still running
       await subproc.stop();
@@ -84,7 +81,7 @@ describe('SubProcess', function () {
 
     it('should throw an error if command fails on startup', async function () {
       s = new SubProcess('blargimarg');
-      await expect(s.start()).to.eventually.be.rejectedWith(/not found/i);
+      await assert.rejects(s.start(), /not found/i);
     });
     it('should have a default startDetector of waiting for output', async function () {
       let hasData = false;
@@ -95,7 +92,7 @@ describe('SubProcess', function () {
         }
       });
       await s.start();
-      expect(hasData).to.be.true;
+      assert.strictEqual(hasData, true);
     });
     it('should interpret a numeric startDetector as a start timeout', async function () {
       let hasData = false;
@@ -106,13 +103,13 @@ describe('SubProcess', function () {
         }
       });
       await s.start(0);
-      expect(hasData).to.be.false;
+      assert.strictEqual(hasData, false);
       await new Promise((resolve) => setTimeout(resolve, 1200));
-      expect(hasData).to.be.true;
+      assert.strictEqual(hasData, true);
     });
     it('should fail even with a start timeout of 0 when command is bad', async function () {
       s = new SubProcess('blargimarg');
-      await expect(s.start(0)).to.eventually.be.rejected;
+      await assert.rejects(s.start(0));
     });
     it('should be able to provide a custom startDetector function', async function () {
       const sd = (stdout: string | Buffer) => stdout;
@@ -124,14 +121,14 @@ describe('SubProcess', function () {
         }
       });
       await s.start(sd);
-      expect(hasData).to.be.true;
+      assert.strictEqual(hasData, true);
     });
     it('should pass on custom errors from startDetector', async function () {
       const sd = () => {
         throw new Error('foo');
       };
       s = new SubProcess('ls');
-      await expect(s.start(sd)).to.eventually.be.rejectedWith(/foo/);
+      await assert.rejects(s.start(sd), /foo/);
     });
     it('should time out starts that take longer than specified ms', async function () {
       const sd = (stdout: string | Buffer) => {
@@ -142,8 +139,8 @@ describe('SubProcess', function () {
       };
       s = new SubProcess('ls');
       const start = Date.now();
-      await expect(s.start(sd, 500)).to.eventually.be.rejectedWith(/process did not start within/i);
-      expect(Date.now() - start).to.be.below(600);
+      await assert.rejects(s.start(sd, 500), /process did not start within/i);
+      assert.ok(Date.now() - start < 600);
     });
   });
 
@@ -164,8 +161,8 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(output[0]).to.be.a('string');
-      expect(output[0]).to.include('subproc.spec');
+      assert.strictEqual(typeof output[0], 'string');
+      assert.ok((output[0] as string).includes('subproc.spec'));
     });
     it('should get output as params with args', async function () {
       subproc = new SubProcess(await getFixture('echo'), ['foo', 'bar']);
@@ -176,9 +173,15 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(outputs.length).to.be.above(0);
-      expect(outputs.some((o) => o.stdout?.toString().trim() === 'foo')).to.be.true;
-      expect(outputs.some((o) => o.stderr?.toString().trim() === 'bar')).to.be.true;
+      assert.ok(outputs.length > 0);
+      assert.strictEqual(
+        outputs.some((o) => o.stdout?.toString().trim() === 'foo'),
+        true,
+      );
+      assert.strictEqual(
+        outputs.some((o) => o.stderr?.toString().trim() === 'bar'),
+        true,
+      );
     });
     it('should get output as buffer', async function () {
       subproc = new SubProcess(await getFixture('echo'), ['foo'], {isBuffer: true});
@@ -188,8 +191,8 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 50));
-      expect(output[0]).to.be.instanceOf(Buffer);
-      expect(output[0].toString().trim()).to.eql('foo');
+      assert.ok(output[0] instanceof Buffer);
+      assert.strictEqual(output[0].toString().trim(), 'foo');
     });
     it('should get output by lines', async function () {
       subproc = new SubProcess('ls', [path.resolve(__dirname)]);
@@ -206,7 +209,10 @@ describe('SubProcess', function () {
         'helpers',
         'subproc.spec',
       ]) {
-        expect(lines.some((line) => line.includes(name))).to.be.true;
+        assert.strictEqual(
+          lines.some((line) => line.includes(name)),
+          true,
+        );
       }
     });
   });
@@ -220,7 +226,7 @@ describe('SubProcess', function () {
       });
       await subproc.start();
       await subproc.stop(stopSignal);
-      expect(exitSignal!).to.eql(stopSignal);
+      assert.strictEqual(exitSignal!, stopSignal);
     });
 
     it('should time out if stop doesnt complete fast enough', async function () {
@@ -230,7 +236,7 @@ describe('SubProcess', function () {
         path.resolve(__filename),
       ]);
       await subproc.start();
-      await expect(subproc.stop(stopSignal, 1)).to.eventually.be.rejectedWith(/Process didn't end/);
+      await assert.rejects(subproc.stop(stopSignal, 1), /Process didn't end/);
 
       // need to kill the process
       // 1 for the trap, 1 for the tail
@@ -246,17 +252,17 @@ describe('SubProcess', function () {
 
     it('should error if there is no process to stop', async function () {
       const subproc = new SubProcess('ls');
-      await expect(subproc.stop()).to.eventually.be.rejectedWith(/Can't stop/);
+      await assert.rejects(subproc.stop(), /Can't stop/);
       await subproc.start();
       await new Promise((resolve) => setTimeout(resolve, 10));
-      await expect(subproc.stop()).to.eventually.be.rejectedWith(/Can't stop/);
+      await assert.rejects(subproc.stop(), /Can't stop/);
     });
   });
 
   describe('#join', function () {
     it('should fail if the #start has not yet been called', async function () {
       const proc = new SubProcess(await getFixture('sleepyproc.sh'), ['ls']);
-      await expect(proc.join()).to.eventually.be.rejectedWith(/Cannot join/);
+      await assert.rejects(proc.join(), /Cannot join/);
     });
 
     it('should wait until the process has been finished', async function () {
@@ -265,19 +271,19 @@ describe('SubProcess', function () {
       await proc.start(0);
       await proc.join();
       const diff = Date.now() - now;
-      expect(diff).to.be.above(1000);
+      assert.ok(diff > 1000);
     });
 
     it('should throw if process ends with a invalid exitcode', async function () {
       const proc = new SubProcess(await getFixture('bad_exit'));
       await proc.start(0);
-      await expect(proc.join()).to.eventually.be.rejectedWith(/Process ended with exitcode/);
+      await assert.rejects(proc.join(), /Process ended with exitcode/);
     });
 
     it('should NOT throw if process ends with a custom allowed exitcode', async function () {
       const proc = new SubProcess(await getFixture('bad_exit'));
       await proc.start(0);
-      await expect(proc.join([1])).to.eventually.become(1);
+      assert.strictEqual(await proc.join([1]), 1);
     });
   });
 
@@ -288,8 +294,8 @@ describe('SubProcess', function () {
       proc.on('stream-line', lines.push.bind(lines));
       await proc.start();
       await proc.stop();
-      expect(lines.length).to.be.above(5);
-      expect(lines[0].slice(0, 8)).to.eql('[STDOUT]');
+      assert.ok(lines.length > 5);
+      assert.strictEqual(lines[0].slice(0, 8), '[STDOUT]');
     });
   });
 
@@ -314,10 +320,10 @@ describe('SubProcess', function () {
       });
       await proc.start();
       await proc.join();
-      expect(exitCaught).to.eql([0, null]);
-      expect(dieCaught).to.be.false;
-      expect(stopCaught).to.be.false;
-      expect(endCaught).to.be.true;
+      assert.deepStrictEqual(exitCaught, [0, null]);
+      assert.strictEqual(dieCaught, false);
+      assert.strictEqual(stopCaught, false);
+      assert.strictEqual(endCaught, true);
     });
 
     it('should emit exit/stop and no end/die when we stop a proc', async function () {
@@ -340,10 +346,10 @@ describe('SubProcess', function () {
       });
       await proc.start();
       await proc.stop();
-      expect(exitCaught).to.eql([null, 'SIGTERM']);
-      expect(stopCaught).to.eql(exitCaught);
-      expect(dieCaught).to.be.false;
-      expect(endCaught).to.be.false;
+      assert.deepStrictEqual(exitCaught, [null, 'SIGTERM']);
+      assert.deepStrictEqual(stopCaught, exitCaught);
+      assert.strictEqual(dieCaught, false);
+      assert.strictEqual(endCaught, false);
     });
 
     it('should emit exit/die and no stop/end when a proc is killed externally', async function () {
@@ -369,10 +375,10 @@ describe('SubProcess', function () {
       try {
         await proc.join();
       } catch {}
-      expect(exitCaught).to.eql([null, 'SIGTERM']);
-      expect(dieCaught).to.eql(exitCaught);
-      expect(stopCaught).to.be.false;
-      expect(endCaught).to.be.false;
+      assert.deepStrictEqual(exitCaught, [null, 'SIGTERM']);
+      assert.deepStrictEqual(dieCaught, exitCaught);
+      assert.strictEqual(stopCaught, false);
+      assert.strictEqual(endCaught, false);
     });
   });
 
@@ -391,7 +397,8 @@ describe('SubProcess', function () {
     it('should throw error if called when process not started detached', async function () {
       s = new SubProcess('tail', ['-f', path.resolve(__filename)]);
       await s.start();
-      expect(() => s?.detachProcess()).to.throw(
+      assert.throws(
+        () => s?.detachProcess(),
         /Unable to detach process that is not started with 'detached' option/,
       );
     });
