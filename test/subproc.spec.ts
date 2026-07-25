@@ -395,10 +395,11 @@ describe('SubProcess', function () {
     });
 
     it('should throw error if called when process not started detached', async function () {
-      s = new SubProcess('tail', ['-f', path.resolve(__filename)]);
-      await s.start();
+      const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
+      s = proc;
+      await proc.start();
       assert.throws(
-        () => s?.detachProcess(),
+        () => proc.detachProcess(),
         /Unable to detach process that is not started with 'detached' option/,
       );
     });

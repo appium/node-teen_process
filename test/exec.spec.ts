@@ -122,9 +122,7 @@ describe('exec', function () {
     const cmd = await getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
-    assert.notStrictEqual(typeof stdout, 'string');
     assert.ok(stdout instanceof Buffer);
-    assert.notStrictEqual(typeof stderr, 'string');
     assert.ok(stderr instanceof Buffer);
     assert.strictEqual(code, 0);
   });
@@ -147,7 +145,6 @@ describe('exec', function () {
         encoding: 'binary',
         isBuffer: true,
       });
-      assert.notStrictEqual(typeof stdout, 'string');
       assert.ok(stdout instanceof Buffer);
       const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
       assert.deepStrictEqual(signature, PNG_MAGIC);
@@ -159,7 +156,6 @@ describe('exec', function () {
       } catch (err: any) {
         const stdout = err.stdout;
         assert.strictEqual(typeof stdout, 'string');
-        assert.ok(!(stdout instanceof Buffer));
       }
     });
 
@@ -172,7 +168,6 @@ describe('exec', function () {
         });
       } catch (err: any) {
         const stdout = err.stdout;
-        assert.notStrictEqual(typeof stdout, 'string');
         assert.ok(stdout instanceof Buffer);
       }
     });
