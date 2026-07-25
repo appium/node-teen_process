@@ -54,20 +54,15 @@
   },
   "devDependencies": {
     "@appium/eslint-config-appium-ts": "^3.0.0",
-    "@appium/tsconfig": "^1.0.0-rc.1",
+    "@appium/tsconfig": "^1.2.0",
     "@appium/types": "^1.0.0-rc.1",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/chai": "5.2.3",
-    "@types/chai-as-promised": "8.0.2",
     "@types/node": "^26.0.0",
     "@types/shell-quote": "^1.7.5",
-    "chai": "^6.0.0",
-    "chai-as-promised": "^8.0.0",
     "conventional-changelog-conventionalcommits": "^9.3.1",
     "prettier": "^3.1.0",
-    "semantic-release": "^25.0.2",
-    "typescript": "^6.0.2"
+    "semantic-release": "^25.0.2"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || >=24.0.0",

@@ -1,24 +1,21 @@
+import assert from 'node:assert/strict';
 import path from 'node:path';
 import {exec} from '../lib';
 import {getFixture} from './helpers';
-import {use as chaiUse, expect} from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import {describe, it, type TestContext} from 'node:test';
-
-chaiUse(chaiAsPromised);
 
 describe('exec', function () {
   it('should work with arguments like spawn', async function () {
     const cmd = 'ls';
     const args = [__dirname];
     const {stdout, stderr, code} = await exec(cmd, args);
-    expect(stdout).to.contain('exec.spec');
-    expect(stderr).to.equal('');
-    expect(code).to.equal(0);
+    assert.ok(stdout.includes('exec.spec'));
+    assert.strictEqual(stderr, '');
+    assert.strictEqual(code, 0);
   });
 
   it('should throw an error if command does not exist', async function () {
-    await expect(exec('doesnoteexist')).to.eventually.be.rejected;
+    await assert.rejects(exec('doesnoteexist'));
   });
 
   it('should throw an error with a bad exit code', async function () {
@@ -29,10 +26,10 @@ describe('exec', function () {
     } catch (e) {
       err = e;
     }
-    expect(err).to.exist;
-    expect(err.stdout.trim()).to.equal('foo');
-    expect(err.stderr.trim()).to.equal('bar');
-    expect(err.code).to.equal(1);
+    assert.ok(err);
+    assert.strictEqual(err.stdout.trim(), 'foo');
+    assert.strictEqual(err.stderr.trim(), 'bar');
+    assert.strictEqual(err.code, 1);
   });
 
   it('should work with spaces in arguments', async function () {
@@ -40,9 +37,9 @@ describe('exec', function () {
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect(stdout.trim()).to.equal(echo1);
-    expect(stderr.trim()).to.equal(echo2);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), echo1);
+    assert.strictEqual(stderr.trim(), echo2);
+    assert.strictEqual(code, 0);
   });
 
   it('should work with backslashes in arguments', async function () {
@@ -50,9 +47,9 @@ describe('exec', function () {
     const echo1 = 'my\\ name\\ is\\ bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect(stdout.trim()).to.equal(echo1);
-    expect(stderr.trim()).to.equal(echo2);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), echo1);
+    assert.strictEqual(stderr.trim(), echo2);
+    assert.strictEqual(code, 0);
   });
 
   it('should work with spaces in commands', async function () {
@@ -60,9 +57,9 @@ describe('exec', function () {
     const echo1 = 'bobbob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect(stdout.trim()).to.equal(echo1);
-    expect(stderr.trim()).to.equal(echo2);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), echo1);
+    assert.strictEqual(stderr.trim(), echo2);
+    assert.strictEqual(code, 0);
   });
 
   it('should work with spaces in commands and arguments', async function () {
@@ -70,9 +67,9 @@ describe('exec', function () {
     const echo1 = 'my name is bob';
     const echo2 = 'lol';
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2]);
-    expect(stdout.trim()).to.equal(echo1);
-    expect(stderr.trim()).to.equal(echo2);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), echo1);
+    assert.strictEqual(stderr.trim(), echo2);
+    assert.strictEqual(code, 0);
   });
 
   it('should respect cwd', async function () {
@@ -81,17 +78,17 @@ describe('exec', function () {
     const echo2 = 'lol';
     const cwd = path.dirname(await getFixture('echo'));
     const {stdout, stderr, code} = await exec(cmd, [echo1, echo2], {cwd});
-    expect(stdout.trim()).to.equal(echo1);
-    expect(stderr.trim()).to.equal(echo2);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), echo1);
+    assert.strictEqual(stderr.trim(), echo2);
+    assert.strictEqual(code, 0);
   });
 
   it('should respect env', async function () {
     const cmd = await getFixture('env');
     const env = {FOO: 'lolol'};
     const {stdout, code} = await exec(cmd, [], {env});
-    expect(stdout.trim()).to.equal(`${env.FOO} ${env.FOO}`);
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout.trim(), `${env.FOO} ${env.FOO}`);
+    assert.strictEqual(code, 0);
   });
 
   it('should allow a timeout parameter', async function () {
@@ -103,33 +100,31 @@ describe('exec', function () {
     } catch (e) {
       err = e;
     }
-    expect(err).to.exist;
-    expect(err.message).to.contain('timed out');
-    expect(err.message).to.contain(cmd);
+    assert.ok(err);
+    assert.ok(err.message.includes('timed out'));
+    assert.ok(err.message.includes(cmd));
   });
 
   it('should allow large amounts of output', {timeout: 24000}, async function () {
     const {stdout} = await exec(await getFixture('bigbuffer.js'));
-    expect(stdout.length).to.be.above(512 * 1024);
+    assert.ok(stdout.length > 512 * 1024);
   });
 
   it('should ignore output if requested', async function () {
     const cmd = await getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, code} = await exec(cmd, [echo1], {ignoreOutput: true});
-    expect(stdout).to.equal('');
-    expect(code).to.equal(0);
+    assert.strictEqual(stdout, '');
+    assert.strictEqual(code, 0);
   });
 
   it('should return a Buffer if requested', async function () {
     const cmd = await getFixture('echo.sh');
     const echo1 = 'my name is bob';
     const {stdout, stderr, code} = await exec(cmd, [echo1], {isBuffer: true});
-    expect(stdout).to.not.be.a('string');
-    expect(stdout).to.be.instanceOf(Buffer);
-    expect(stderr).to.not.be.a('string');
-    expect(stderr).to.be.instanceOf(Buffer);
-    expect(code).to.equal(0);
+    assert.ok(stdout instanceof Buffer);
+    assert.ok(stderr instanceof Buffer);
+    assert.strictEqual(code, 0);
   });
 
   describe('binary output', function () {
@@ -140,10 +135,9 @@ describe('exec', function () {
       const {stdout} = await exec('cat', [await getFixture('screenshot.png')], {
         encoding: 'binary',
       });
-      expect(stdout).to.be.a('string');
-      expect(stdout).to.not.be.instanceOf(Buffer);
+      assert.strictEqual(typeof stdout, 'string');
       const signature = Buffer.from(stdout, 'binary').toString('hex', 0, PNG_MAGIC_LENGTH);
-      expect(signature).to.eql(PNG_MAGIC);
+      assert.deepStrictEqual(signature, PNG_MAGIC);
     });
 
     it('should allow binary output as Buffer', async function () {
@@ -151,10 +145,9 @@ describe('exec', function () {
         encoding: 'binary',
         isBuffer: true,
       });
-      expect(stdout).to.not.be.a('string');
-      expect(stdout).to.be.instanceOf(Buffer);
+      assert.ok(stdout instanceof Buffer);
       const signature = stdout.toString('hex', 0, PNG_MAGIC_LENGTH);
-      expect(signature).to.eql(PNG_MAGIC);
+      assert.deepStrictEqual(signature, PNG_MAGIC);
     });
 
     it('should allow binary output from timeout', async function () {
@@ -162,8 +155,7 @@ describe('exec', function () {
         await exec('cat', [await getFixture('screenshot.png')], {encoding: 'binary', timeout: 1});
       } catch (err: any) {
         const stdout = err.stdout;
-        expect(stdout).to.be.a('string');
-        expect(stdout).to.not.be.instanceOf(Buffer);
+        assert.strictEqual(typeof stdout, 'string');
       }
     });
 
@@ -176,8 +168,7 @@ describe('exec', function () {
         });
       } catch (err: any) {
         const stdout = err.stdout;
-        expect(stdout).to.not.be.a('string');
-        expect(stdout).to.be.instanceOf(Buffer);
+        assert.ok(stdout instanceof Buffer);
       }
     });
   });
@@ -204,9 +195,9 @@ describe('exec', function () {
         stdio: 'pipe',
       });
 
-      expect(code).to.equal(0);
-      expect(stdout.trim()).to.equal(String(targetUid));
-      expect(targetUid).to.not.equal(0);
+      assert.strictEqual(code, 0);
+      assert.strictEqual(stdout.trim(), String(targetUid));
+      assert.notStrictEqual(targetUid, 0);
     },
   );
 });
