@@ -60,7 +60,7 @@
     "@semantic-release/git": "^10.0.1",
     "@types/node": "^26.0.0",
     "@types/shell-quote": "^1.7.5",
-    "conventional-changelog-conventionalcommits": "^9.3.1",
+    "conventional-changelog-conventionalcommits": "^10.2.1",
     "prettier": "^3.1.0",
     "semantic-release": "^25.0.2"
   },
