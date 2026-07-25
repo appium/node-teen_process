@@ -52,7 +52,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json",
     "postbuild": "node scripts/postbuild.mjs",
-    "clean": "npm run build -- --clean",
+    "clean": "rm -rf build",
     "dev": "npm run build -- --watch",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
