@@ -1,3 +1,9 @@
+## [4.1.10](https://github.com/appium/node-teen_process/compare/v4.1.9...v4.1.10) (2026-07-25)
+
+### Miscellaneous Chores
+
+* Drop chai ([#489](https://github.com/appium/node-teen_process/issues/489)) ([19996f3](https://github.com/appium/node-teen_process/commit/19996f3bddb272e07357091c2cfaee20172f3ffa))
+
 ## [4.1.9](https://github.com/appium/node-teen_process/compare/v4.1.8...v4.1.9) (2026-07-15)
 
 ### Miscellaneous Chores
