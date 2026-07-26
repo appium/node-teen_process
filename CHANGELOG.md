@@ -1,3 +1,9 @@
+## [4.2.0](https://github.com/appium/node-teen_process/compare/v4.1.10...v4.2.0) (2026-07-26)
+
+### Features
+
+* Publish dual CJS and ESM builds ([#490](https://github.com/appium/node-teen_process/issues/490)) ([c385840](https://github.com/appium/node-teen_process/commit/c385840a8db92ace46a7b64ad9ee6678ee502285))
+
 ## [4.1.10](https://github.com/appium/node-teen_process/compare/v4.1.9...v4.1.10) (2026-07-25)
 
 ### Miscellaneous Chores
