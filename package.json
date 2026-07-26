@@ -52,7 +52,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json",
     "postbuild": "node scripts/postbuild.mjs",
-    "clean": "rm -rf build",
+    "clean": "node -e \"require('node:fs').rmSync('build', {recursive: true, force: true})\"",
     "dev": "npm run build -- --watch",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
