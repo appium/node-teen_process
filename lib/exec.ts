@@ -1,14 +1,14 @@
 import {spawn} from 'node:child_process';
 import {quote} from 'shell-quote';
-import {formatEnoent} from './helpers';
-import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer';
+import {formatEnoent} from './helpers.js';
+import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer.js';
 import type {
   TeenProcessExecOptions,
   TeenProcessExecResult,
   BufferProp,
   ExecError,
   StreamName,
-} from './types';
+} from './types.js';
 
 /**
  * Spawns a child process and collects its output.

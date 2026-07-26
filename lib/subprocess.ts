@@ -2,10 +2,10 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import {quote} from 'shell-quote';
-import {formatEnoent} from './helpers';
+import {formatEnoent} from './helpers.js';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
-import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from './types';
+import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from './types.js';
 
 /**
  * A wrapper around Node's spawn that provides event-driven process management.

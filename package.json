@@ -20,20 +20,39 @@
   },
   "license": "Apache-2.0",
   "author": "Appium Contributors",
-  "main": "build/lib/index.js",
-  "types": "build/lib/index.d.ts",
+  "type": "module",
+  "main": "./build/cjs/lib/index.js",
+  "module": "./build/esm/lib/index.js",
+  "types": "./build/cjs/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./build/esm/lib/index.d.ts",
+        "default": "./build/esm/lib/index.js"
+      },
+      "require": {
+        "types": "./build/cjs/lib/index.d.ts",
+        "default": "./build/cjs/lib/index.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {},
   "directories": {
     "lib": "lib"
   },
   "files": [
     "lib",
-    "build/lib",
+    "build/cjs/lib",
+    "build/cjs/package.json",
+    "build/esm/lib",
+    "build/esm/package.json",
     "CHANGELOG.md"
   ],
   "scripts": {
-    "build": "tsc -b",
-    "clean": "npm run build -- --clean",
+    "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json",
+    "postbuild": "node scripts/postbuild.mjs",
+    "clean": "node -e \"require('node:fs').rmSync('build', {recursive: true, force: true})\"",
     "dev": "npm run build -- --watch",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
@@ -42,7 +61,7 @@
     "format:check": "prettier --check ./lib ./test",
     "prepare": "npm run rebuild",
     "rebuild": "npm run clean && npm run build",
-    "test": "node --test \"./build/test/**/*.spec.js\""
+    "test": "node --test --enable-source-maps --test-timeout=60000 \"./build/esm/test/**/*.spec.js\" \"./test/*.spec.cjs\""
   },
   "prettier": {
     "bracketSpacing": false,

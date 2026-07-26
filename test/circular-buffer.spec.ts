@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {CircularBuffer} from '../lib/circular-buffer';
+import {CircularBuffer} from '../lib/circular-buffer.js';
 import {describe, it} from 'node:test';
 
 describe('CircularBuffer', function () {
