@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import {describe, it, type TestContext} from 'node:test';
 import {fileURLToPath} from 'node:url';
+
 import {exec} from '../lib/index.js';
 import {getFixture} from './helpers.js';
-import {describe, it, type TestContext} from 'node:test';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

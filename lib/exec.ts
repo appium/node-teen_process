@@ -1,14 +1,10 @@
 import {spawn} from 'node:child_process';
+
 import {quote} from 'shell-quote';
-import {formatEnoent} from './helpers.js';
+
 import {CircularBuffer, MAX_BUFFER_SIZE} from './circular-buffer.js';
-import type {
-  TeenProcessExecOptions,
-  TeenProcessExecResult,
-  BufferProp,
-  ExecError,
-  StreamName,
-} from './types.js';
+import {formatEnoent} from './helpers.js';
+import type {TeenProcessExecOptions, TeenProcessExecResult, BufferProp, ExecError, StreamName} from './types.js';
 
 /**
  * Spawns a child process and collects its output.
@@ -94,8 +90,7 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
       }
 
       stream.on('error', (err: NodeJS.ErrnoException) => {
-        const capitalizedStreamType =
-          streamType.charAt(0).toUpperCase() + streamType.slice(1).toLowerCase();
+        const capitalizedStreamType = streamType.charAt(0).toUpperCase() + streamType.slice(1).toLowerCase();
         reject(new Error(`${capitalizedStreamType} '${err.syscall}' error: ${err.stack}`));
       });
 
@@ -119,15 +114,9 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
     function getStdio<U extends boolean>(
       wantBuffer: U,
     ): U extends true ? {stdout: Buffer; stderr: Buffer} : {stdout: string; stderr: string} {
-      const stdout = wantBuffer
-        ? stdoutBuffer.value()
-        : stdoutBuffer.value().toString(opts.encoding);
-      const stderr = wantBuffer
-        ? stderrBuffer.value()
-        : stderrBuffer.value().toString(opts.encoding);
-      return {stdout, stderr} as U extends true
-        ? {stdout: Buffer; stderr: Buffer}
-        : {stdout: string; stderr: string};
+      const stdout = wantBuffer ? stdoutBuffer.value() : stdoutBuffer.value().toString(opts.encoding);
+      const stderr = wantBuffer ? stderrBuffer.value() : stderrBuffer.value().toString(opts.encoding);
+      return {stdout, stderr} as U extends true ? {stdout: Buffer; stderr: Buffer} : {stdout: string; stderr: string};
     }
 
     proc.on('close', (code: number | null) => {
@@ -162,12 +151,8 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
   });
 }
 
-function applyDefaults<T extends TeenProcessExecOptions>(
-  defaults: TeenProcessExecOptions,
-  originalOpts: T,
-): T {
-  const normalizedOriginalOpts =
-    originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
+function applyDefaults<T extends TeenProcessExecOptions>(defaults: TeenProcessExecOptions, originalOpts: T): T {
+  const normalizedOriginalOpts = originalOpts !== null && typeof originalOpts === 'object' ? originalOpts : ({} as T);
   const definedOriginalOpts = Object.fromEntries(
     Object.entries(normalizedOriginalOpts).filter(([, value]) => value !== undefined),
   ) as Partial<T>;

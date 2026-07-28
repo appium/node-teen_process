@@ -3,23 +3,35 @@
   "version": "4.2.0",
   "description": "A grown up version of Node's spawn/exec",
   "keywords": [
+    "child",
     "child_process",
-    "process management",
-    "subprocess",
-    "spawn",
     "exec",
     "process",
-    "child"
+    "process management",
+    "spawn",
+    "subprocess"
   ],
   "bugs": {
     "url": "https://github.com/appium/node-teen_process/issues"
   },
+  "license": "Apache-2.0",
+  "author": "Appium Contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/appium/node-teen_process.git"
   },
-  "license": "Apache-2.0",
-  "author": "Appium Contributors",
+  "bin": {},
+  "directories": {
+    "lib": "lib"
+  },
+  "files": [
+    "lib",
+    "build/cjs/lib",
+    "build/cjs/package.json",
+    "build/esm/lib",
+    "build/esm/package.json",
+    "CHANGELOG.md"
+  ],
   "type": "module",
   "main": "./build/cjs/lib/index.js",
   "module": "./build/esm/lib/index.js",
@@ -37,51 +49,30 @@
     },
     "./package.json": "./package.json"
   },
-  "bin": {},
-  "directories": {
-    "lib": "lib"
-  },
-  "files": [
-    "lib",
-    "build/cjs/lib",
-    "build/cjs/package.json",
-    "build/esm/lib",
-    "build/esm/package.json",
-    "CHANGELOG.md"
-  ],
   "scripts": {
     "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json",
     "postbuild": "node scripts/postbuild.mjs",
     "clean": "node -e \"require('node:fs').rmSync('build', {recursive: true, force: true})\"",
     "dev": "npm run build -- --watch",
-    "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint": "oxlint -c oxlint.config.mjs .",
+    "lint:fix": "oxlint -c oxlint.config.mjs --fix .",
     "lint:types": "tsc",
-    "format": "prettier -w ./lib ./test",
-    "format:check": "prettier --check ./lib ./test",
+    "format": "oxfmt -c oxfmt.config.mjs .",
+    "format:check": "oxfmt -c oxfmt.config.mjs --check .",
     "prepare": "npm run rebuild",
     "rebuild": "npm run clean && npm run build",
     "test": "node --test --enable-source-maps --test-timeout=60000 \"./build/esm/test/**/*.spec.js\" \"./test/*.spec.cjs\""
-  },
-  "prettier": {
-    "bracketSpacing": false,
-    "printWidth": 100,
-    "singleQuote": true
   },
   "dependencies": {
     "shell-quote": "^1.8.1"
   },
   "devDependencies": {
-    "@appium/eslint-config-appium-ts": "^3.0.0",
+    "@appium/oxc-config": "^1.1.0",
+    "@appium/semantic-release-config": "^1.1.0",
     "@appium/tsconfig": "^1.2.0",
     "@appium/types": "^1.0.0-rc.1",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
     "@types/node": "^26.0.0",
-    "@types/shell-quote": "^1.7.5",
-    "conventional-changelog-conventionalcommits": "^9.3.1",
-    "prettier": "^3.1.0",
-    "semantic-release": "^25.0.2"
+    "@types/shell-quote": "^1.7.5"
   },
   "engines": {
     "node": "^20.19.0 || ^22.12.0 || >=24.0.0",

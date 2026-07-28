@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import {describe, it, beforeEach, afterEach} from 'node:test';
 import {fileURLToPath} from 'node:url';
+
 import {exec, SubProcess} from '../lib/index.js';
 import {getFixture} from './helpers.js';
-import {describe, it, beforeEach, afterEach} from 'node:test';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -206,13 +207,7 @@ describe('SubProcess', function () {
       });
       await subproc.start(0);
       await new Promise((resolve) => setTimeout(resolve, 50));
-      for (const name of [
-        'circular-buffer.spec',
-        'exec.spec',
-        'fixtures',
-        'helpers',
-        'subproc.spec',
-      ]) {
+      for (const name of ['circular-buffer.spec', 'exec.spec', 'fixtures', 'helpers', 'subproc.spec']) {
         assert.strictEqual(
           lines.some((line) => line.includes(name)),
           true,
@@ -234,11 +229,7 @@ describe('SubProcess', function () {
     });
 
     it('should time out if stop doesnt complete fast enough', async function () {
-      const subproc = new SubProcess(await getFixture('traphup'), [
-        'tail',
-        '-f',
-        path.resolve(__filename),
-      ]);
+      const subproc = new SubProcess(await getFixture('traphup'), ['tail', '-f', path.resolve(__filename)]);
       await subproc.start();
       await assert.rejects(subproc.stop(stopSignal, 1), /Process didn't end/);
 
@@ -402,10 +393,7 @@ describe('SubProcess', function () {
       const proc = new SubProcess('tail', ['-f', path.resolve(__filename)]);
       s = proc;
       await proc.start();
-      assert.throws(
-        () => proc.detachProcess(),
-        /Unable to detach process that is not started with 'detached' option/,
-      );
+      assert.throws(() => proc.detachProcess(), /Unable to detach process that is not started with 'detached' option/);
     });
   });
 });
