@@ -1,3 +1,9 @@
+## [4.2.1](https://github.com/appium/node-teen_process/compare/v4.2.0...v4.2.1) (2026-07-28)
+
+### Miscellaneous Chores
+
+* Integrate oxc and release configs ([#491](https://github.com/appium/node-teen_process/issues/491)) ([9683fe7](https://github.com/appium/node-teen_process/commit/9683fe7c4a5009fcc5466c27816fb0682a2488b0))
+
 ## [4.2.0](https://github.com/appium/node-teen_process/compare/v4.1.10...v4.2.0) (2026-07-26)
 
 ### Features
