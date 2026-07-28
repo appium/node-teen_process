@@ -1,10 +1,12 @@
 import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
-import {quote} from 'shell-quote';
-import {formatEnoent} from './helpers.js';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
+
+import {quote} from 'shell-quote';
+
+import {formatEnoent} from './helpers.js';
 import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from './types.js';
 
 /**
@@ -42,9 +44,7 @@ import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from '
  * await proc.stop();
  * ```
  */
-export class SubProcess<
-  TSubProcessOptions extends SubProcessOptions = SubProcessOptions,
-> extends EventEmitter {
+export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProcessOptions> extends EventEmitter {
   proc: ChildProcess | null;
   readonly rep: string;
   private args: string[];
@@ -116,8 +116,7 @@ export class SubProcess<
   ): Promise<void> {
     let startDelay = 10;
 
-    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) =>
-      stdout || stderr;
+    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) => stdout || stderr;
     let detector: StartDetector<TSubProcessOptions> | null = null;
 
     if (startDetector === null) {
@@ -131,19 +130,13 @@ export class SubProcess<
       detector = startDetector;
     }
 
-    if (
-      (typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) &&
-      Boolean(startDetector)
-    ) {
+    if ((typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) && Boolean(startDetector)) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
       detach = true;
       detector = genericStartDetector;
-    } else if (
-      (typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) &&
-      Boolean(timeoutMs)
-    ) {
+    } else if ((typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) && Boolean(timeoutMs)) {
       if (!this.opts.detached) {
         throw new Error(`Unable to detach process that is not started with 'detached' option`);
       }
@@ -205,14 +198,10 @@ export class SubProcess<
       if (this.proc.stdout) {
         this.proc.stdout.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer
-              ? chunk
-              : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
+            stdout: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
               ? Buffer
               : string,
-            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
+            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
           }),
         );
         handleStreamLines('stdout', this.proc.stdout);
@@ -221,12 +210,8 @@ export class SubProcess<
       if (this.proc.stderr) {
         this.proc.stderr.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
-            stderr: (isBuffer
-              ? chunk
-              : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
+            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
+            stderr: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
               ? Buffer
               : string,
           }),
@@ -348,8 +333,7 @@ export class SubProcess<
   }
 
   private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
-    const doEmit = (line: string) =>
-      this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
+    const doEmit = (line: string) => this.emit('stream-line', `[${streamName.toUpperCase()}] ${line}`);
 
     if (typeof lines === 'string' || (lines as any) instanceof String) {
       doEmit(lines as string);

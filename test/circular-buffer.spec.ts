@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
-import {CircularBuffer} from '../lib/circular-buffer.js';
 import {describe, it} from 'node:test';
+
+import {CircularBuffer} from '../lib/circular-buffer.js';
 
 describe('CircularBuffer', function () {
   it('should properly rotate', function () {

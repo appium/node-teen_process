@@ -1,5 +1,5 @@
-import path from 'node:path';
 import fs from 'node:fs/promises';
+import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 let moduleRoot: string | null = null;
@@ -23,10 +23,7 @@ async function getModuleRoot(): Promise<string> {
     const manifestPath = path.join(currentDir, 'package.json');
     try {
       await fs.access(manifestPath);
-      if (
-        (JSON.parse(await fs.readFile(manifestPath, 'utf8')) as {name?: string}).name ===
-        'teen_process'
-      ) {
+      if ((JSON.parse(await fs.readFile(manifestPath, 'utf8')) as {name?: string}).name === 'teen_process') {
         return currentDir;
       }
     } catch {
