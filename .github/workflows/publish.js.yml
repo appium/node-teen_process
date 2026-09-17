@@ -1,4 +1,3 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 name: Release
 
 on:
@@ -28,15 +27,6 @@ jobs:
       name: Install dependencies
     - run: npm run test
       name: Run NPM Test
-    - run: |
-        rm -rf node_modules package-lock.json
-        npm prune --omit=dev --omit=peer --no-package-lock
-      name: Remove dev dependencies and appium peer dependencies
-    - run: npm shrinkwrap --omit=dev --omit=peer
-      name: Create shrinkwrap
-      # "--no-package-lock" prevent adding dev dependencies in the shrinkwrap
-    - run: npm install --only=dev --no-package-lock
-      name: Install dev dependencies for the release
     - run: npx semantic-release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
