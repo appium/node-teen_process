@@ -1,3 +1,9 @@
+## [4.2.2](https://github.com/appium/node-teen_process/compare/v4.2.1...v4.2.2) (2026-11-07)
+
+### Bug Fixes
+
+* clear start and stop timers and use one-time event listeners in SubProcess ([#494](https://github.com/appium/node-teen_process/issues/494)) ([53125c8](https://github.com/appium/node-teen_process/commit/53125c8d7628dfeca89975fd1b2c78c6b7ba435f))
+
 ## [4.2.1](https://github.com/appium/node-teen_process/compare/v4.2.0...v4.2.1) (2026-07-28)
 
 ### Miscellaneous Chores
