@@ -144,6 +144,9 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       timeoutMs = null;
     }
 
+    let startDelayTimer: NodeJS.Timeout | null = null;
+    let startTimeoutTimer: NodeJS.Timeout | null = null;
+
     return await new Promise<void>((resolve, reject) => {
       this.proc = spawn(this.cmd, this.args, this.opts);
 
@@ -233,15 +236,21 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       });
 
       if (!detector) {
-        setTimeout(() => resolve(), startDelay);
+        startDelayTimer = setTimeout(() => resolve(), startDelay);
       }
 
       if (typeof timeoutMs === 'number' || (timeoutMs as any) instanceof Number) {
-        setTimeout(() => {
+        startTimeoutTimer = setTimeout(() => {
           reject(new Error(`The process did not start within ${timeoutMs}ms (cmd: '${this.rep}')`));
         }, Number(timeoutMs));
       }
     }).finally(() => {
+      if (startDelayTimer) {
+        clearTimeout(startDelayTimer);
+      }
+      if (startTimeoutTimer) {
+        clearTimeout(startTimeoutTimer);
+      }
       if (detach && this.proc) {
         this.proc.unref();
       }
@@ -273,12 +282,15 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       throw new Error(`Can't stop process; it's not currently running (cmd: '${this.rep}')`);
     }
     return await new Promise<void>((resolve, reject) => {
-      this.proc?.on('close', () => resolve());
-      this.expectingExit = true;
-      this.proc?.kill(signal);
-      setTimeout(() => {
+      const stopTimeoutTimer = setTimeout(() => {
         reject(new Error(`Process didn't end after ${timeout}ms (cmd: '${this.rep}')`));
       }, timeout).unref();
+      this.proc?.once('close', () => {
+        clearTimeout(stopTimeoutTimer);
+        resolve();
+      });
+      this.expectingExit = true;
+      this.proc?.kill(signal);
     });
   }
 
@@ -305,7 +317,7 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
     }
 
     return await new Promise<number | null>((resolve, reject) => {
-      this.proc?.on('exit', (code: number | null) => {
+      this.proc?.once('exit', (code: number | null) => {
         if (code !== null && !allowedExitCodes.includes(code)) {
           reject(new Error(`Process ended with exitcode ${code} (cmd: '${this.rep}')`));
         } else {
