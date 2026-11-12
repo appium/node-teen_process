@@ -6,6 +6,5 @@
     "types": ["node"],
     "strict": true
   },
-  "include": ["lib", "test"],
-  "exclude": ["test/*.cjs"]
+  "include": ["lib", "test"]
 }
