@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/appium/node-teen_process/compare/v4.2.2...v5.0.0) (2026-11-12)
+
+### ⚠ BREAKING CHANGES
+
+* The package is ESM only. require('teen_process') only works on Node versions that support require(esm); otherwise use import().
+* Node.js ^22.22.2 || ^24.15.0 || >=26.0.0 is now required.
+
+### Features
+
+* Drop CommonJS build ([#495](https://github.com/appium/node-teen_process/issues/495)) ([2c48d1c](https://github.com/appium/node-teen_process/commit/2c48d1ce62ed378ca34b0a9e386e7b615032de32))
+
 ## [4.2.2](https://github.com/appium/node-teen_process/compare/v4.2.1...v4.2.2) (2026-11-07)
 
 ### Bug Fixes
