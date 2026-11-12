@@ -26,32 +26,21 @@
   },
   "files": [
     "lib",
-    "build/cjs/lib",
-    "build/cjs/package.json",
-    "build/esm/lib",
-    "build/esm/package.json",
+    "build/lib",
     "CHANGELOG.md"
   ],
   "type": "module",
-  "main": "./build/cjs/lib/index.js",
-  "module": "./build/esm/lib/index.js",
-  "types": "./build/cjs/lib/index.d.ts",
+  "main": "./build/lib/index.js",
+  "types": "./build/lib/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./build/esm/lib/index.d.ts",
-        "default": "./build/esm/lib/index.js"
-      },
-      "require": {
-        "types": "./build/cjs/lib/index.d.ts",
-        "default": "./build/cjs/lib/index.js"
-      }
+      "types": "./build/lib/index.d.ts",
+      "default": "./build/lib/index.js"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.esm.json tsconfig.cjs.json",
-    "postbuild": "node scripts/postbuild.mjs",
+    "build": "tsc",
     "clean": "node -e \"require('node:fs').rmSync('build', {recursive: true, force: true})\"",
     "dev": "npm run build -- --watch",
     "lint": "oxlint -c oxlint.config.mjs .",
@@ -61,21 +50,21 @@
     "format:check": "oxfmt -c oxfmt.config.mjs --check .",
     "prepare": "npm run rebuild",
     "rebuild": "npm run clean && npm run build",
-    "test": "node --test --enable-source-maps --test-timeout=60000 \"./build/esm/test/**/*.spec.js\" \"./test/*.spec.cjs\""
+    "test": "node --test --enable-source-maps --test-timeout=60000 \"./build/test/**/*.spec.js\""
   },
   "dependencies": {
-    "shell-quote": "^1.8.1"
+    "shell-quote": "^1.12.0"
   },
   "devDependencies": {
-    "@appium/oxc-config": "^1.1.0",
-    "@appium/semantic-release-config": "^1.1.0",
-    "@appium/tsconfig": "^1.2.0",
-    "@appium/types": "^1.0.0-rc.1",
+    "@appium/oxc-config": "^2.0.0-beta.2",
+    "@appium/semantic-release-config": "^2.0.0-beta.1",
+    "@appium/tsconfig": "^2.0.0-beta.1",
+    "@appium/types": "^2.0.0-beta.5",
     "@types/node": "^26.0.0",
     "@types/shell-quote": "^1.7.5"
   },
   "engines": {
-    "node": "^20.19.0 || ^22.12.0 || >=24.0.0",
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0",
     "npm": ">=10"
   }
 }
