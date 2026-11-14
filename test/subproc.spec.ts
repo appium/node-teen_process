@@ -216,6 +216,22 @@ describe('SubProcess', function () {
       await exited;
       assert.strictEqual(out, 'Café 日本\n');
     });
+    it('should pass uncorrupted multi-byte text to a custom startDetector', async function () {
+      const child = `
+        const buf = Buffer.from('Café 日本\\n');
+        const split = buf.indexOf(0xe6) + 1;
+        process.stdout.write(buf.subarray(0, split));
+        setTimeout(() => process.stdout.write(buf.subarray(split)), 50);
+        setTimeout(() => {}, 1000);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child]);
+      const seen: string[] = [];
+      await subproc.start((stdout: string) => {
+        seen.push(stdout);
+        return stdout.includes('日本');
+      }, 5000);
+      assert.deepStrictEqual(seen, ['Café ', '日本\n']);
+    });
     it('should not corrupt multi-byte characters split across chunks in stderr', async function () {
       const child = `
         const buf = Buffer.from('Café 日本\\n');
