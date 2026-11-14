@@ -202,27 +202,40 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       type TOutput = TSubProcessOptions extends TIsBufferOpts ? Buffer : string;
       const emptyOutput = (isBuffer ? Buffer.alloc(0) : '') as TOutput;
 
-      if (this.proc.stdout) {
+      const handleStreamOutput = (streamName: StreamName, stream: Readable) => {
         // StringDecoder keeps incomplete multi-byte sequences between chunks
         const decoder = isBuffer ? null : new StringDecoder(encoding);
-        this.proc.stdout.on('data', (chunk: Buffer) =>
+        const emitOutput = (data: Buffer | string) =>
           handleOutput({
-            stdout: (decoder ? decoder.write(chunk) : chunk) as TOutput,
-            stderr: emptyOutput,
-          }),
-        );
-        handleStreamLines('stdout', this.proc.stdout);
-      }
+            stdout: (streamName === 'stdout' ? data : emptyOutput) as TOutput,
+            stderr: (streamName === 'stderr' ? data : emptyOutput) as TOutput,
+          });
+        stream.on('data', (chunk: Buffer) => {
+          if (!decoder) {
+            emitOutput(chunk);
+            return;
+          }
+          const text = decoder.write(chunk);
+          if (text) {
+            emitOutput(text);
+          }
+        });
+        if (decoder) {
+          stream.on('end', () => {
+            const rest = decoder.end();
+            if (rest) {
+              emitOutput(rest);
+            }
+          });
+        }
+        handleStreamLines(streamName, stream);
+      };
 
+      if (this.proc.stdout) {
+        handleStreamOutput('stdout', this.proc.stdout);
+      }
       if (this.proc.stderr) {
-        const decoder = isBuffer ? null : new StringDecoder(encoding);
-        this.proc.stderr.on('data', (chunk: Buffer) =>
-          handleOutput({
-            stdout: emptyOutput,
-            stderr: (decoder ? decoder.write(chunk) : chunk) as TOutput,
-          }),
-        );
-        handleStreamLines('stderr', this.proc.stderr);
+        handleStreamOutput('stderr', this.proc.stderr);
       }
 
       this.proc.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
