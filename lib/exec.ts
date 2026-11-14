@@ -1,4 +1,5 @@
 import {spawn} from 'node:child_process';
+import {StringDecoder} from 'node:string_decoder';
 
 import {quote} from 'shell-quote';
 
@@ -100,10 +101,12 @@ export async function exec<T extends TeenProcessExecOptions = TeenProcessExecOpt
         return;
       }
 
+      // StringDecoder keeps multi-byte characters split across chunks intact in logs
+      const decoder = new StringDecoder();
       stream.on('data', (chunk: Buffer) => {
         buffer.add(chunk);
         if (typeof opts.logger?.debug === 'function') {
-          opts.logger.debug(chunk.toString());
+          opts.logger.debug(decoder.write(chunk));
         }
       });
     };
