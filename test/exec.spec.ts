@@ -131,6 +131,36 @@ describe('exec', function () {
     assert.strictEqual(code, 0);
   });
 
+  it('should not corrupt multi-byte characters split across chunks in debug logs', async function () {
+    const child = `
+      const buf = Buffer.from('Café 日本\\n');
+      const split = buf.indexOf(0xe6) + 1;
+      process.stdout.write(buf.subarray(0, split));
+      setTimeout(() => process.stdout.write(buf.subarray(split)), 50);
+    `;
+    const logged: string[] = [];
+    const {stdout} = await exec(process.execPath, ['-e', child], {
+      logger: {debug: (msg: string) => logged.push(msg)},
+    });
+    assert.strictEqual(stdout, 'Café 日本\n');
+    assert.strictEqual(logged.join(''), 'Café 日本\n');
+  });
+
+  it('should decode debug logs with the configured encoding and skip empty chunks', async function () {
+    const child = `
+      const buf = Buffer.from('日本', 'utf16le');
+      process.stdout.write(buf.subarray(0, 1));
+      setTimeout(() => process.stdout.write(buf.subarray(1)), 50);
+    `;
+    const logged: string[] = [];
+    const {stdout} = await exec(process.execPath, ['-e', child], {
+      encoding: 'utf16le',
+      logger: {debug: (msg: string) => logged.push(msg)},
+    });
+    assert.strictEqual(stdout, '日本');
+    assert.deepStrictEqual(logged, ['日本']);
+  });
+
   describe('binary output', function () {
     const PNG_MAGIC = '89504e47';
     const PNG_MAGIC_LENGTH = 4;

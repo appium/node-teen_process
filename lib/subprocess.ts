@@ -3,11 +3,14 @@ import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
+import {StringDecoder} from 'node:string_decoder';
 
 import {quote} from 'shell-quote';
 
 import {formatEnoent} from './helpers.js';
 import type {SubProcessOptions, StartDetector, TIsBufferOpts, StreamName} from './types.js';
+
+type TOutput<T extends SubProcessOptions> = T extends TIsBufferOpts ? Buffer : string;
 
 /**
  * A wrapper around Node's spawn that provides event-driven process management.
@@ -114,48 +117,16 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
     timeoutMs: number | boolean | null = null,
     detach: boolean = false,
   ): Promise<void> {
-    let startDelay = 10;
-
-    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) => stdout || stderr;
-    let detector: StartDetector<TSubProcessOptions> | null = null;
-
-    if (startDetector === null) {
-      detector = genericStartDetector;
-    }
-
-    if (typeof startDetector === 'number' || (startDetector as any) instanceof Number) {
-      startDelay = Number(startDetector);
-      detector = null;
-    } else if (typeof startDetector === 'function') {
-      detector = startDetector;
-    }
-
-    if ((typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) && Boolean(startDetector)) {
-      if (!this.opts.detached) {
-        throw new Error(`Unable to detach process that is not started with 'detached' option`);
-      }
-      detach = true;
-      detector = genericStartDetector;
-    } else if ((typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) && Boolean(timeoutMs)) {
-      if (!this.opts.detached) {
-        throw new Error(`Unable to detach process that is not started with 'detached' option`);
-      }
-      detach = true;
-      timeoutMs = null;
-    }
-
+    const args = this.parseStartArgs(startDetector, timeoutMs, detach);
+    let detector = args.detector;
     let startDelayTimer: NodeJS.Timeout | null = null;
     let startTimeoutTimer: NodeJS.Timeout | null = null;
 
     return await new Promise<void>((resolve, reject) => {
       this.proc = spawn(this.cmd, this.args, this.opts);
 
-      const handleOutput = (streams: {
-        stdout: TSubProcessOptions extends TIsBufferOpts ? Buffer : string;
-        stderr: TSubProcessOptions extends TIsBufferOpts ? Buffer : string;
-      }) => {
-        const {stdout, stderr} = streams;
-
+      this.attachErrorHandler(reject);
+      this.attachOutputHandlers((stdout, stderr) => {
         try {
           if (detector && detector(stdout, stderr)) {
             detector = null;
@@ -166,83 +137,17 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
         }
 
         this.emit('output', stdout, stderr);
-      };
-
-      this.proc.on('error', async (err: NodeJS.ErrnoException) => {
-        this.proc?.removeAllListeners('exit');
-        this.proc?.kill('SIGINT');
-
-        let error = err;
-        if (error.code === 'ENOENT') {
-          error = await formatEnoent(error, this.cmd, this.opts?.cwd?.toString());
-        }
-        reject(error);
-
-        this.proc?.unref();
-        this.proc = null;
       });
-
-      const handleStreamLines = (streamName: StreamName, input: Readable) => {
-        const rl = createInterface({input});
-        rl.on('line', (line) => {
-          if (this.listenerCount(`lines-${streamName}`)) {
-            this.emit(`lines-${streamName}`, [line]);
-          }
-          this.emit(`line-${streamName}`, line);
-          if (this.listenerCount('stream-line')) {
-            this.emitLines(streamName, line);
-          }
-        });
-      };
-
-      const isBuffer = Boolean(this.opts.isBuffer);
-      const encoding = this.opts.encoding || 'utf8';
-
-      if (this.proc.stdout) {
-        this.proc.stdout.on('data', (chunk: Buffer) =>
-          handleOutput({
-            stdout: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
-            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
-          }),
-        );
-        handleStreamLines('stdout', this.proc.stdout);
-      }
-
-      if (this.proc.stderr) {
-        this.proc.stderr.on('data', (chunk: Buffer) =>
-          handleOutput({
-            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
-            stderr: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
-          }),
-        );
-        handleStreamLines('stderr', this.proc.stderr);
-      }
-
-      this.proc.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
-        this.emit('exit', code, signal);
-
-        let event: 'stop' | 'die' | 'end' = this.expectingExit ? 'stop' : 'die';
-        if (!this.expectingExit && code === 0) {
-          event = 'end';
-        }
-        this.emit(event, code, signal);
-
-        this.proc = null;
-        this.expectingExit = false;
-      });
+      this.attachExitHandler();
 
       if (!detector) {
-        startDelayTimer = setTimeout(() => resolve(), startDelay);
+        startDelayTimer = setTimeout(() => resolve(), args.startDelay);
       }
 
-      if (typeof timeoutMs === 'number' || (timeoutMs as any) instanceof Number) {
+      if (typeof args.timeoutMs === 'number' || (args.timeoutMs as any) instanceof Number) {
         startTimeoutTimer = setTimeout(() => {
-          reject(new Error(`The process did not start within ${timeoutMs}ms (cmd: '${this.rep}')`));
-        }, Number(timeoutMs));
+          reject(new Error(`The process did not start within ${args.timeoutMs}ms (cmd: '${this.rep}')`));
+        }, Number(args.timeoutMs));
       }
     }).finally(() => {
       if (startDelayTimer) {
@@ -251,7 +156,7 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       if (startTimeoutTimer) {
         clearTimeout(startTimeoutTimer);
       }
-      if (detach && this.proc) {
+      if (args.detach && this.proc) {
         this.proc.unref();
       }
     });
@@ -336,12 +241,143 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
    * @throws {Error} When process was not created with 'detached' option
    */
   detachProcess(): void {
-    if (!this.opts.detached) {
-      throw new Error(`Unable to detach process that is not started with 'detached' option`);
-    }
+    this.assertDetachable();
     if (this.proc) {
       this.proc.unref();
     }
+  }
+
+  private parseStartArgs(
+    startDetector: StartDetector<TSubProcessOptions> | number | boolean | null,
+    timeoutMs: number | boolean | null,
+    detach: boolean,
+  ): {
+    detector: StartDetector<TSubProcessOptions> | null;
+    startDelay: number;
+    timeoutMs: number | boolean | null;
+    detach: boolean;
+  } {
+    let startDelay = 10;
+
+    const genericStartDetector: StartDetector<TSubProcessOptions> = (stdout, stderr) => stdout || stderr;
+    let detector: StartDetector<TSubProcessOptions> | null = null;
+
+    if (startDetector === null) {
+      detector = genericStartDetector;
+    }
+
+    if (typeof startDetector === 'number' || (startDetector as any) instanceof Number) {
+      startDelay = Number(startDetector);
+      detector = null;
+    } else if (typeof startDetector === 'function') {
+      detector = startDetector;
+    }
+
+    if ((typeof startDetector === 'boolean' || (startDetector as any) instanceof Boolean) && Boolean(startDetector)) {
+      this.assertDetachable();
+      detach = true;
+      detector = genericStartDetector;
+    } else if ((typeof timeoutMs === 'boolean' || (timeoutMs as any) instanceof Boolean) && Boolean(timeoutMs)) {
+      this.assertDetachable();
+      detach = true;
+      timeoutMs = null;
+    }
+
+    return {detector, startDelay, timeoutMs, detach};
+  }
+
+  private assertDetachable(): void {
+    if (!this.opts.detached) {
+      throw new Error(`Unable to detach process that is not started with 'detached' option`);
+    }
+  }
+
+  private attachErrorHandler(reject: (reason: Error) => void): void {
+    this.proc?.on('error', async (err: NodeJS.ErrnoException) => {
+      this.proc?.removeAllListeners('exit');
+      this.proc?.kill('SIGINT');
+
+      let error = err;
+      if (error.code === 'ENOENT') {
+        error = await formatEnoent(error, this.cmd, this.opts?.cwd?.toString());
+      }
+      reject(error);
+
+      this.proc?.unref();
+      this.proc = null;
+    });
+  }
+
+  private attachExitHandler(): void {
+    this.proc?.on('exit', (code: number | null, signal: NodeJS.Signals | null) => {
+      this.emit('exit', code, signal);
+
+      let event: 'stop' | 'die' | 'end' = this.expectingExit ? 'stop' : 'die';
+      if (!this.expectingExit && code === 0) {
+        event = 'end';
+      }
+      this.emit(event, code, signal);
+
+      this.proc = null;
+      this.expectingExit = false;
+    });
+  }
+
+  private attachOutputHandlers(
+    onOutput: (stdout: TOutput<TSubProcessOptions>, stderr: TOutput<TSubProcessOptions>) => void,
+  ): void {
+    const isBuffer = Boolean(this.opts.isBuffer);
+    const encoding = this.opts.encoding || 'utf8';
+    const emptyOutput = (isBuffer ? Buffer.alloc(0) : '') as TOutput<TSubProcessOptions>;
+
+    const attach = (streamName: StreamName, stream: Readable) => {
+      // StringDecoder keeps incomplete multi-byte sequences between chunks
+      const decoder = isBuffer ? null : new StringDecoder(encoding);
+      const emitOutput = (data: Buffer | string) =>
+        onOutput(
+          (streamName === 'stdout' ? data : emptyOutput) as TOutput<TSubProcessOptions>,
+          (streamName === 'stderr' ? data : emptyOutput) as TOutput<TSubProcessOptions>,
+        );
+      stream.on('data', (chunk: Buffer) => {
+        if (!decoder) {
+          emitOutput(chunk);
+          return;
+        }
+        const text = decoder.write(chunk);
+        if (text) {
+          emitOutput(text);
+        }
+      });
+      if (decoder) {
+        stream.on('end', () => {
+          const rest = decoder.end();
+          if (rest) {
+            emitOutput(rest);
+          }
+        });
+      }
+      this.attachLineHandler(streamName, stream);
+    };
+
+    if (this.proc?.stdout) {
+      attach('stdout', this.proc.stdout);
+    }
+    if (this.proc?.stderr) {
+      attach('stderr', this.proc.stderr);
+    }
+  }
+
+  private attachLineHandler(streamName: StreamName, input: Readable): void {
+    const rl = createInterface({input});
+    rl.on('line', (line) => {
+      if (this.listenerCount(`lines-${streamName}`)) {
+        this.emit(`lines-${streamName}`, [line]);
+      }
+      this.emit(`line-${streamName}`, line);
+      if (this.listenerCount('stream-line')) {
+        this.emitLines(streamName, line);
+      }
+    });
   }
 
   private emitLines(streamName: StreamName, lines: Iterable<string> | string): void {
