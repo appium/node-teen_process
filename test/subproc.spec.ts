@@ -199,6 +199,23 @@ describe('SubProcess', function () {
       assert.ok(output[0] instanceof Buffer);
       assert.strictEqual(output[0].toString().trim(), 'foo');
     });
+    it('should not corrupt multi-byte characters split across chunks', async function () {
+      const child = `
+        const buf = Buffer.from('Café 日本\\n');
+        const split = buf.indexOf(0xe6) + 1;
+        process.stdout.write(buf.subarray(0, split));
+        setTimeout(() => process.stdout.write(buf.subarray(split)), 50);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child]);
+      let out = '';
+      subproc.on('output', (stdout: string) => {
+        out += stdout;
+      });
+      const exited = new Promise((resolve) => subproc!.on('exit', resolve));
+      await subproc.start(0);
+      await exited;
+      assert.strictEqual(out, 'Café 日本\n');
+    });
     it('should get output by lines', async function () {
       subproc = new SubProcess('ls', [path.resolve(__dirname)]);
       let lines: string[] = [];

@@ -3,6 +3,7 @@ import type {ChildProcess} from 'node:child_process';
 import {EventEmitter} from 'node:events';
 import {createInterface} from 'node:readline';
 import type {Readable} from 'node:stream';
+import {StringDecoder} from 'node:string_decoder';
 
 import {quote} from 'shell-quote';
 
@@ -198,25 +199,27 @@ export class SubProcess<TSubProcessOptions extends SubProcessOptions = SubProces
       const isBuffer = Boolean(this.opts.isBuffer);
       const encoding = this.opts.encoding || 'utf8';
 
+      type TOutput = TSubProcessOptions extends TIsBufferOpts ? Buffer : string;
+      const emptyOutput = (isBuffer ? Buffer.alloc(0) : '') as TOutput;
+
       if (this.proc.stdout) {
+        // StringDecoder keeps incomplete multi-byte sequences between chunks
+        const decoder = isBuffer ? null : new StringDecoder(encoding);
         this.proc.stdout.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
-            stderr: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
+            stdout: (decoder ? decoder.write(chunk) : chunk) as TOutput,
+            stderr: emptyOutput,
           }),
         );
         handleStreamLines('stdout', this.proc.stdout);
       }
 
       if (this.proc.stderr) {
+        const decoder = isBuffer ? null : new StringDecoder(encoding);
         this.proc.stderr.on('data', (chunk: Buffer) =>
           handleOutput({
-            stdout: (isBuffer ? Buffer.alloc(0) : '') as TSubProcessOptions extends TIsBufferOpts ? Buffer : string,
-            stderr: (isBuffer ? chunk : chunk.toString(encoding)) as TSubProcessOptions extends TIsBufferOpts
-              ? Buffer
-              : string,
+            stdout: emptyOutput,
+            stderr: (decoder ? decoder.write(chunk) : chunk) as TOutput,
           }),
         );
         handleStreamLines('stderr', this.proc.stderr);
