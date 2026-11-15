@@ -1,3 +1,9 @@
+## [5.0.1](https://github.com/appium/node-teen_process/compare/v5.0.0...v5.0.1) (2026-11-15)
+
+### Bug Fixes
+
+* Preserve multi-byte characters split across output chunks ([#496](https://github.com/appium/node-teen_process/issues/496)) ([5a594ee](https://github.com/appium/node-teen_process/commit/5a594ee4795d6e4dab309ebc4978d0fcec8f4ee3))
+
 ## [5.0.0](https://github.com/appium/node-teen_process/compare/v4.2.2...v5.0.0) (2026-11-12)
 
 ### ⚠ BREAKING CHANGES
