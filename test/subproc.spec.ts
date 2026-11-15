@@ -199,6 +199,86 @@ describe('SubProcess', function () {
       assert.ok(output[0] instanceof Buffer);
       assert.strictEqual(output[0].toString().trim(), 'foo');
     });
+    it('should not corrupt multi-byte characters split across chunks', async function () {
+      const child = `
+        const buf = Buffer.from('Café 日本\\n');
+        const split = buf.indexOf(0xe6) + 1;
+        process.stdout.write(buf.subarray(0, split));
+        setTimeout(() => process.stdout.write(buf.subarray(split)), 50);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child]);
+      let out = '';
+      subproc.on('output', (stdout: string) => {
+        out += stdout;
+      });
+      const exited = new Promise((resolve) => subproc!.on('exit', resolve));
+      await subproc.start(0);
+      await exited;
+      assert.strictEqual(out, 'Café 日本\n');
+    });
+    it('should pass uncorrupted multi-byte text to a custom startDetector', async function () {
+      const child = `
+        const buf = Buffer.from('Café 日本\\n');
+        const split = buf.indexOf(0xe6) + 1;
+        process.stdout.write(buf.subarray(0, split));
+        setTimeout(() => process.stdout.write(buf.subarray(split)), 50);
+        setTimeout(() => {}, 1000);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child]);
+      const seen: string[] = [];
+      await subproc.start((stdout: string) => {
+        seen.push(stdout);
+        return stdout.includes('日本');
+      }, 5000);
+      assert.deepStrictEqual(seen, ['Café ', '日本\n']);
+    });
+    it('should not corrupt multi-byte characters split across chunks in stderr', async function () {
+      const child = `
+        const buf = Buffer.from('Café 日本\\n');
+        const split = buf.indexOf(0xe6) + 1;
+        process.stderr.write(buf.subarray(0, split));
+        setTimeout(() => process.stderr.write(buf.subarray(split)), 50);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child]);
+      const chunks: string[] = [];
+      subproc.on('output', (_stdout: string, stderr: string) => {
+        chunks.push(stderr);
+      });
+      const exited = new Promise((resolve) => subproc!.on('exit', resolve));
+      await subproc.start(0);
+      await exited;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      assert.strictEqual(chunks.join(''), 'Café 日本\n');
+      assert.ok(chunks.every((c) => c !== ''));
+    });
+    it('should flush an incomplete trailing multi-byte sequence', async function () {
+      subproc = new SubProcess(process.execPath, ['-e', 'process.stdout.write(Buffer.from([0x61, 0xe6]))']);
+      let out = '';
+      subproc.on('output', (stdout: string) => {
+        out += stdout;
+      });
+      const exited = new Promise((resolve) => subproc!.on('exit', resolve));
+      await subproc.start(0);
+      await exited;
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      assert.strictEqual(out, 'a\ufffd');
+    });
+    it('should respect a custom encoding when decoding split chunks', async function () {
+      const child = `
+        const buf = Buffer.from('日本', 'utf16le');
+        process.stdout.write(buf.subarray(0, 1));
+        setTimeout(() => process.stdout.write(buf.subarray(1)), 50);
+      `;
+      subproc = new SubProcess(process.execPath, ['-e', child], {encoding: 'utf16le'});
+      let out = '';
+      subproc.on('output', (stdout: string) => {
+        out += stdout;
+      });
+      const exited = new Promise((resolve) => subproc!.on('exit', resolve));
+      await subproc.start(0);
+      await exited;
+      assert.strictEqual(out, '日本');
+    });
     it('should get output by lines', async function () {
       subproc = new SubProcess('ls', [path.resolve(__dirname)]);
       let lines: string[] = [];
