@@ -1,3 +1,9 @@
+## [5.0.2](https://github.com/appium/node-teen_process/compare/v5.0.1...v5.0.2) (2026-11-27)
+
+### Miscellaneous Chores
+
+* remove unused @appium/types dev dependency ([#498](https://github.com/appium/node-teen_process/issues/498)) ([b2c86c1](https://github.com/appium/node-teen_process/commit/b2c86c125b229fc5555a1dca63e72be5e19d2e00))
+
 ## [5.0.1](https://github.com/appium/node-teen_process/compare/v5.0.0...v5.0.1) (2026-11-15)
 
 ### Bug Fixes
